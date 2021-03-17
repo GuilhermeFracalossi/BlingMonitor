@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="mainPane" minWidth="400.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #1F3146;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controllers.StartScreenController">
+   <top>
+      <HBox fx:id="topPane" alignment="CENTER_RIGHT" centerShape="false" prefHeight="46.0" prefWidth="1190.0" spacing="20.0">
+         <children>
+            <Button fx:id="configBtn1" alignment="CENTER" mnemonicParsing="false" onAction="#configScreen" opacity="0.64" style="-fx-background-color: none;" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/settingsLOW.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="userBtn" mnemonicParsing="false" onAction="#userScreen" opacity="0.64" style="-fx-background-color: none;" text="Usuario" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/userIconLOW.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logout" opacity="0.64" style="-fx-background-color: none;" text="Sair" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logoutIconLOW.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1190.0" spacing="20.0" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escolha o método de cadastro das imagens" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+            <HBox alignment="CENTER" prefHeight="571.0" prefWidth="1200.0" spacing="20.0">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <VBox alignment="CENTER" prefHeight="155.0" prefWidth="483.0" spacing="20.0">
+                     <children>
+                        <ImageView fitHeight="301.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/autoScanIcon2.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escaneamento automático">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Procura por dispositivos transmitindo imagens em sua rede " textAlignment="CENTER" wrappingWidth="425.1640625">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Button mnemonicParsing="false" onAction="#autoScan" prefHeight="67.0" prefWidth="250.0" style="-fx-background-color: #217dd1; -fx-background-radius: 6;" text="Escanear" textFill="WHITE">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <VBox alignment="CENTER" prefHeight="571.0" prefWidth="449.0" spacing="20.0">
+                     <children>
+                        <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/manualRegisterIcon.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro manual">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cadastro manual dos endereços das câmeras" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Button mnemonicParsing="false" onAction="#manualRegister" prefHeight="67.0" prefWidth="250.0" style="-fx-background-color: #00A569; -fx-background-radius: 6;" text="Registrar" textFill="WHITE">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="30.0" />
+         </padding>
+      </VBox>
+   </center>
+
+</BorderPane>
