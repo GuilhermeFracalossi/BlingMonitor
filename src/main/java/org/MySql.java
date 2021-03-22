@@ -1,6 +1,7 @@
 package org;
 
 import java.math.BigInteger;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -15,8 +16,10 @@ public  class MySql {
     public static Connection conn;
     public static Statement st;
     public static ResultSet rs = null;
+    //String path = MySql.class.getResource("/org/");
 
-    public static final String servidor = "jdbc:sqlite:src/main/resources/monitor.db"; //database monitor
+
+    public static final String servidor = "jdbc:sqlite:monitor.db"; //database monitor
 
     public static final String driver = "org.sqlite.JDBC";
 

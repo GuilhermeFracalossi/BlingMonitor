@@ -92,7 +92,7 @@ public class ManualRegisterController implements Initializable {
         }
     }
     private JSONObject readJson(){
-        File arquivo =  new File("src/main/resources/camerasIndexed.json");
+        File arquivo =  new File("camerasIndexed.json");
 
         if(!arquivo.exists()){
 

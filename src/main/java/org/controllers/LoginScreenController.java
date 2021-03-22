@@ -91,7 +91,7 @@ public class LoginScreenController implements Initializable {
 
                 logged = true;
 
-                File arquivo =  new File("src/main/resources/camerasIndexed.json");
+                File arquivo =  new File("camerasIndexed.json");
 
 
                 if(arquivo.exists()){

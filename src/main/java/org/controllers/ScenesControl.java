@@ -28,9 +28,7 @@ public class ScenesControl extends Application {
         stage.setScene(startingScene);
         stage.show();
         AllCamerasMainGridScreenController.stage = stage;
-
     }
-
     @Override
     public void stop() {
 //        for (int i = 0; i < 100; i++) {
@@ -44,12 +42,9 @@ public class ScenesControl extends Application {
         logger.setInfoLog("BlingMonitor closed");
         Log.handler.close();
         MySql.FecharConexao();
-        System.exit(0);
+        //System.exit(0);
 
     }
-
-
-
     public static void main(String[] args) {
         launch(args);
     }

@@ -169,7 +169,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         cameraContainerStartingConfig();
 
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("src/main/resources/camerasIndexed.json"))
+        try (FileReader reader = new FileReader("camerasIndexed.json"))
         {
             Object obj = jsonParser.parse(reader);
             fullJson = (JSONObject) obj;
@@ -710,7 +710,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     private void updateCurrentCamera() {
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("src/main/resources/camerasIndexed.json")) {
+        try (FileReader reader = new FileReader("camerasIndexed.json")) {
             Object obj = jsonParser.parse(reader);
             fullJson = (JSONObject) obj;
             camerasList = (JSONArray) fullJson.get("cameras");
@@ -901,7 +901,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     public void readConfigFile(){
-        File configFile = new File("src/main/resources/config.properties");
+        File configFile = new File("config.properties");
         if(!configFile.exists()){
             try {
                 configFile.createNewFile();
@@ -909,7 +909,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 e.printStackTrace();
             }
         }
-        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+        try (InputStream input = new FileInputStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             silentMode = prop.getProperty("silent_mode") == null ? ConfigScreenController.SILENT_MODE_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("silent_mode"));

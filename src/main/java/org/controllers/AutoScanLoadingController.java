@@ -87,7 +87,7 @@ public class AutoScanLoadingController implements Initializable {
 
                         //ID START AT 1
                         cameraUnique.put("id", (index + 1));
-                        cameraUnique.put("cameraName", "camera " + (index + 1));
+                        cameraUnique.put("cameraName", "Camera " + (index + 1));
                         cameraUnique.put("address", camerasFound.get(index)[0]);
                         cameraUnique.put("port", camerasFound.get(index)[1]);
 
@@ -129,7 +129,7 @@ public class AutoScanLoadingController implements Initializable {
     }
 
     public void readConfigFile(){
-        File configFile = new File("src/main/resources/config.properties");
+        File configFile = new File("config.properties");
         if(!configFile.exists()){
             try {
                 configFile.createNewFile();
@@ -137,7 +137,7 @@ public class AutoScanLoadingController implements Initializable {
                 e.printStackTrace();
             }
         }
-        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+        try (InputStream input = new FileInputStream("config.properties")) {
 
             Properties prop = new Properties();
             prop.load(input);

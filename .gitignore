@@ -1,6 +1,4 @@
-src/main/resources/config.properties
-src/main/resources/camerasIndexed.json
-src/main/resources/monitor.db
+
 config.properties
 log.txt
 log.txt.lck
