@@ -12,7 +12,7 @@ Both for Linux and Windows.
 
 A minimum amount of gpu resource it's necessary for the 
 
-##Features
+## Features
 
 * **Grid-mode**: group all registered cameras to fit in a maximized screen
 * **Slide-mode**: show each camera individually and slide it after a certain time
@@ -31,7 +31,7 @@ Any stream that VLC can play, BlingMonitor can do it too.
 Keep in mind that this can only be possible if registering the camera
 manually, as the auto scan just checks for open ports in the network. 
 
-##Requirements
+## Requirements
 * [VLC](https://www.videolan.org/vlc/index.html). On linux, recommend *not* using the snap version,
 but instead, the one that your package manager provides. `sudo apt-get install vlc`
 * [Java](https://www.oracle.com/br/java/technologies/javase-downloads.html) version 13+ recommended.
