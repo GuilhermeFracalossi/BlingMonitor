@@ -10,7 +10,15 @@ server for the cameras, since it streams HTTP as default.
 
 Both for Linux and Windows.
 
-A minimum amount of gpu resource it's necessary for the 
+A minimum amount of GPU and CPU resources are necessary for the streams to run. Each stream of a camera is like 
+an instance of VLC running, so if you are going to display 10 1080p cameras, it's the same
+as opening VLC 10 times and streaming a camera on each instance.
+
+If the device is too old or not compatible with this kind of streams, the software on this Java
+version won't work, but we are working on a web-based system aimed at low profile devices. 
+
+You can test if the software will be capable of showing you the camera's streams by simply 
+opening `VLC -> Media -> Open Network Stream`, and checking if an open stream works properly.
 
 ## How to use
 
@@ -30,7 +38,7 @@ Keep in mind that this is a beta release.
 * Save frames from any camera
 * Change the size of the camera's grid
 * Full screen mode
-* Readjust automatically to window resize (just the arrangement, not the size, for now)
+* Log system
 
 Although not tested, theoretically it supports any kind of video stream, since it's VLC based.
 Any stream that VLC can play, BlingMonitor can do it too.
