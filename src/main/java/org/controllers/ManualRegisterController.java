@@ -196,7 +196,7 @@ public class ManualRegisterController implements Initializable {
         //imagem de camera
 
         //File cameraFile = new File("src/images/cameraIconLow.png");
-        Image cameraImg = new Image(getClass().getResource("/org/images/cameraIconLOW.png").toString());
+        Image cameraImg = new Image(getClass().getResource("/org/images/camera-icon-low.png").toString());
 
         ImageView imageView = new ImageView();
         imageView.setImage(cameraImg);
@@ -251,7 +251,7 @@ public class ManualRegisterController implements Initializable {
 
         //botao de excluir
         //File deleteFile = new File("src/images/deleteIconLOW.png");
-        Image deleteIconIMG = new Image(getClass().getResource("/org/images/deleteIconLOW.png").toString());
+        Image deleteIconIMG = new Image(getClass().getResource("/org/images/delete-icon-low.png").toString());
 
         ImageView deleteImageView = new ImageView();
         deleteImageView.setImage(deleteIconIMG);

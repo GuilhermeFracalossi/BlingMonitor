@@ -16,9 +16,8 @@ public  class MySql {
     public static Statement st;
     public static ResultSet rs = null;
 
-    public static final String servidor = "jdbc:sqlite:monitor.db"; //database monitor
-    //    String usuario = "admin123";
-//    String senha = "admin123";
+    public static final String servidor = "jdbc:sqlite:src/main/resources/monitor.db"; //database monitor
+
     public static final String driver = "org.sqlite.JDBC";
 
     public void prepareAll(){

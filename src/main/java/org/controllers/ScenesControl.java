@@ -24,7 +24,7 @@ public class ScenesControl extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));
         Scene startingScene = new Scene(root);
         stage.setTitle("BlingMonitor");
-        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/org/images/cctvLogoLOW.png"))));
+        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/org/images/brand.png"))));
         stage.setScene(startingScene);
         stage.show();
         AllCamerasMainGridScreenController.stage = stage;
@@ -33,10 +33,22 @@ public class ScenesControl extends Application {
 
     @Override
     public void stop() {
+        for (int i = 0; i < 100; i++) {
+
+
+            if(AllCamerasMainGridScreenController.audioPlayer[i] == null){
+                break;
+            }
+
+        }
+
+
         logger.setInfoLog("BlingMonitor closed");
         Log.handler.close();
         MySql.FecharConexao();
-        //System.exit(0);
+        System.exit(0);
+
+
 
     }
 

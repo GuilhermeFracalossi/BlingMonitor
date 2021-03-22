@@ -23,7 +23,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/settingsLOW.png" />
+                              <Image url="@../images/settings-low.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -42,7 +42,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/userIconLOW.png" />
+                              <Image url="@../images/user-icon-low.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -60,7 +60,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/logoutIconLOW.png" />
+                              <Image url="@../images/logout-icon-low.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -80,7 +80,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/backIconLOW.png" />
+                                          <Image url="@../images/back-icon-low.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -153,7 +153,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/redoIconLOW.png" />
+                                          <Image url="@../images/redo-icon-low.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -168,7 +168,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/nextIconLOW.png" />
+                                          <Image url="@../images/next-icon-low.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>

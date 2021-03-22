@@ -128,7 +128,7 @@ public class AutoScanLoadingController implements Initializable {
     }
 
     public void readConfigFile(){
-        File configFile = new File("config.properties");
+        File configFile = new File("src/main/resources/config.properties");
         if(!configFile.exists()){
             try {
                 configFile.createNewFile();
@@ -136,7 +136,7 @@ public class AutoScanLoadingController implements Initializable {
                 e.printStackTrace();
             }
         }
-        try (InputStream input = new FileInputStream("config.properties")) {
+        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
 
             Properties prop = new Properties();
             prop.load(input);

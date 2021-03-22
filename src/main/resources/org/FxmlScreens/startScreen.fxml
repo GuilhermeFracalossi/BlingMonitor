@@ -20,7 +20,7 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/settingsLOW.png" />
+                        <Image url="@../images/settings-low.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -39,7 +39,7 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/userIconLOW.png" />
+                        <Image url="@../images/user-icon-low.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -57,7 +57,7 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/logoutIconLOW.png" />
+                        <Image url="@../images/logout-icon-low.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -86,7 +86,7 @@
                      <children>
                         <ImageView fitHeight="301.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/autoScanIcon2.png" />
+                              <Image url="@../images/auto-scan-icon.png" />
                            </image>
                         </ImageView>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escaneamento automático">
@@ -114,7 +114,7 @@
                      <children>
                         <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/manualRegisterIcon.png" />
+                              <Image url="@../images/manual-register-icon.png" />
                            </image>
                         </ImageView>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro manual">

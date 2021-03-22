@@ -27,7 +27,7 @@
                      <graphic>
                         <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/backIconLOW.png" />
+                              <Image url="@../images/back-icon-low.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -42,7 +42,7 @@
                   </Text>
                   <ImageView fitHeight="38.0" fitWidth="38.0" opacity="0.7">
                      <image>
-                        <Image url="@../images/settingsLOW.png" />
+                        <Image url="@../images/settings-low.png" />
                      </image>
                   </ImageView>
                </children>

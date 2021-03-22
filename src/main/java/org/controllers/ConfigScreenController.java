@@ -108,7 +108,7 @@ public class ConfigScreenController implements Initializable {
         applyBtn.setVisible(false);
         applyBtn.setDefaultButton(true);
 
-        File configFile = new File("config.properties");
+        File configFile = new File("src/main/resources/config.properties");
         if(!configFile.exists()){
             try {
                 configFile.createNewFile();
@@ -116,7 +116,7 @@ public class ConfigScreenController implements Initializable {
                 e.printStackTrace();
             }
         }
-        try (InputStream input = new FileInputStream("config.properties")) {
+        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
 
             Properties prop = new Properties();
             prop.load(input);
@@ -286,7 +286,7 @@ public class ConfigScreenController implements Initializable {
     }
 
     public void saveToConfigFile(){
-        try (OutputStream output = new FileOutputStream("config.properties")) {
+        try (OutputStream output = new FileOutputStream("src/main/resources/config.properties")) {
 
             Properties prop = new Properties();
 

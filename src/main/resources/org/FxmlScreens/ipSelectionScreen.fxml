@@ -62,7 +62,7 @@
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/backIconLOW.png" />
+                        <Image url="@../images/back-icon-low.png" />
                      </image>
                   </ImageView>
                </graphic>

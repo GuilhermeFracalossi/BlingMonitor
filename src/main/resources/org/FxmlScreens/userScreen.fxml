@@ -21,7 +21,7 @@
                <graphic>
                   <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/backIconLOW.png" />
+                        <Image url="@../images/back-icon-low.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -120,7 +120,7 @@
                      <children>
                         <ImageView fx:id="messageImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/cancelLOW.png" />
+                              <Image url="@../images/cancel-low.png" />
                            </image>
                         </ImageView>
                         <Text fx:id="messageText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Formulário vazio">

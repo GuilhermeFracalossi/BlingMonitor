@@ -39,7 +39,7 @@
                <children>
                   <ImageView fx:id="tickImg" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
-                        <Image url="@../images/tickScanComplete.png" />
+                        <Image url="@../images/tick-scan-complete.png" />
                      </image>
                   </ImageView>
                </children>
