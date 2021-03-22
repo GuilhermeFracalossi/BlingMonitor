@@ -12,6 +12,12 @@ Both for Linux and Windows.
 
 A minimum amount of gpu resource it's necessary for the 
 
+## How to use
+
+Just download the `BlingMonitor.jar` from the [Release](https://github.com/GuilhermeFracalossi/BlingMonitor/releases/) tab and run it with
+a double-click or `java -jar BlingMonitor.jar` from the terminal. The default *login* and *password* are `admin`, for start using the software.
+Keep in mind that this is a beta release.
+
 ## Features
 
 * **Grid-mode**: group all registered cameras to fit in a maximized screen
