@@ -143,7 +143,7 @@
                         <Region prefWidth="200.0" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="325.0" style="-fx-background-color: #008391;" text="Escanear novamente" textFill="WHITE">
+                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="325.0" style="-fx-background-color: #008391;" text="Escanear" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>

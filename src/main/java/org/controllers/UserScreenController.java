@@ -63,6 +63,7 @@ public class UserScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
+        saveBtn.setDefaultButton(true);
         ResultSet data= MySql.getData();
 
         try {

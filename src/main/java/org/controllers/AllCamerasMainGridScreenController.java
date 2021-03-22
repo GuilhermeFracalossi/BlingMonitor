@@ -109,7 +109,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
     @FXML ImageView fullScreenCameraToggleImg;
 
 
-    Timeline slideRepeater;
+    Timeline taskSlider;
+   // Timeline slideRepeater;
     @FXML VBox centerContainerVbox;
     @FXML ScrollPane camerasScrollContainer = new ScrollPane();
     TilePane cameraViewGrid = new TilePane();
@@ -120,10 +121,10 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     double playerSizeSelected;
     StackPane cameraContainer[] = new StackPane[100];
-    //public static EmbeddedMediaPlayer embeddedMediaPlayerIntances[] = new EmbeddedMediaPlayer[100];
+
     MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
     public final List<PlayerInstance> players = new ArrayList<PlayerInstance>();
-    //ImageView cameraView[] = new ImageView[100];
+
     EmbeddedMediaPlayer playerSetted;
 
 
@@ -307,7 +308,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
                 ExecutorService es = Executors.newFixedThreadPool(10);
                 for (int i =0; i< players.size(); i++){
-                    camerasScanResult.add(GetCameraUrls.portIsOpen(es, players.get(i).cameraAddress(), (int)players.get(i).cameraPort(), 2000));
+                    camerasScanResult.add(GetCameraUrls.portIsOpen(es, players.get(i).cameraAddress(), (int)players.get(i).cameraPort(), 3000));
                 }
                 es.shutdown();
 
@@ -854,7 +855,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         }
                     }
                     setPlayersSize();
-                    Timeline taskSlider = new Timeline(new KeyFrame(Duration.seconds(INTERVAL), new EventHandler<ActionEvent>() {
+                    taskSlider = new Timeline(new KeyFrame(Duration.seconds(INTERVAL), new EventHandler<ActionEvent>() {
                         int i = (int) currentCameraIndex+1;
                         @Override
                         public void handle(ActionEvent event) {
@@ -893,7 +894,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     taskSlider.setCycleCount(Timeline.INDEFINITE);
                     taskSlider.play();
 
-                    slideRepeater = taskSlider;
+                    //slideRepeater = taskSlider;
 
                 }
             });
@@ -922,7 +923,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
         playerControlsHbox.setManaged(true);
         if (gridScreen == false) {
             gridScreen = true;
-            slideRepeater.stop();
+            taskSlider.stop();
+
             gridModeBtn.setStyle("-fx-background-color: #133f78;");
             slideModeBtn.setStyle("-fx-background-color: none;");
 
