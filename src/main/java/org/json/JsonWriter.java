@@ -12,7 +12,7 @@ public class JsonWriter
 
     public static void main(JSONObject fullJson)
     {
-        try (FileWriter file = new FileWriter("camerasIndexed.json")) {
+        try (FileWriter file = new FileWriter("src/main/resources/camerasIndexed.json")) {
             file.write(fullJson.toJSONString());
             file.flush();
 

@@ -33,22 +33,18 @@ public class ScenesControl extends Application {
 
     @Override
     public void stop() {
-        for (int i = 0; i < 100; i++) {
-
-
-            if(AllCamerasMainGridScreenController.audioPlayer[i] == null){
-                break;
-            }
-
-        }
-
-
+//        for (int i = 0; i < 100; i++) {
+//
+//
+//            if(AllCamerasMainGridScreenController.audioPlayer[i] == null){
+//                break;
+//            }
+//
+//        }
         logger.setInfoLog("BlingMonitor closed");
         Log.handler.close();
         MySql.FecharConexao();
         System.exit(0);
-
-
 
     }
 

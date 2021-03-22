@@ -14,13 +14,13 @@ public class JsonReader
 {
     public static JSONObject main(String[] args){
         
-        File arquivo =  new File("camerasIndexed.json");
+        File arquivo =  new File("src/main/resources/camerasIndexed.json");
         JSONObject fullJson = new JSONObject();
 
 
         if(arquivo.exists()){
 
-            try (FileReader reader = new FileReader("camerasIndexed.json")){
+            try (FileReader reader = new FileReader("src/main/resources/camerasIndexed.json")){
                 
                 JSONParser jsonParser = new JSONParser();
                 Object obj = jsonParser.parse(reader);

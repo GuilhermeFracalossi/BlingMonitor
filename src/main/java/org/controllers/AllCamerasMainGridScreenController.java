@@ -169,7 +169,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         cameraContainerStartingConfig();
 
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("camerasIndexed.json"))
+        try (FileReader reader = new FileReader("src/main/resources/camerasIndexed.json"))
         {
             Object obj = jsonParser.parse(reader);
             fullJson = (JSONObject) obj;
@@ -247,26 +247,29 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         public void handle(MouseEvent mouseEvent) {
                             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
-                                stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                                playerSetted = players.get(cameraIndex).mediaPlayer();
-                                cameraContainerSetted = cameraContainer[cameraIndex];
-                                currentCameraIndex = cameraIndex;
-                                currentAddress = players.get(cameraIndex).cameraAddress();
-                                currentPort = players.get(cameraIndex).cameraPort();
-                                playerControls();
+                                if(gridScreen != false){
+                                    stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                                    playerSetted = players.get(cameraIndex).mediaPlayer();
+                                    cameraContainerSetted = cameraContainer[cameraIndex];
+                                    currentCameraIndex = cameraIndex;
+                                    currentAddress = players.get(cameraIndex).cameraAddress();
+                                    currentPort = players.get(cameraIndex).cameraPort();
+                                    playerControls();
 
 
-                                if (!players.get(cameraIndex).getCameraOpen()) {
-                                    playerControlsHbox.setDisable(true);
+                                    if (!players.get(cameraIndex).getCameraOpen()) {
+                                        playerControlsHbox.setDisable(true);
 
-                                } else {
-                                    playerControlsHbox.setDisable(false);
+                                    } else {
+                                        playerControlsHbox.setDisable(false);
+                                    }
+
+
+                                    if (mouseEvent.getClickCount() == 2) {
+                                        fullScreenCameraToggle();
+                                    }
                                 }
 
-
-                                if (mouseEvent.getClickCount() == 2) {
-                                    fullScreenCameraToggle();
-                                }
                             }
                         }
                     });
@@ -311,12 +314,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 for (final Future<GetCameraUrls.ScanResult> f : camerasScanResult) {
                     int i = camerasScanResult.indexOf(f);
 
-                    //if (f.get().isOpen()) {
-                    if(true){
+                    if (f.get().isOpen()) {
+                    //if(true){
                         players.get(i).setCameraOpen(true);
                         players.get(i).mediaPlayer().videoSurface().set(videoSurfaceForImageView(players.get(i).videoSurface()));
-                        //players.get(i).mediaPlayer().media().start("http://"+players.get(i).cameraAddress()+":"+players.get(i).cameraPort());
-                        players.get(i).mediaPlayer().media().start(players.get(i).cameraAddress());
+                        players.get(i).mediaPlayer().media().start("http://"+players.get(i).cameraAddress()+":"+players.get(i).cameraPort());
+                       // players.get(i).mediaPlayer().media().start(players.get(i).cameraAddress());
                     }else{
                         players.get(i).setCameraOpen(false);
                     }
@@ -369,10 +372,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     }
                 });
                 setPlayersSize();
+
                 setPlayersImageAdjustments();
                 gridSizeAdjust();
                 defaultCameraStyles();
                 camerasScrollContainer.setVisible(true);
+
                 return null;
             };
 
@@ -705,7 +710,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     private void updateCurrentCamera() {
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("camerasIndexed.json")) {
+        try (FileReader reader = new FileReader("src/main/resources/camerasIndexed.json")) {
             Object obj = jsonParser.parse(reader);
             fullJson = (JSONObject) obj;
             camerasList = (JSONArray) fullJson.get("cameras");

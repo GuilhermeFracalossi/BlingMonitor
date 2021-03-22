@@ -87,7 +87,7 @@ public class AutoScanLoadingController implements Initializable {
 
                         //ID START AT 1
                         cameraUnique.put("id", (index + 1));
-                        cameraUnique.put("cameraName", "camera" + (index + 1));
+                        cameraUnique.put("cameraName", "camera " + (index + 1));
                         cameraUnique.put("address", camerasFound.get(index)[0]);
                         cameraUnique.put("port", camerasFound.get(index)[1]);
 
@@ -95,6 +95,7 @@ public class AutoScanLoadingController implements Initializable {
                         cameraUnique.put("brightness", 1);
                         cameraUnique.put("contrast", 1);
                         cameraUnique.put("saturation", 1);
+                        cameraUnique.put("gamma", 1);
 
                         allCameras.add(cameraUnique);
 
