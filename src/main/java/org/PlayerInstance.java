@@ -7,6 +7,8 @@ import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerInstance extends MediaPlayerEventAdapter {
@@ -19,12 +21,15 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     protected final long cameraPort;
     protected boolean cameraOpen;
 
+    private static PlayerInstance instance;
+    public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
+
     public PlayerInstance(EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long  cameraPort) {
         this.mediaPlayer = mediaPlayer;
         this.videoSurface = new ImageView();
         this.cameraAddress = cameraAddress;
         this.cameraPort = cameraPort;
-
+        players.add(this);
         mediaPlayer.events().addMediaPlayerEventListener(this);
     }
 
@@ -49,7 +54,14 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         this.cameraOpen = cameraOpen;
     }
 
-
+    public static void releaseAll(){
+        // Release all player instances
+        for (int i = 0; i < players.size();i++){
+            players.get(i).mediaPlayer().controls().stop();
+            players.get(i).mediaPlayer().release();
+        }
+        players.clear();
+    }
     @Override
     public void mediaChanged(MediaPlayer mediaPlayer, MediaRef media) {
         //System.out.println("mediaChanged");
