@@ -1,7 +1,6 @@
 package org.controllers;
 
 import org.PlayerInstance;
-import org.controllers.AllCamerasMainGridScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.Log;
-import org.MySql;
+import org.database.Database;
 
 
 public class ScenesControl extends Application {
@@ -22,8 +21,8 @@ public class ScenesControl extends Application {
 
 //        Instanciate MySQL and create the admin entry on the users table if its empty
 //        if the table doesn't exists, then creates it
-        MySql connection = new MySql();
-        connection.prepareAll();
+        Database connection = new Database();
+        connection.prepareDatabase();
 
 
         Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));//Gets the frontend page
@@ -51,7 +50,7 @@ public class ScenesControl extends Application {
 //        System.out.println(players);
         logger.setInfoLog("BlingMonitor closed");
         Log.handler.close();
-        MySql.FecharConexao();
+        Database.closeConnection();
         PlayerInstance.releaseAll();
         //System.exit(0);
 
