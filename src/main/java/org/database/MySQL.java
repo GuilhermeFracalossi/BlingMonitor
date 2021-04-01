@@ -109,7 +109,7 @@ public class MySQL{
 
         params.add("Nome Usuario");
         params.add("admin");
-        params.add("21232f297a57a5a743894a0e4a801fc3");
+        params.add("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918");
 
         execute("INSERT INTO usuario(nome,login,senha) VALUES (?, ?, ?)",params,false);
     }
