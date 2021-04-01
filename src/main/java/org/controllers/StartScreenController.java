@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 
 import javafx.stage.Stage;
 import org.network.GetAvailableIps;
-import org.MySql;
+import org.database.Database;
 
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class StartScreenController implements Initializable {
 
 
     public String getUserName() throws SQLException {
-        String userName = MySql.getData().getString(2);
+        String userName = Database.getUsers().getString(2);
         return userName;
     }
 

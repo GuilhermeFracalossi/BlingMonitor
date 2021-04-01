@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.MySql;
+import org.database.Database;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static org.MySql.encrypt;
+import static org.database.Database.encrypt;
 
 public class UserScreenController implements Initializable {
     public static String previousScreen;
@@ -64,7 +64,7 @@ public class UserScreenController implements Initializable {
 
 
         saveBtn.setDefaultButton(true);
-        ResultSet data= MySql.getData();
+        ResultSet data= Database.getUsers();
 
         try {
 
@@ -121,7 +121,7 @@ public class UserScreenController implements Initializable {
 
         }else{
 
-            MySql.update(name, user, encrypt(passwordString), LoginScreenController.id);
+            Database.updateUserInfo(LoginScreenController.id, name, user, encrypt(passwordString));
 
             LoginScreenController.passwordTyped = passwordString;
             messageImage.setImage(new Image(getClass().getResource("/org/images/tick.png").toString()));

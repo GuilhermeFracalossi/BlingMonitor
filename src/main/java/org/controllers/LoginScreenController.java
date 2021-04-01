@@ -4,7 +4,6 @@ package org.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -20,17 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.JsonReader;
-import org.json.JsonWriter;
-import org.MySql;
-import static org.MySql.encrypt;
+import org.database.Database;
+import static org.database.Database.encrypt;
 
 
 public class LoginScreenController implements Initializable {
@@ -69,12 +65,13 @@ public class LoginScreenController implements Initializable {
         String senha = encrypt(passwordField.getText());
         
             try {
-                if(MySql.conn.isClosed()){
-                    MySql connection = new MySql();
+//                if(Database.conn.isClosed()){
+                if(Database.isClosed()){
+                    Database connection = new Database();
                      rs = connection.login(usuario, senha);
 
                 }else{
-                    rs = MySql.login(usuario, senha);
+                    rs = Database.login(usuario, senha);
                 }
 
 

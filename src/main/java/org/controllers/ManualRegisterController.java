@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ import org.json.simple.JSONObject;
 import org.network.GetAvailableIps;
 import org.json.JsonReader;
 import org.json.JsonWriter;
-import org.MySql;
+import org.database.Database;
 
 
 public class ManualRegisterController implements Initializable {
@@ -112,7 +111,8 @@ public class ManualRegisterController implements Initializable {
 
 
     public String getUserName() throws SQLException {
-        String userName = MySql.getData().getString(2);
+        //Mod 1
+        String userName = Database.getUsers().getString(2);
         return userName;
     }
     public void manualRegisterAction(ActionEvent actionEvent) throws Exception {
