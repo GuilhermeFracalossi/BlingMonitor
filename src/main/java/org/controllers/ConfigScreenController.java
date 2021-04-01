@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import org.Config;
 
 import java.io.*;
 import java.net.URL;
@@ -68,20 +69,6 @@ public class ConfigScreenController implements Initializable {
     @FXML
     Button applyBtn;
 
-    public static final int START_IP_DEFAULT_VALUE = 1;
-    public static final int END_IP_DEFAULT_VALUE  = 254;
-    public static final int START_PORT_DEFAULT_VALUE  = 8081;
-    public static final int END_PORT_DEFAULT_VALUE  = 8086;
-
-    public static final int THREADS_DEFAULT_VALUE  = 50;
-    public static final int TIMEOUT_DEFAULT_VALUE  = 1500;
-
-
-    private static final boolean DEFAULT_OPTIONS_SCAN_DEFAULT_VALUE  = true;
-    public static final boolean SILENT_MODE_DEFAULT_VALUE  = false;
-    public static final boolean VERIFICATION_MODE_DEFAULT_VALUE  = true;
-    private static final boolean ADVANCED_CONFIGS_DEFAULT_VALUE  = false;
-
     public static int startIp;
     public static int endIp;
     public static int startPort;
@@ -108,46 +95,23 @@ public class ConfigScreenController implements Initializable {
         applyBtn.setVisible(false);
         applyBtn.setDefaultButton(true);
 
-        File configFile = new File("config.properties");
-        if(!configFile.exists()){
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try (InputStream input = new FileInputStream("config.properties")) {
+//        default options address, Ip start, ip end, port start, port end, number of threds, timeout, silent mode, active verification
+        threads = Integer.parseInt(Config.get("number_threads"));
+        timeout = Integer.parseInt(Config.get("timeout"));
 
-            Properties prop = new Properties();
-            prop.load(input);
+        advancedConfigs = Boolean.parseBoolean(Config.get("advanced_configuration"));
+        defaultOptionsScan = Boolean.parseBoolean(Config.get("default_configuration_scan"));
 
+        silentMode = Boolean.parseBoolean(Config.get("silent_mode"));
+        verificationMode = Boolean.parseBoolean(Config.get("active_verification"));
 
-            defaultOptionsScan = prop.getProperty("default_configuration_scan") == null ? DEFAULT_OPTIONS_SCAN_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("default_configuration_scan"));
-            startIp =  prop.getProperty("ip_start_scan") == null ? START_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_start_scan"));
-            endIp = prop.getProperty("ip_end_scan") == null ? END_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_end_scan"));
-            startPort = prop.getProperty("port_start_scan") == null ? START_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_start_scan"));
-            endPort = prop.getProperty("port_end_scan") == null ? END_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_end_scan"));
-
-            advancedConfigs = prop.getProperty("advanced_configuration") == null ? ADVANCED_CONFIGS_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("advanced_configuration"));
-            threads = prop.getProperty("number_threads") == null ? THREADS_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("number_threads"));
-            timeout = prop.getProperty("timeout") == null ? TIMEOUT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("timeout"));
-            silentMode = prop.getProperty("silent_mode") == null ? SILENT_MODE_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("silent_mode"));
-            verificationMode = prop.getProperty("active_verification") == null ? VERIFICATION_MODE_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("active_verification"));
-
-
-            defaultOptionsScan = prop.getProperty("default_configuration_scan") == null ? DEFAULT_OPTIONS_SCAN_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("default_configuration_scan"));
-            startIp =  prop.getProperty("ip_start_scan") == null ? START_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_start_scan"));
-            endIp = prop.getProperty("ip_end_scan") == null ? END_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_end_scan"));
-            startPort = prop.getProperty("port_start_scan") == null ? START_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_start_scan"));
-            endPort = prop.getProperty("port_end_scan") == null ? END_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_end_scan"));
+        startIp =  Integer.parseInt(Config.get("ip_start_scan"));
+        endIp = Integer.parseInt(Config.get("ip_end_scan"));
+        startPort = Integer.parseInt(Config.get("port_start_scan"));
+        endPort = Integer.parseInt(Config.get("port_end_scan"));
 
 
 
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
         defaultCheckbox.selectedProperty().setValue(defaultOptionsScan);
         silentModeCheckbox.selectedProperty().setValue(silentMode);

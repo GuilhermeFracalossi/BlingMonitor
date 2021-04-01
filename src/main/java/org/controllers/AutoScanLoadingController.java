@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.Config;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.network.GetCameraUrls;
@@ -71,7 +72,14 @@ public class AutoScanLoadingController implements Initializable {
 
 
         GetCameraUrls getCameras = new GetCameraUrls();
-        readConfigFile();
+
+        startIp = Integer.parseInt(Config.get("ip_start_scan"));
+        endIp= Integer.parseInt(Config.get("ip_end_scan"));
+        startPort = Integer.parseInt(Config.get("port_start_scan"));
+        endPort = Integer.parseInt(Config.get("port_end_scan"));
+        threads = Integer.parseInt(Config.get("number_threads"));
+        timeout = Integer.parseInt(Config.get("timeout"));
+
         try {
 
             Task scanning = new Task<Void>() {
@@ -126,39 +134,6 @@ public class AutoScanLoadingController implements Initializable {
         statusScanningLabel.setText("Concluído");
         nextBtn.setVisible(true);
         tickImg.setVisible(true);
-    }
-
-    public void readConfigFile(){
-        File configFile = new File("config.properties");
-        if(!configFile.exists()){
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try (InputStream input = new FileInputStream("config.properties")) {
-
-            Properties prop = new Properties();
-            prop.load(input);
-
-
-
-            startIp = prop.getProperty("ip_start_scan") == null ? ConfigScreenController.START_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_start_scan"));
-            endIp = prop.getProperty("ip_end_scan") == null ? ConfigScreenController.END_IP_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("ip_end_scan"));
-
-            startPort = prop.getProperty("port_start_scan") == null ? ConfigScreenController.START_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_start_scan"));
-            endPort = prop.getProperty("port_end_scan") == null ? ConfigScreenController.END_PORT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("port_end_scan"));
-
-            threads = prop.getProperty("number_threads") == null ? ConfigScreenController.THREADS_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("number_threads"));
-            timeout = prop.getProperty("timeout") == null ? ConfigScreenController.TIMEOUT_DEFAULT_VALUE : Integer.parseInt(prop.getProperty("timeout"));
-
-
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void showCamerasRegisteredPage(ActionEvent actionEvent) throws IOException {
