@@ -13,6 +13,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
+import org.Config;
 import org.network.GetCameraUrls;
 import org.Log;
 import org.PlayerInstance;
@@ -156,7 +157,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
             e.printStackTrace();
         }
 
-        readConfigFile();
+        silentMode = Boolean.parseBoolean(Config.get("silentMode"));
+        verificationMode = Boolean.parseBoolean(Config.get("verificationMode"));
         //Clears the players array
         PlayerInstance.players.clear();
 
@@ -887,24 +889,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
         }
     }
 
-    public void readConfigFile(){
-        File configFile = new File("config.properties");
-        if(!configFile.exists()){
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try (InputStream input = new FileInputStream("config.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            silentMode = prop.getProperty("silent_mode") == null ? ConfigScreenController.SILENT_MODE_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("silent_mode"));
-            verificationMode = prop.getProperty("active_verification") == null ? ConfigScreenController.VERIFICATION_MODE_DEFAULT_VALUE : Boolean.parseBoolean(prop.getProperty("active_verification"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
     public void gridScreenMode(ActionEvent actionEvent) {
         playerControlsHbox.setManaged(true);
         if (gridScreen == false) {
