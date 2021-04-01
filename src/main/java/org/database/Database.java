@@ -60,7 +60,7 @@ public class Database extends MySQL {
 
         try {
 
-            md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance("SHA-256");
             BigInteger hash = new BigInteger(1, md.digest(password.getBytes()));
             result = hash.toString(16);
 
