@@ -923,8 +923,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
             audioPlayer[i].stop();
             audioPlayer[i].dispose();
-            PlayerInstance.players.get(i).mediaPlayer().controls().stop();
-            PlayerInstance.players.get(i).mediaPlayer().release();
+            PlayerInstance.releaseAll();
 
         }
 
