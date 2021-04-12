@@ -1,8 +1,6 @@
 package org.controllers;
 
 
-import java.io.*;
-
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -53,11 +51,9 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
@@ -119,15 +115,15 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
 
     double playerSizeSelected;
-    StackPane cameraContainer[] = new StackPane[100];
+    StackPane[] cameraContainer = new StackPane[100];
 
     MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
 
     EmbeddedMediaPlayer playerSetted;
 
 
-    StackPane alerterStack[] = new StackPane[100];
-    HBox alertsContainer[] = new HBox[100];
+    StackPane[] alerterStack = new StackPane[100];
+    HBox[] alertsContainer = new HBox[100];
     boolean fullScreenPlayer = false;
     long currentCameraIndex;
     String currentCameraName;
@@ -136,10 +132,10 @@ public class AllCamerasMainGridScreenController implements Initializable {
     StackPane cameraContainerSetted;
 
 //    Frame analizer variables
-    int lastFrameCount[] = new int[100];
-    int currentFrameCount[] = new int[100];
-    int reconeectionTolerance;
-    Timeline analyzer[] = new Timeline[100];
+    int[] lastFrameCount = new int[100];
+    int[] currentFrameCount = new int[100];
+    int reconnectionTolerance;
+    Timeline[] analyzer = new Timeline[100];
 
 
     static MediaPlayer[] audioPlayer = new MediaPlayer[100];
@@ -157,8 +153,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
             e.printStackTrace();
         }
 
-        silentMode = Boolean.parseBoolean(Config.get("silentMode"));
-        verificationMode = Boolean.parseBoolean(Config.get("verificationMode"));
+        silentMode = Config.get("silent_mode") == 1;
+        verificationMode = Config.get("active_verification") == 1;
+
         //Clears the players array
         PlayerInstance.players.clear();
 
@@ -215,12 +212,10 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 cameraViewGrid.getChildren().add(cameraContainer[i]);
                 }
             }
-        catch (ParseException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+        catch (ParseException | IOException ex) {
             ex.printStackTrace();
         }
-            imageControlsListeners();//Event listener for the image controls
+        imageControlsListeners();//Event listener for the image controls
             startPlayers();
 
 //            Create the audio player to play the warning audio when the alert is trigged
@@ -300,12 +295,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 for (final Future<GetCameraUrls.ScanResult> f : camerasScanResult) {
                     int i = camerasScanResult.indexOf(f);
 
-//                    if (f.get().isOpen()) {
-                    if(true){
+                    if (f.get().isOpen()) {
+                    //if(true){
                         PlayerInstance.players.get(i).setCameraOpen(true);
                         PlayerInstance.players.get(i).mediaPlayer().videoSurface().set(videoSurfaceForImageView(PlayerInstance.players.get(i).videoSurface()));
-//                        PlayerInstance.players.get(i).mediaPlayer().media().start("http://"+PlayerInstance.players.get(i).cameraAddress()+":"+PlayerInstance.players.get(i).cameraPort());
-                        PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
+                        PlayerInstance.players.get(i).mediaPlayer().media().start("http://"+PlayerInstance.players.get(i).cameraAddress()+":"+PlayerInstance.players.get(i).cameraPort());
+                        //PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
                     }else{
                         PlayerInstance.players.get(i).setCameraOpen(false);
                     }
@@ -338,10 +333,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     VBox.setVgrow(camerasScrollContainer, Priority.ALWAYS);
                 }
 
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {}
-
+                Thread.sleep(1000);
 
                 for (Future<GetCameraUrls.ScanResult> f : camerasScanResult) {
                     int i = camerasScanResult.indexOf(f);
@@ -469,7 +461,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         camerasScrollContainer.setContent(cameraViewGrid);
     }
     public void fpsAnalizer(EmbeddedMediaPlayer player, int cameraIndex, String address, int port) {
-        reconeectionTolerance = 0;
+        reconnectionTolerance = 0;
         lastFrameCount[cameraIndex] = 0;
 
         analyzer[cameraIndex] = new Timeline(new KeyFrame(Duration.seconds(5), new EventHandler<ActionEvent>() {
@@ -511,27 +503,23 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
                 boolean reconnected = false;
                 while (reconnected != true) {
-                    try {
-                        Socket socket = new Socket();
-                        socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 200);
-                        socket.close();
-                        reconnected = true;
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 200);
+                    socket.close();
+                    reconnected = true;
 
-                        Thread.sleep(7000);
-                        PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
-                        succeedReconection(cameraIndex);
-                        logger.setWarning("Camera: "+address+":"+port+ " reconnected");
-                        lastFrameCount[cameraIndex] = 0;
-                        //analyzer[cameraIndex].playFromStart();
-                    } catch (Exception ex) {
-
-                    }
+                    Thread.sleep(7000);
+                    PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
+                    succeedReconection(cameraIndex);
+                    logger.setWarning("Camera: "+address+":"+port+ " reconnected");
+                    lastFrameCount[cameraIndex] = 0;
+                    //analyzer[cameraIndex].playFromStart();
                 }
                 return null;
             };
 
         };
-        Thread reconnectThread[] = new Thread[100];
+        Thread[] reconnectThread = new Thread[100];
         reconnectThread[cameraIndex] = new Thread(reconnector);
         reconnectThread[cameraIndex].setDaemon(true);
         reconnectThread[cameraIndex].start();
@@ -917,24 +905,17 @@ public class AllCamerasMainGridScreenController implements Initializable {
 //            }
             if(analyzer[i] != null){
                 analyzer[i].stop();
-
-
             }
-
             audioPlayer[i].stop();
             audioPlayer[i].dispose();
-            PlayerInstance.releaseAll();
-
         }
-
+        PlayerInstance.releaseAll();
         //taskSlider.stop();
         //startThread.interrupt();
-
 
         if(mediaPlayerFactory != null){
             mediaPlayerFactory.release();
         }
-
 
         ManualRegisterController.enableScan = true;
         Parent manualRegisterRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
@@ -944,4 +925,3 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
 
 }
-

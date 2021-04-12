@@ -1,5 +1,6 @@
 package org.controllers;
 
+import org.Config;
 import org.PlayerInstance;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ public class ScenesControl extends Application {
         Database connection = new Database();
         connection.prepareDatabase();
 
+        Config config = new Config();
 
         Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));//Gets the frontend page
         Scene startingScene = new Scene(root);//Create a scene with the loginscreen
@@ -40,12 +42,9 @@ public class ScenesControl extends Application {
     @Override
     public void stop() {
 //        for (int i = 0; i < 100; i++) {
-//
-//
 //            if(AllCamerasMainGridScreenController.audioPlayer[i] == null){
 //                break;
 //            }
-//
 //        }
 //        System.out.println(players);
         logger.setInfoLog("BlingMonitor closed");
