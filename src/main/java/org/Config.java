@@ -61,7 +61,7 @@ public class Config {
     }
 
     public static void saveToConfigFile(Map<String, Integer> configValues) {
-        try (OutputStream output = new FileOutputStream("config.properties")) {
+        try (OutputStream output = new FileOutputStream(CONFIG_FILE_NAME)) {
 
             Properties prop = new Properties();
 
