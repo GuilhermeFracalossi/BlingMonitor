@@ -21,7 +21,8 @@ import org.Config;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ConfigScreenController implements Initializable {
@@ -31,22 +32,22 @@ public class ConfigScreenController implements Initializable {
     BorderPane mainPane;
     
     @FXML
-    Spinner startIpSpinner;
+    Spinner<Integer> startIpSpinner;
 
     @FXML
-    Spinner endIpSpinner;
+    Spinner<Integer> endIpSpinner;
 
     @FXML
-    Spinner startPortSpinner;
+    Spinner<Integer> startPortSpinner;
 
     @FXML
-    Spinner endPortSpinner;
+    Spinner<Integer> endPortSpinner;
 
     @FXML
-    Spinner threadsSpinner;
+    Spinner<Integer> threadsSpinner;
 
     @FXML
-    Spinner timeoutSpinner;
+    Spinner<Integer> timeoutSpinner;
 
     @FXML
     CheckBox defaultCheckbox;
@@ -69,25 +70,7 @@ public class ConfigScreenController implements Initializable {
     @FXML
     Button applyBtn;
 
-    public static int startIp;
-    public static int endIp;
-    public static int startPort;
-    public static int endPort;
-
-    public static int threads;
-    public static int timeout ;
-
-
-    public static boolean defaultOptionsScan;
-    public static boolean silentMode;
-    public static boolean verificationMode;
-    public static boolean advancedConfigs;
-
-//    Map<Boolean, Object> map = new HashMap<Boolean, Object>();
-//    final Object[] defaultOptions = new Object[]{true, 1, 254, 8081, 8086, 50, 2000, false, true};
-    //default options address, Ip start, ip end, port start, port end, number of threds, timeout, silent mode, active verification
-
-
+    public static HashMap<String, Integer> propertiesSetted = new HashMap<String, Integer>();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -95,62 +78,55 @@ public class ConfigScreenController implements Initializable {
         applyBtn.setVisible(false);
         applyBtn.setDefaultButton(true);
 
-//        default options address, Ip start, ip end, port start, port end, number of threds, timeout, silent mode, active verification
-        threads = Integer.parseInt(Config.get("number_threads"));
-        timeout = Integer.parseInt(Config.get("timeout"));
 
-        advancedConfigs = Boolean.parseBoolean(Config.get("advanced_configuration"));
-        defaultOptionsScan = Boolean.parseBoolean(Config.get("default_configuration_scan"));
-
-        silentMode = Boolean.parseBoolean(Config.get("silent_mode"));
-        verificationMode = Boolean.parseBoolean(Config.get("active_verification"));
-
-        startIp =  Integer.parseInt(Config.get("ip_start_scan"));
-        endIp = Integer.parseInt(Config.get("ip_end_scan"));
-        startPort = Integer.parseInt(Config.get("port_start_scan"));
-        endPort = Integer.parseInt(Config.get("port_end_scan"));
+        propertiesSetted.put("ip_start_scan", Config.get("ip_start_scan"));
+        propertiesSetted.put("ip_end_scan", Config.get("ip_end_scan"));
+        propertiesSetted.put("port_start_scan", Config.get("port_start_scan"));
+        propertiesSetted.put("port_end_scan", Config.get("port_end_scan"));
+        propertiesSetted.put("number_threads", Config.get("number_threads"));
+        propertiesSetted.put("timeout", Config.get("timeout"));
+        propertiesSetted.put("advanced_configuration", Config.get("advanced_configuration"));
+        propertiesSetted.put("default_scan_config", Config.get("default_scan_config"));
+        propertiesSetted.put("silent_mode", Config.get("silent_mode"));
+        propertiesSetted.put("active_verification", Config.get("active_verification"));
 
 
+        defaultCheckbox.selectedProperty().setValue(propertiesSetted.get("default_scan_config") == 1);
+        silentModeCheckbox.selectedProperty().setValue(propertiesSetted.get("silent_mode") == 1);
+        verificationOnRadio.selectedProperty().setValue(propertiesSetted.get("active_verification") == 1);
+        verificationOffRadio.selectedProperty().setValue(!(propertiesSetted.get("active_verification") == 1));
 
 
-        defaultCheckbox.selectedProperty().setValue(defaultOptionsScan);
-        silentModeCheckbox.selectedProperty().setValue(silentMode);
-        verificationOnRadio.selectedProperty().setValue(verificationMode);
-        verificationOffRadio.selectedProperty().setValue(!verificationMode);
-
-
-        if (defaultOptionsScan == true){
+        if (propertiesSetted.get("default_scan_config") == 1){
             //disable all text fields
             startIpSpinner.setDisable(true);
             endIpSpinner.setDisable(true);
             startPortSpinner.setDisable(true);
             endPortSpinner.setDisable(true);
-        }else if(defaultOptionsScan == false){
+        }else {
             startIpSpinner.setDisable(false);
             endIpSpinner.setDisable(false);
             startPortSpinner.setDisable(false);
             endPortSpinner.setDisable(false);
         }
 
-        if(advancedConfigs == true){
+        if(propertiesSetted.get("advanced_configuration") == 1){
             advancedConfigsCheckbox.selectedProperty().setValue(true);
             threadsSpinner.setDisable(false);
             timeoutSpinner.setDisable(false);
         }
 
-        SpinnerValueFactory spinnerStartIpFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 254, startIp); //minimo, maximo, default
-        SpinnerValueFactory spinnerEndIpFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 254, endIp);
-        SpinnerValueFactory spinnerStartPortFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 65534, startPort);
-        SpinnerValueFactory spinnerEndPortFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, endPort);
-
-        SpinnerValueFactory spinnerThreadsFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2000, threads);
-        SpinnerValueFactory spinnerTimeoutFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 5000, timeout);
+        SpinnerValueFactory<Integer> spinnerStartIpFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 254, propertiesSetted.get("ip_start_scan")); //minimo, maximo, default
+        SpinnerValueFactory<Integer> spinnerEndIpFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 254, propertiesSetted.get("ip_end_scan"));
+        SpinnerValueFactory<Integer> spinnerStartPortFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 65534, propertiesSetted.get("port_start_scan"));
+        SpinnerValueFactory<Integer> spinnerEndPortFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, propertiesSetted.get("port_end_scan"));
+        SpinnerValueFactory<Integer> spinnerThreadsFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2000, propertiesSetted.get("number_threads"));
+        SpinnerValueFactory<Integer> spinnerTimeoutFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 5000, propertiesSetted.get("timeout"));
 
         startIpSpinner.setValueFactory(spinnerStartIpFactory);
         endIpSpinner.setValueFactory(spinnerEndIpFactory);
         startPortSpinner.setValueFactory(spinnerStartPortFactory);
         endPortSpinner.setValueFactory(spinnerEndPortFactory);
-
         threadsSpinner.setValueFactory(spinnerThreadsFactory);
         timeoutSpinner.setValueFactory(spinnerTimeoutFactory);
 
@@ -161,8 +137,6 @@ public class ConfigScreenController implements Initializable {
         threadsSpinner.valueProperty().addListener((obs, oldValue, newValue) -> showApplyBtn());
         timeoutSpinner.valueProperty().addListener((obs, oldValue, newValue) -> showApplyBtn());
     }
-
-
 
 
     public void toggleDefault(ActionEvent actionEvent) {
@@ -187,22 +161,43 @@ public class ConfigScreenController implements Initializable {
         }
     }
 
+    public void advancedConfigsToggle(ActionEvent actionEvent) {
+        showApplyBtn();
+        if(advancedConfigsCheckbox.selectedProperty().getValue() == true){
+            threadsSpinner.setDisable(false);
+            timeoutSpinner.setDisable(false);
+        }else{
+            // applyBtn.setVisible(true);
+            threadsSpinner.getValueFactory().setValue(50);
+            timeoutSpinner.getValueFactory().setValue(1500);
+            threadsSpinner.setDisable(true);
+            timeoutSpinner.setDisable(true);
+        }
+
+    }
+
+    public void showApplyBtn() {
+
+        mainPane.setBottom(applyBtn);
+
+        applyBtn.setVisible(true);
+
+    }
 
     public void appliedConfigs(ActionEvent actionEvent) {
-        startIp = (int) startIpSpinner.getValue();
-        endIp = (int) endIpSpinner.getValue();
-        startPort = (int) startPortSpinner.getValue();
-        endPort = (int) endPortSpinner.getValue();
-        threads = (int) threadsSpinner.getValue();
-        timeout = (int) timeoutSpinner.getValue();
+        propertiesSetted.put("ip_start_scan", startIpSpinner.getValue());
+        propertiesSetted.put("ip_end_scan", endIpSpinner.getValue());
+        propertiesSetted.put("port_start_scan", startPortSpinner.getValue());
+        propertiesSetted.put("port_end_scan", endPortSpinner.getValue());
+        propertiesSetted.put("number_threads", threadsSpinner.getValue());
+        propertiesSetted.put("timeout", timeoutSpinner.getValue());
 
-        defaultOptionsScan = defaultCheckbox.selectedProperty().getValue();
-        silentMode = silentModeCheckbox.selectedProperty().getValue();
-        verificationMode = verificationOnRadio.selectedProperty().getValue();
+        propertiesSetted.put("default_scan_config", defaultCheckbox.selectedProperty().getValue() ? 1 : 0);
+        propertiesSetted.put("silent_mode", silentModeCheckbox.selectedProperty().getValue() ? 1 : 0);
+        propertiesSetted.put("active_verification", verificationOnRadio.selectedProperty().getValue() ? 1 : 0);
+        propertiesSetted.put("advanced_configuration", advancedConfigsCheckbox.selectedProperty().getValue() ? 1 : 0);
 
-        advancedConfigs = advancedConfigsCheckbox.selectedProperty().getValue();
-
-        saveToConfigFile();
+        Config.saveToConfigFile(propertiesSetted);
 
         mainPane.setBottom(null);
         HBox statusContainer = new HBox();
@@ -226,60 +221,38 @@ public class ConfigScreenController implements Initializable {
 
     }
 
-    public void advancedConfigsToggle(ActionEvent actionEvent) {
-        showApplyBtn();
-        if(advancedConfigsCheckbox.selectedProperty().getValue() == true){
-            threadsSpinner.setDisable(false);
-            timeoutSpinner.setDisable(false);
-        }else{
-           // applyBtn.setVisible(true);
-            threadsSpinner.getValueFactory().setValue(50);
-            timeoutSpinner.getValueFactory().setValue(1500);
-            threadsSpinner.setDisable(true);
-            timeoutSpinner.setDisable(true);
-        }
 
-    }
-
-    public void showApplyBtn() {
-
-        mainPane.setBottom(applyBtn);
-
-        applyBtn.setVisible(true);
-
-    }
-
-    public void saveToConfigFile(){
-        try (OutputStream output = new FileOutputStream("config.properties")) {
-
-            Properties prop = new Properties();
-
-            // set the properties value
-            prop.setProperty("default_configuration_scan", String.valueOf(defaultOptionsScan));
-            prop.setProperty("ip_start_scan", String.valueOf(startIp));
-            prop.setProperty("ip_end_scan", String.valueOf(endIp));
-            prop.setProperty("port_start_scan", String.valueOf(startPort));
-            prop.setProperty("port_end_scan", String.valueOf(endPort));
-
-            prop.setProperty("advanced_configuration", String.valueOf(advancedConfigs));
-            prop.setProperty("number_threads", String.valueOf(threads));
-            prop.setProperty("timeout", String.valueOf(timeout));
-
-            prop.setProperty("silent_mode", String.valueOf(silentMode));
-            prop.setProperty("active_verification", String.valueOf(verificationMode));
-
-
-            prop.store(output, null);
-
-
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-
-    }
+//    public void saveToConfigFile(){
+//        try (OutputStream output = new FileOutputStream("config.properties")) {
+//
+//            Properties prop = new Properties();
+//
+//            // set the properties value
+//            prop.setProperty("default_scan_config", String.valueOf(defaultScanConfig));
+//            prop.setProperty("ip_start_scan", String.valueOf(startIp));
+//            prop.setProperty("ip_end_scan", String.valueOf(endIp));
+//            prop.setProperty("port_start_scan", String.valueOf(startPort));
+//            prop.setProperty("port_end_scan", String.valueOf(endPort));
+//
+//            prop.setProperty("advanced_configuration", String.valueOf(advancedConfigs));
+//            prop.setProperty("number_threads", String.valueOf(threads));
+//            prop.setProperty("timeout", String.valueOf(timeout));
+//
+//            prop.setProperty("silent_mode", String.valueOf(silentMode));
+//            prop.setProperty("active_verification", String.valueOf(verificationMode));
+//
+//
+//            prop.store(output, null);
+//
+//
+//        } catch (IOException io) {
+//            io.printStackTrace();
+//        }
+//
+//    }
 
     public void backToStartScreen(ActionEvent actionEvent) throws IOException {
-        Parent startScreenRoot = FXMLLoader.load(getClass().getResource(previousScreen));
+        Parent startScreenRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(previousScreen)));
         Scene window = ((Node) actionEvent.getSource()).getScene();
 
         window.setRoot(startScreenRoot);

@@ -73,12 +73,14 @@ public class AutoScanLoadingController implements Initializable {
 
         GetCameraUrls getCameras = new GetCameraUrls();
 
-        startIp = Integer.parseInt(Config.get("ip_start_scan"));
-        endIp= Integer.parseInt(Config.get("ip_end_scan"));
-        startPort = Integer.parseInt(Config.get("port_start_scan"));
-        endPort = Integer.parseInt(Config.get("port_end_scan"));
-        threads = Integer.parseInt(Config.get("number_threads"));
-        timeout = Integer.parseInt(Config.get("timeout"));
+        startIp = Config.get("ip_start_scan");
+        endIp= Config.get("ip_end_scan");
+        startPort = Config.get("port_start_scan");
+        endPort = Config.get("port_end_scan");
+        threads = Config.get("number_threads");
+        timeout = Config.get("timeout");
+
+
 
         try {
 

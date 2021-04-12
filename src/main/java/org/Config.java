@@ -1,100 +1,100 @@
 package org;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Config {
 //    Methods to get app configurations
-    private static String configFileName = "config.properties";
+    private static final String CONFIG_FILE_NAME = "config.properties";
 
     private static Properties configFileCache = null;
 
-    public static final int START_IP_DEFAULT_VALUE = 1;
-    public static final int END_IP_DEFAULT_VALUE  = 254;
-    public static final int START_PORT_DEFAULT_VALUE  = 8081;
-    public static final int END_PORT_DEFAULT_VALUE  = 8086;
-    public static final int THREADS_DEFAULT_VALUE  = 50;
-    public static final int TIMEOUT_DEFAULT_VALUE  = 1500;
-    private static final boolean DEFAULT_OPTIONS_SCAN_DEFAULT_VALUE  = true;
-    public static final boolean SILENT_MODE_DEFAULT_VALUE  = false;
-    public static final boolean VERIFICATION_MODE_DEFAULT_VALUE  = true;
-    private static final boolean ADVANCED_CONFIGS_DEFAULT_VALUE  = false;
+    public static final Map<String, Integer> DEFAULT_VALUES = new HashMap<String, Integer>();
 
+    public Config(){
+        DEFAULT_VALUES.put("ip_start_scan", 2);
+        DEFAULT_VALUES.put("ip_end_scan", 254);
+        DEFAULT_VALUES.put("port_start_scan", 8081);
+        DEFAULT_VALUES.put("port_end_scan", 8086);
+        DEFAULT_VALUES.put("default_scan_config", 1);
+        DEFAULT_VALUES.put("advanced_configuration", 0);
+        DEFAULT_VALUES.put("number_threads", 50);
+        DEFAULT_VALUES.put("timeout", 1500);
+        DEFAULT_VALUES.put("silent_mode", 0);
+        DEFAULT_VALUES.put("active_verification", 1);
 
-private static Properties readConfigFile(){
-
-    if(configFileCache != null){
-        return configFileCache;
     }
 
-    ConfigFileExists();
+    private static Properties readConfigFile(){
 
-    try (InputStream inputConfigFile = new FileInputStream(configFileName)) {
-        Properties configuration = new Properties();
-        configuration.load(inputConfigFile);
+        if(configFileCache != null){
+            return configFileCache;
+        }
 
-        configFileCache = configuration;
-        return configFileCache;
+        configFileExists();
 
-    } catch (IOException ex) {
-        ex.printStackTrace();
+        try (InputStream inputConfigFile = new FileInputStream(CONFIG_FILE_NAME)) {
+            Properties configuration = new Properties();
+            configuration.load(inputConfigFile);
+
+            configFileCache = configuration;
+            return configFileCache;
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
-
-    return null;
-}
-private static void ConfigFileExists(){
-    File configFile = new File(configFileName);
-    if(!configFile.exists()){
-        try {
-            configFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static void configFileExists(){
+        File configFile = new File(CONFIG_FILE_NAME);
+        if(!configFile.exists()){
+            try {
+                configFile.createNewFile();
+                saveToConfigFile(DEFAULT_VALUES);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
 
-public static String get(String property){
-    Properties cfgFile = readConfigFile();
+    public static void saveToConfigFile(Map<String, Integer> configValues) {
+        try (OutputStream output = new FileOutputStream(CONFIG_FILE_NAME)) {
 
-    String response = cfgFile.getProperty(property);
-    if (response != null){
-        return response;
+            Properties prop = new Properties();
+
+            // set the properties value
+            prop.setProperty("ip_start_scan", String.valueOf(configValues.get("ip_start_scan")));
+            prop.setProperty("ip_end_scan", String.valueOf(configValues.get("ip_end_scan")));
+            prop.setProperty("port_start_scan", String.valueOf(configValues.get("port_start_scan")));
+            prop.setProperty("port_end_scan", String.valueOf(configValues.get("port_end_scan")));
+            prop.setProperty("default_scan_config", String.valueOf(configValues.get("default_scan_config")));
+            prop.setProperty("advanced_configuration", String.valueOf(configValues.get("advanced_configuration")));
+            prop.setProperty("number_threads", String.valueOf(configValues.get("number_threads")));
+            prop.setProperty("timeout", String.valueOf(configValues.get("timeout")));
+            prop.setProperty("silent_mode", String.valueOf(configValues.get("silent_mode")));
+            prop.setProperty("active_verification", String.valueOf(configValues.get("active_verification")));
+
+            prop.store(output, null);
+            configFileCache = null;
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
+
     }
 
-//    if property cant be read, return the default values
-    switch (property) {
-        case "ip_start_scan":
-            return String.valueOf(START_IP_DEFAULT_VALUE);
-        case "ip_end_scan":
-            return String.valueOf(END_IP_DEFAULT_VALUE);
+    public static int get(String property){
+        Properties cfgFile = readConfigFile();
 
-        case "port_start_scan":
-            return String.valueOf(START_PORT_DEFAULT_VALUE);
-        case "port_end_scan":
-            return String.valueOf(END_PORT_DEFAULT_VALUE);
+        String response = cfgFile.getProperty(property);
+        if (response != null){
+            return Integer.parseInt(response);
+        }
 
-        case "number_threads":
-            return String.valueOf(THREADS_DEFAULT_VALUE);
-        case "silent_mode":
-            return String.valueOf(SILENT_MODE_DEFAULT_VALUE);
+        return DEFAULT_VALUES.get(property);
 
-        case "active_verification":
-            return String.valueOf(VERIFICATION_MODE_DEFAULT_VALUE);
-
-        case "default_configuration_scan":
-            return String.valueOf(DEFAULT_OPTIONS_SCAN_DEFAULT_VALUE);
-
-        case "timeout":
-            return String.valueOf(TIMEOUT_DEFAULT_VALUE);
-
-        case "advanced_configuration":
-            return String.valueOf(ADVANCED_CONFIGS_DEFAULT_VALUE);
-
-        default:
-            return null;
     }
-}
 }

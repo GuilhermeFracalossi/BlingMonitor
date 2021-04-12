@@ -54,14 +54,20 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         this.cameraOpen = cameraOpen;
     }
 
-    public static void releaseAll(){
+    public static boolean releaseAll(){
         // Release all player instances
-        for (int i = 0; i < players.size();i++){
+        if(players.isEmpty()){
+            return false;
+        }
+
+        for (int i = 0; i < players.size(); i++){
             players.get(i).mediaPlayer().controls().stop();
             players.get(i).mediaPlayer().release();
         }
         players.clear();
+        return true;
     }
+
     @Override
     public void mediaChanged(MediaPlayer mediaPlayer, MediaRef media) {
         //System.out.println("mediaChanged");
