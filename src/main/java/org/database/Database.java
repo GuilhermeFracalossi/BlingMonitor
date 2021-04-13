@@ -20,11 +20,11 @@ public class Database extends MySQL {
         if (super.isDefaultTablesEmpty()) {
             super.insertDefaultUser();
         }
-        try {
-            ResultSet a = debugTable("usuario");
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+//        try {
+//            ResultSet a = debugTable("usuario");
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
         super.closeConn();
     }
 
