@@ -89,12 +89,15 @@ public class AllCamerasMainGridScreenController implements Initializable {
     @FXML Slider gammaSlider;
     @FXML Button fullScreenCameraToggleBtn;
     @FXML ImageView fullScreenCameraToggleImg;
+    @FXML ImageView alarmToggleImg;
 
 
     private final Image cameraNotFoundImg = new Image(getClass().getResource("/org/images/camera-not-found.jpg").toString());
 
     private final Image minimizeFullScreenPlayerImg = new Image(getClass().getResource("/org/images/exit-full-screen-camera-low.png").toString());
     private final Image fullScreenPlayerImg = new Image(getClass().getResource("/org/images/camera-full-screen-low.png").toString());
+    private final Image alarmOnImg = new Image(getClass().getResource("/org/images/bell-icon.png").toString());
+    private final Image alarmOffImg = new Image(getClass().getResource("/org/images/bell-silent-icon.png").toString());
 
     JSONObject fullJson;
     static JSONArray camerasList;
@@ -155,6 +158,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
         silentMode = Config.get("silent_mode") == 1;
         verificationMode = Config.get("active_verification") == 1;
+        setAlarmIcon();
 
         //Clears the players array
         PlayerInstance.players.clear();
@@ -166,7 +170,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         playerControlsHboxStartingConfig();
         cameraContainerStartingConfig();
 
-//        Reads the cameraindexed.json and instanciate the camera players based on the address and port
+//        Reads the cameraindexed.json and instantiate the camera players based on the address and port
 //        that is written in this file
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("camerasIndexed.json"))
@@ -175,7 +179,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
             fullJson = (JSONObject) obj;
             camerasList = (JSONArray) fullJson.get("cameras");
 
-            //Logic to set to full screen if only one camera is registred
+            //Logic to set to full screen if only one camera is registered
             if(camerasList.size() == 1){
                 fullScreenPlayer = true;
                 fullScreenCameraToggleBtn.setDisable(true);
@@ -218,7 +222,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         imageControlsListeners();//Event listener for the image controls
             startPlayers();
 
-//            Create the audio player to play the warning audio when the alert is trigged
+//            Create the audio player to play the warning audio when the alert is triggered
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
                 int cameraIndex = i;
                 createAlerts(i);//Create all the styles for the alerts
@@ -402,24 +406,32 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     private void setPlayersSize() {
-        if(playerSizeSelected != 0 && fullScreenPlayer!=true){
-            for (int i = 0; i < PlayerInstance.players.size(); i++) {
-                PlayerInstance.players.get(i).videoSurface().setFitWidth(playerSizeSelected);
-            }
-            return;
-        }
+
+        double videoWidths = 0;
+        double videoHeights = 0;
         int numberOfcameras = 0;
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
+
             if(cameraContainer[i].isVisible()){
                 numberOfcameras++;
+                videoWidths += PlayerInstance.players.get(i).videoSurface().getBoundsInLocal().getWidth();
+                videoHeights += PlayerInstance.players.get(i).videoSurface().getBoundsInLocal().getHeight();
             }
         }
 
-        final double RATIO = 1.333;
+        final double RATIO = (videoWidths/numberOfcameras) / (videoHeights/numberOfcameras);
         int cameraColumnCount=  (numberOfcameras<=3 ? numberOfcameras : (int) Math.ceil((double) numberOfcameras/2));
         int cameraRowCount = (int) Math.ceil((double) numberOfcameras/cameraColumnCount);
         int availableHeightTotal = (int) (stage.getHeight()-playerControlsHbox.getHeight()-topPane.getHeight()-30);
 
+
+        if(playerSizeSelected != 0 && fullScreenPlayer!=true){
+            for (int i = 0; i < PlayerInstance.players.size(); i++) {
+                PlayerInstance.players.get(i).videoSurface().setFitWidth(playerSizeSelected);
+                PlayerInstance.players.get(i).videoSurface().setFitHeight(playerSizeSelected/RATIO);
+            }
+            return;
+        }
 
         if((cameraColumnCount*RATIO)/cameraRowCount < (mainBorderPane.getWidth()/availableHeightTotal)){
             int heightSubtraction = VGAP_SIZE + BORDER_WIDTH * 2 + 5;
@@ -427,6 +439,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
             int playersHeight = availableHeightPerCamera - heightSubtraction;
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
                 PlayerInstance.players.get(i).videoSurface().setFitWidth(playersHeight*RATIO);
+                PlayerInstance.players.get(i).videoSurface().setFitHeight(playersHeight);
 
             }
         }else{
@@ -435,6 +448,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
             int playersWidth = availableWidthPerCamera - widthSubtraction;
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
                 PlayerInstance.players.get(i).videoSurface().setFitWidth(playersWidth);
+                PlayerInstance.players.get(i).videoSurface().setFitHeight(playersWidth/RATIO);
             }
         }
 
@@ -767,6 +781,23 @@ public class AllCamerasMainGridScreenController implements Initializable {
             setPlayersSize();
         }
 
+    }
+    public void alarmToggle(ActionEvent actionEvent) {
+        silentMode = !silentMode;
+
+        for (int i = 0; i < PlayerInstance.players.size(); i++) {
+            audioPlayer[i].setVolume(silentMode ? 0 : 1);
+        }
+        Config.setProperty("silent_mode", silentMode ? 1 : 0);
+        setAlarmIcon();
+    }
+    private void setAlarmIcon(){
+        if(silentMode == true){
+            alarmToggleImg.setImage(alarmOffImg);
+        }
+        else{
+            alarmToggleImg.setImage(alarmOnImg);
+        }
     }
 
     public void slideModeScreen(ActionEvent actionEvent) {

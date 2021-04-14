@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.Log;
 import org.database.Database;
+import org.network.GetCameraUrls;
+import java.util.concurrent.Future;
 
 
 public class ScenesControl extends Application {
@@ -40,18 +42,15 @@ public class ScenesControl extends Application {
 
     }
     @Override
-    public void stop() {
-//        for (int i = 0; i < 100; i++) {
-//            if(AllCamerasMainGridScreenController.audioPlayer[i] == null){
-//                break;
-//            }
-//        }
-//        System.out.println(players);
+    public void stop(){
         logger.setInfoLog("BlingMonitor closed");
         Log.handler.close();
         Database.closeConnection();
         PlayerInstance.releaseAll();
-        //System.exit(0);
+
+        for (Future<GetCameraUrls.ScanResult> futureTask : GetCameraUrls.futures) {
+            futureTask.cancel(true);
+        }
 
     }
     public static void main(String[] args) {

@@ -74,11 +74,6 @@ public class LoginScreenController implements Initializable {
                     rs = Database.login(usuario, senha);
                 }
 
-
-
-
-            
-                     
             if (rs.next()) { 
                 id = rs.getInt("id");
 

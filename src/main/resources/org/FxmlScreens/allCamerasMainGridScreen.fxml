@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -33,7 +32,7 @@
                </cursor>
             </Button>
             <Region layoutX="643.0" layoutY="11.0" prefHeight="51.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="topControlsMenu" alignment="CENTER" prefHeight="51.0" prefWidth="362.0" translateX="-40.0">
+            <HBox fx:id="topControlsMenu" alignment="CENTER" prefHeight="51.0" prefWidth="306.0" translateX="-40.0">
                <children>
                   <Button fx:id="gridModeBtn" mnemonicParsing="false" onAction="#gridScreenMode" style="-fx-background-color: #133f78;">
                      <graphic>
@@ -61,7 +60,6 @@
                   </Button>
                </children>
             </HBox>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
             <HBox fx:id="gridSizeContainerHbox" alignment="CENTER" disable="true" prefHeight="51.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
@@ -77,6 +75,19 @@
                   </ImageView>
                </children>
             </HBox>
+            <Region prefHeight="51.0" prefWidth="95.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#alarmToggle" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: none;">
+               <graphic>
+                  <ImageView fx:id="alarmToggleImg" fitHeight="27.0" fitWidth="26.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/bell-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             <Region layoutX="67.0" layoutY="11.0" prefHeight="51.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
             <Button fx:id="fullScreenToggleBtn" mnemonicParsing="false" onAction="#fullScreenToggle" prefWidth="54.0" style="-fx-background-color: none;">
                <graphic>

@@ -23,8 +23,6 @@ import java.util.*;
 
 
 public class StartScreenController implements Initializable {
-
-
     @FXML
     BorderPane mainPane;
 
@@ -37,34 +35,26 @@ public class StartScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         try {
 
             userBtn.setText(getUserName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
-
 
     public String getUserName() throws SQLException {
         String userName = Database.getUsers().getString(2);
         return userName;
     }
 
-
     public void autoScan(ActionEvent actionEvent) throws IOException {
 
         ArrayList availableIps = new GetAvailableIps().main();
 
-
         if(availableIps.size() == 1){
-
             AutoScanLoadingController.ipSelected = (String) availableIps.get(0);
             Parent autoScanLoadingRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/autoScanLoadingScreen.fxml"));
-
             Scene window =  ((Node) actionEvent.getSource()).getScene();
             window.setRoot(autoScanLoadingRoot);
 
@@ -76,8 +66,6 @@ public class StartScreenController implements Initializable {
             Scene window =  ((Node) actionEvent.getSource()).getScene();
             window.setRoot(ipSelectionRoot);
         }
-
-
 
     }
 
