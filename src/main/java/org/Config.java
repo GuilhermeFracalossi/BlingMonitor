@@ -11,7 +11,8 @@ public class Config {
 
     private static Properties configFileCache = null;
 
-    public static final Map<String, Integer> DEFAULT_VALUES = new HashMap<String, Integer>();
+    public static final HashMap<String, Integer> DEFAULT_VALUES = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> propertiesSetted = new HashMap<String, Integer>();
 
     public Config(){
         DEFAULT_VALUES.put("ip_start_scan", 2);
@@ -38,7 +39,7 @@ public class Config {
         try (InputStream inputConfigFile = new FileInputStream(CONFIG_FILE_NAME)) {
             Properties configuration = new Properties();
             configuration.load(inputConfigFile);
-
+            propertiesSetted = (HashMap<String, Integer>) DEFAULT_VALUES.clone();
             configFileCache = configuration;
             return configFileCache;
 
@@ -82,7 +83,16 @@ public class Config {
         } catch (IOException io) {
             io.printStackTrace();
         }
+    }
+    public static HashMap<String, Integer> getAllProperties(){
 
+        Properties properties = readConfigFile();
+        //update properties
+        for (String key : properties.stringPropertyNames()) {
+            String value = properties.getProperty(key);
+            propertiesSetted.put(key, Integer.valueOf(value));
+        }
+        return propertiesSetted;
 
     }
 
@@ -95,6 +105,13 @@ public class Config {
         }
 
         return DEFAULT_VALUES.get(property);
+
+    }
+    public static void setProperty(String propertyName, Integer value){
+
+        readConfigFile();
+        propertiesSetted.put(propertyName, value);
+        saveToConfigFile(propertiesSetted);
 
     }
 }
