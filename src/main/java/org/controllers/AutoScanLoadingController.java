@@ -9,32 +9,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.Config;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.network.GetCameraUrls;
 import org.json.JsonWriter;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 
@@ -84,7 +71,7 @@ public class AutoScanLoadingController implements Initializable {
 
         try {
 
-            Task scanning = new Task<Void>() {
+           Task<Void> scanning = new Task<>() {
                 @Override public Void call() throws Exception {
 
                     camerasFound = getCameras.main(startIp, endIp, startPort, endPort, threads, timeout);
@@ -119,11 +106,11 @@ public class AutoScanLoadingController implements Initializable {
 
                 }
             };
-            new Thread(scanning).start();
+            Thread scanningThread = new Thread(scanning);
+
+            scanningThread.start();
 
             progressBarScanning.progressProperty().bind(getCameras.progressProperty());
-
-
 
             } catch (Exception e) {
             e.printStackTrace();

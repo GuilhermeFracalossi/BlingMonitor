@@ -17,7 +17,7 @@ import java.util.concurrent.*;
 public class GetCameraUrls {
 
     private static DoubleProperty progress = new SimpleDoubleProperty();;
-
+    public final static List<Future<ScanResult>> futures = new ArrayList<>();
     public List<Object[]> main(int startIp, int endIp, int startPort, int endPort, int numberThreads, int timeout) throws Exception {
 
         List<Object[]> camerasFound = new ArrayList<Object[]>();
@@ -33,7 +33,7 @@ public class GetCameraUrls {
 
         int i = 1;
         double scanningProgress;
-        final List<Future<ScanResult>> futures = new ArrayList<>();
+
         for (int ipTest = startIp; ipTest <= endIp; ipTest++) {
            for (int portTest = startPort; portTest <= endPort; portTest++) {
 
@@ -42,7 +42,6 @@ public class GetCameraUrls {
                setProgress((double) scanningProgress*30/100);
                i++;
             }
-
         }
         es.shutdown();
         i=1;
