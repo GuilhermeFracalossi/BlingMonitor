@@ -89,12 +89,15 @@ public class AllCamerasMainGridScreenController implements Initializable {
     @FXML Slider gammaSlider;
     @FXML Button fullScreenCameraToggleBtn;
     @FXML ImageView fullScreenCameraToggleImg;
+    @FXML ImageView alarmToggleImg;
 
 
     private final Image cameraNotFoundImg = new Image(getClass().getResource("/org/images/camera-not-found.jpg").toString());
 
     private final Image minimizeFullScreenPlayerImg = new Image(getClass().getResource("/org/images/exit-full-screen-camera-low.png").toString());
     private final Image fullScreenPlayerImg = new Image(getClass().getResource("/org/images/camera-full-screen-low.png").toString());
+    private final Image alarmOnImg = new Image(getClass().getResource("/org/images/bell-icon.png").toString());
+    private final Image alarmOffImg = new Image(getClass().getResource("/org/images/bell-silent-icon.png").toString());
 
     JSONObject fullJson;
     static JSONArray camerasList;
@@ -155,6 +158,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
         silentMode = Config.get("silent_mode") == 1;
         verificationMode = Config.get("active_verification") == 1;
+        setAlarmIcon();
 
         //Clears the players array
         PlayerInstance.players.clear();
@@ -777,6 +781,23 @@ public class AllCamerasMainGridScreenController implements Initializable {
             setPlayersSize();
         }
 
+    }
+    public void alarmToggle(ActionEvent actionEvent) {
+        silentMode = !silentMode;
+
+        for (int i = 0; i < PlayerInstance.players.size(); i++) {
+            audioPlayer[i].setVolume(silentMode ? 0 : 1);
+        }
+        Config.setProperty("silent_mode", silentMode ? 1 : 0);
+        setAlarmIcon();
+    }
+    private void setAlarmIcon(){
+        if(silentMode == true){
+            alarmToggleImg.setImage(alarmOffImg);
+        }
+        else{
+            alarmToggleImg.setImage(alarmOnImg);
+        }
     }
 
     public void slideModeScreen(ActionEvent actionEvent) {
