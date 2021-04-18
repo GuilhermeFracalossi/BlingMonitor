@@ -25,7 +25,7 @@ public class MySQL{
             //Adds all the parameters
             for (int i = 1; i <= params.size(); i++){
                 String param = String.valueOf(params.get(i - 1));
-                ps.setString(i, (String) params.get(i - 1));
+                ps.setString(i, param);
             }
 
             if (expectResults) {
@@ -74,12 +74,13 @@ public class MySQL{
 
             sql =  "CREATE TABLE IF NOT EXISTS cameras("+
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                    "cameraName VARCHAR(255),"+
+                    "name VARCHAR(255),"+
                     "port INTEGER,"+
                     "address VARCHAR(15),"+
-                    "gamma INTEGER,"+
-                    "contrast INTEGER,"+
-                    "brightness INTEGER"+
+                    "gamma FLOAT,"+
+                    "contrast FLOAT,"+
+                    "brightness FLOAT," +
+                    "saturation FLOAT"+
                     ")";
             st.execute(sql);
         }catch(Exception e){
@@ -104,6 +105,10 @@ public class MySQL{
         return empty;
     }
 
+    public static long lastInsertedId() throws SQLException {
+        ResultSet rs = st.getGeneratedKeys();
+        return rs.getLong(1);
+    }
     protected void insertDefaultUser() {
         ArrayList<String> params = new ArrayList<String>();
 
