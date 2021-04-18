@@ -1,6 +1,7 @@
 package org.database;
 
-import javax.xml.transform.Result;
+import org.CamerasConfig;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,33 +15,30 @@ public class Database extends MySQL {
         super();
     }
 
+    public static void deleteCamera(Integer id) {
+        ArrayList<String> params = new ArrayList<>();
+
+        params.add(String.valueOf(id));
+        execute("DELETE FROM cameras WHERE id=?",params,false);
+    }
+
     public void prepareDatabase() {
         super.createDefaultTables();
 
         if (super.isDefaultTablesEmpty()) {
             super.insertDefaultUser();
         }
-//        try {
-//            ResultSet a = debugTable("usuario");
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//        }
-        super.closeConn();
+        closeConn();
     }
 
     public static ResultSet login(String user, String password) {
 
-        ArrayList<String> params = new ArrayList<String>();
+        ArrayList<String> params = new ArrayList<>();
 
         params.add(user);
         params.add(password);
 
         return execute("SELECT * FROM usuario WHERE login=? AND senha=?", params,true);
-    }
-    public static ResultSet debugTable(String table) throws SQLException {
-        ResultSet resultSet = execute("SELECT * FROM usuario", true);
-        System.out.println(resultSet.getObject(1));
-        return resultSet;
     }
     public static void updateUserInfo(int id, String nome, String login, String senha) {
         ArrayList params = new ArrayList();
@@ -80,11 +78,40 @@ public class Database extends MySQL {
     }
 
     public static ResultSet getUsers() {
-        ResultSet data = null;
+        return execute("SELECT * FROM usuario",true);
+    }
+    public static Long insertCamera(CamerasConfig cameraObj){
+        try {
+            ArrayList params = new ArrayList();
 
+            params.add(cameraObj.getName());
+            params.add(cameraObj.getAddress());
+            params.add(String.valueOf(cameraObj.getPort()));
+            params.add(String.valueOf(cameraObj.getBrightness()));
+            params.add(String.valueOf(cameraObj.getGamma()));
+            params.add(String.valueOf(cameraObj.getSaturation()));
+            params.add(String.valueOf(cameraObj.getContrast()));
+
+            execute("INSERT INTO cameras(name,address,port,brightness,gamma,saturation,contrast) values(?,?,?,?,?,?,?)", params, false);
+            return lastInsertedId();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static void updateCamera(CamerasConfig cameraObj){
         ArrayList params = new ArrayList();
+        params.add(cameraObj.getName());
+        params.add(cameraObj.getAddress());
+        params.add(cameraObj.getPort());
+        params.add(cameraObj.getBrightness());
+        params.add(cameraObj.getGamma());
+        params.add(cameraObj.getSaturation());
+        params.add(cameraObj.getContrast());
 
-        data = execute("SELECT * FROM usuario", params,true);
-        return data;
+        params.add(cameraObj.getId());
+
+        execute("UPDATE cameras SET name=?,address=?,port=?,brightness=?,gamma=?,saturation=?,contrast=? WHERE id=?",params, false);
     }
 }
