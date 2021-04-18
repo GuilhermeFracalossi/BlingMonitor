@@ -14,21 +14,52 @@ import java.util.List;
 public class PlayerInstance extends MediaPlayerEventAdapter {
 
     private final EmbeddedMediaPlayer mediaPlayer;
-
     private final ImageView videoSurface;
-
     protected final String cameraAddress;
     protected final long cameraPort;
     protected boolean cameraOpen;
-
     private static PlayerInstance instance;
+
+    private int id;
+    private float gamma = 1;
+    private float brightness= 1;
+    private float saturation = 1;
+    private float constrast = 1;
+
+    public float getGamma() {
+        return gamma;
+    }
+    public float getBrightness() {
+        return brightness;
+    }
+
+    public float getSaturation() {
+        return saturation;
+    }
+
+    public float getConstrast() {
+        return constrast;
+    }
+
+
+
+
+
     public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
 
-    public PlayerInstance(EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long  cameraPort) {
+    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float constrast) {
+        this.id = id;
+
         this.mediaPlayer = mediaPlayer;
         this.videoSurface = new ImageView();
         this.cameraAddress = cameraAddress;
         this.cameraPort = cameraPort;
+
+        this.gamma = gamma;
+        this.brightness = brightness;
+        this.saturation = saturation;
+        this.constrast = constrast;
+
         players.add(this);
         mediaPlayer.events().addMediaPlayerEventListener(this);
     }
@@ -101,5 +132,9 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     @Override
     public void opening(MediaPlayer mediaPlayer) {
         //System.out.println("opening");
+    }
+
+    public int getId() {
+        return this.id;
     }
 }
