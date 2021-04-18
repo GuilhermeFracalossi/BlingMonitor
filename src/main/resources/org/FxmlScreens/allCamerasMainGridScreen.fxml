@@ -131,17 +131,17 @@
                               <Font name="System Bold" size="11.0" />
                            </font>
                         </Label>
-                        <Label fx:id="addressLabel" contentDisplay="CENTER" prefHeight="17.0" prefWidth="120.0" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <Label fx:id="addressLabel" contentDisplay="CENTER" prefHeight="17.0" textFill="WHITE" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="11.0" />
                            </font></Label>
                         <Region prefHeight="28.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-                        <Label prefHeight="19.0" prefWidth="31.0" text="Porta:" textFill="#d4d4d4">
+                        <Label prefHeight="19.0" text="Porta:" textFill="#d4d4d4">
                            <font>
                               <Font name="System Bold" size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="portLabel" alignment="CENTER" prefHeight="17.0" prefWidth="46.0" textFill="#d4d4d4">
+                        <Label fx:id="portLabel" alignment="CENTER" prefHeight="17.0" textFill="#d4d4d4">
                            <font>
                               <Font size="11.0" />
                            </font></Label>

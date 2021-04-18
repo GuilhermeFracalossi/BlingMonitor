@@ -272,7 +272,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
                                 }
 
 
-                                if (mouseEvent.getClickCount() == 2) {
+                                if (mouseEvent.getClickCount() == 2 && CamerasConfig.camerasCount()>1) {
+
                                     fullScreenCameraToggle();
                                 }
                             }
@@ -317,6 +318,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         EmbeddedMediaPlayer mediaPlayer = PlayerInstance.players.get(i).mediaPlayer();
                         mediaPlayer.controls().start();
                         if(verificationMode == true){
+                            System.out.println("fps analyzer call");
                             fpsAnalyzer(i, PlayerInstance.players.get(i).cameraAddress(), (int) PlayerInstance.players.get(i).cameraPort());
                         }
                     }
@@ -332,7 +334,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 synchronized (this) {
                     VBox.setVgrow(loadingText, Priority.NEVER);
                     loadingText.setVisible(false);
-
                     loadingText.setManaged(false);
                     VBox.setVgrow(camerasScrollContainer, Priority.ALWAYS);
                 }
@@ -358,7 +359,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 setPlayersSize();
 
                 setPlayersImageAdjustments();
-                gridSizeAdjust();
+                if (CamerasConfig.camerasCount() > 1) {
+                    gridSizeAdjust();
+                }
                 defaultCameraStyles();
                 camerasScrollContainer.setVisible(true);
 
@@ -482,60 +485,63 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-
-                    currentFrameCount[cameraIndex] = PlayerInstance.players.get(cameraIndex).mediaPlayer().media().info().statistics().picturesDisplayed();
-                    if(lastFrameCount[cameraIndex] == currentFrameCount[cameraIndex]){
-                        if(!silentMode){
-                            audioPlayer[cameraIndex].seek(audioPlayer[cameraIndex].getStartTime());
-                            audioPlayer[cameraIndex].play();
-                        }
-                        logger.setWarning("Camera: "+address+":"+port+ " disconnected");
-                        transmissionOffAlert(cameraIndex);
-                        reconnectCamera(cameraIndex, address, port);
-                        analyzer[cameraIndex].stop();
-
-                    }else{
-                        lastFrameCount[cameraIndex] = currentFrameCount[cameraIndex];
-                        if(alerterStack[cameraIndex].isVisible()){
-                            alerterStack[cameraIndex].setVisible(false);
-                        }
+                currentFrameCount[cameraIndex] = PlayerInstance.players.get(cameraIndex).mediaPlayer().media().info().statistics().picturesDisplayed();
+                if(lastFrameCount[cameraIndex] == currentFrameCount[cameraIndex]){
+                    if(!silentMode){
+                        audioPlayer[cameraIndex].seek(audioPlayer[cameraIndex].getStartTime());
+                        audioPlayer[cameraIndex].play();
                     }
+                    logger.setWarning("Camera: "+address+":"+port+ " disconnected");
+                    transmissionOffAlert(cameraIndex);
+                    reconnectCamera(cameraIndex, address, port);
+                    analyzer[cameraIndex].stop();
+
+                }else{
+                    lastFrameCount[cameraIndex] = currentFrameCount[cameraIndex];
+                    if(alerterStack[cameraIndex].isVisible()){
+                        alerterStack[cameraIndex].setVisible(false);
+                    }
+                }
             }
 
         }));
 
-        analyzer[cameraIndex].setDelay(Duration.seconds(2));
+        analyzer[cameraIndex].setDelay(Duration.seconds(4));
         analyzer[cameraIndex].setCycleCount(Timeline.INDEFINITE);
-
         analyzer[cameraIndex].play();
     }
 
     public void reconnectCamera(int cameraIndex,String address, int port) {
+        System.out.println(cameraIndex);
         Task<Void> reconnector = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-
                 boolean reconnected = false;
                 while (reconnected != true) {
-                    Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 200);
-                    socket.close();
-                    reconnected = true;
-                    Thread.sleep(7000);
-                    PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
-                    succeedReconection(cameraIndex);
-                    logger.setWarning("Camera: "+address+":"+port+ " reconnected");
-                    lastFrameCount[cameraIndex] = 0;
+                    //if the socket.connect goes wrong, land on catch and it loops again,
+                    try {
+                        Socket socket = new Socket();
+                        socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 1500);
+                        socket.close();
+                        reconnected = true;
+
+                        Thread.sleep(7000);
+                        PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
+                        succeedReconnection(cameraIndex);
+                        logger.setWarning("Camera: " + address + ":" + port + " reconnected");
+                        lastFrameCount[cameraIndex] = 0;
+                        analyzer[cameraIndex].playFromStart();
+                    } catch (Exception ignored) {
+                    }
+
                 }
                 return null;
             };
-
         };
 
-        Thread[] reconnectThread = new Thread[100];
-        reconnectThread[cameraIndex] = new Thread(reconnector);
-        reconnectThread[cameraIndex].setDaemon(true);
-        reconnectThread[cameraIndex].start();
+        Thread reconnectThread = new Thread(reconnector);
+        reconnectThread.setDaemon(true);
+        reconnectThread.start();
 
     }
     public void createAlerts(int index){
@@ -573,7 +579,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         alerterStack[index].setVisible(true);
     }
 
-    public void succeedReconection(int index){
+    public void succeedReconnection(int index){
         Text statusText = (Text) alertsContainer[index].getChildren().get(1);
         statusText.setText("Conexão reestabelecida");
         statusText.setFill(Color.rgb(0, 211, 21));
@@ -883,16 +889,18 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     public void backToCamerasRegistration(ActionEvent actionEvent) throws IOException {
         for (int i = 0; i <PlayerInstance.players.size() ; i++) {
+
             if(analyzer[i] != null){
                 analyzer[i].stop();
+                analyzer[i] = null;
+
             }
             audioPlayer[i].stop();
             audioPlayer[i].dispose();
         }
         PlayerInstance.releaseAll();
 
-        //taskSlider.stop();
-        //startThread.interrupt();
+
 
         if(mediaPlayerFactory != null){
             mediaPlayerFactory.release();
