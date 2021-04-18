@@ -30,6 +30,9 @@ public class ScenesControl extends Application {
         Config config = new Config();
 
         Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));//Gets the frontend page
+//        Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));//Gets the frontend page
+
+
         Scene startingScene = new Scene(root);//Create a scene with the loginscreen
 
         //Opens a window, set the title,icon and set the first scene to show
