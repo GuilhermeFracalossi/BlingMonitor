@@ -11,6 +11,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
+import org.CamerasConfig;
 import org.Config;
 import org.network.GetCameraUrls;
 import org.Log;
@@ -41,15 +42,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.json.JsonWriter;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.base.VideoApi;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -64,7 +60,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
     public static Stage stage;
     Log logger;
 
-    static boolean threadStop;
     boolean fullScreenStage;
 
 
@@ -99,12 +94,11 @@ public class AllCamerasMainGridScreenController implements Initializable {
     private final Image alarmOnImg = new Image(getClass().getResource("/org/images/bell-icon.png").toString());
     private final Image alarmOffImg = new Image(getClass().getResource("/org/images/bell-silent-icon.png").toString());
 
-    JSONObject fullJson;
-    static JSONArray camerasList;
 
     boolean gridScreen = true;
 
     Timeline taskSlider;
+
    // Timeline slideRepeater;
     @FXML VBox centerContainerVbox;
     @FXML ScrollPane camerasScrollContainer = new ScrollPane();
@@ -129,12 +123,16 @@ public class AllCamerasMainGridScreenController implements Initializable {
     HBox[] alertsContainer = new HBox[100];
     boolean fullScreenPlayer = false;
     long currentCameraIndex;
+    long currentCameraId;
+    CamerasConfig currentCameraObj;
+
+
     String currentCameraName;
     String currentAddress;
     long currentPort;
     StackPane cameraContainerSetted;
 
-//    Frame analizer variables
+//    Frame analyzer variables
     int[] lastFrameCount = new int[100];
     int[] currentFrameCount = new int[100];
     int reconnectionTolerance;
@@ -146,7 +144,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     private boolean silentMode;
     private boolean verificationMode;
-
+    private int index = 0;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -170,17 +168,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
         playerControlsHboxStartingConfig();
         cameraContainerStartingConfig();
 
-//        Reads the cameraindexed.json and instantiate the camera players based on the address and port
-//        that is written in this file
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("camerasIndexed.json"))
-        {
-            Object obj = jsonParser.parse(reader);
-            fullJson = (JSONObject) obj;
-            camerasList = (JSONArray) fullJson.get("cameras");
-
-            //Logic to set to full screen if only one camera is registered
-            if(camerasList.size() == 1){
+//        Logic to set to full screen if only one camera is registered
+            if(CamerasConfig.camerasCount()== 1){
                 fullScreenPlayer = true;
                 fullScreenCameraToggleBtn.setDisable(true);
                 gridSizeContainerHbox.setDisable(true);
@@ -189,97 +178,108 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 gridModeBtn.setStyle("-fx-background-color: none;");
             }
 
-//            Logic to instanciate all the camera players and UI elements for it
+//            Logic to instantiate all the camera players and UI elements for it
 //            In the end, all camera players are stored in the players property
-            for(int i = 0; i < camerasList.size(); i++)
-            {
-                int cameraIndex = i;
-                JSONObject cameraObject = (JSONObject) camerasList.get(i);
-                String cameraName = (String) cameraObject.get("cameraName");
-                String cameraAddress = (String) cameraObject.get("address");
+//            Even though im using a foreach loop, i still need a index to put in the camera container
+//            because im not sure if i can use the cameraID as a index to do this.
+            index = 0;
+            CamerasConfig.getCamerasList().forEach((id,v) ->{
+
+                CamerasConfig cameraObj = (CamerasConfig) v;
+
+                String cameraAddress = cameraObj.getAddress();
+
+                int cameraId = cameraObj.getId();
+                float gamma = cameraObj.getGamma();
+                float brightness = cameraObj.getBrightness();
+                float saturation = cameraObj.getSaturation();
+                float contrast = cameraObj.getContrast();
+
+                long cameraPort = cameraObj.getPort();
+//                Creates an VLC player instance and put it into the players instance list
+                EmbeddedMediaPlayer embeddedMediaPlayer= mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer();
+
+                PlayerInstance playerInstance = new PlayerInstance(
+                    cameraId,embeddedMediaPlayer,cameraAddress,cameraPort,
+                    gamma,brightness,saturation,contrast);
 
 
-                long cameraPort = (long) cameraObject.get("port");
-                long id = (long) cameraObject.get("id");
+                cameraContainer[index] = new StackPane();
+                cameraContainer[index].setAlignment(Pos.CENTER);
+                cameraContainer[index].setStyle("-fx-border-width:"+BORDER_WIDTH+"px;"+"-fx-border-color: #698cde");
+                cameraContainer[index].getChildren().add(playerInstance.videoSurface());
+                cameraViewGrid.getChildren().add(cameraContainer[index]);
 
-                EmbeddedMediaPlayer embeddedMediaPlayer= mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer(); //VLC player instance
+                index = index + 1;
+            });
 
-//                embeddedMediaPlayerIntances[i] = embeddedMediaPlayer;
-//                the active instances of PlayerInstace will be available on PlayerInstance.players property
-                PlayerInstance playerInstance = new PlayerInstance(embeddedMediaPlayer, cameraAddress, cameraPort);
-
-//                Style logic to add the camera to the UI
-                cameraContainer[i] = new StackPane();
-                cameraContainer[i].setAlignment(Pos.CENTER);
-                cameraContainer[i].setStyle("-fx-border-width:"+BORDER_WIDTH+"px;"+"-fx-border-color: #698cde");
-                cameraContainer[i].getChildren().add(playerInstance.videoSurface());
-                cameraViewGrid.getChildren().add(cameraContainer[i]);
-                }
-            }
-        catch (ParseException | IOException ex) {
-            ex.printStackTrace();
-        }
         imageControlsListeners();//Event listener for the image controls
-            startPlayers();
+        startPlayers();
+
 
 //            Create the audio player to play the warning audio when the alert is triggered
-            for (int i = 0; i < PlayerInstance.players.size(); i++) {
-                int cameraIndex = i;
-                createAlerts(i);//Create all the styles for the alerts
+        for (int i = 0; i < PlayerInstance.players.size(); i++) {
+            int cameraIndex = i;
+            createAlerts(i);//Create all the styles for the alerts
 
 
-                audioPlayer[i] = new MediaPlayer(audioMedia);
+            audioPlayer[i] = new MediaPlayer(audioMedia);
 
 //                Event handlers for mouse enter and leave and click
-                cameraContainer[i].setOnMouseEntered(new EventHandler() {
+            cameraContainer[i].setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+
+                    Scene scene = cameraContainer[cameraIndex].getScene();
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                }
+            });
+
+            cameraContainer[i].setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+
+                    Scene scene = cameraContainer[cameraIndex].getScene();
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to default
+                }
+            });
+
+                cameraContainer[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(Event event) {
+                    public void handle(MouseEvent mouseEvent) {
+                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Scene scene = cameraContainer[cameraIndex].getScene();
-                        scene.setCursor(Cursor.HAND); //Change cursor to hand
-                    }
-                });
+                            if(gridScreen != false){
+                                stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                                playerSetted = PlayerInstance.players.get(cameraIndex).mediaPlayer();
+                                cameraContainerSetted = cameraContainer[cameraIndex];
 
-                cameraContainer[i].setOnMouseExited(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
+                                currentCameraIndex = cameraIndex;
+                                currentCameraId = PlayerInstance.players.get(cameraIndex).getId();
+                                currentCameraObj = CamerasConfig.getCamera((int) currentCameraId);
+                                currentCameraName = currentCameraObj.getName();
 
-                        Scene scene = cameraContainer[cameraIndex].getScene();
-                        scene.setCursor(Cursor.DEFAULT); //Change cursor to default
-                    }
-                });
-
-                    cameraContainer[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-
-                                if(gridScreen != false){
-                                    stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                                    playerSetted = PlayerInstance.players.get(cameraIndex).mediaPlayer();
-                                    cameraContainerSetted = cameraContainer[cameraIndex];
-                                    currentCameraIndex = cameraIndex;
-                                    currentAddress = PlayerInstance.players.get(cameraIndex).cameraAddress();
-                                    currentPort = PlayerInstance.players.get(cameraIndex).cameraPort();
-                                    playerControls();
+                                currentAddress = currentCameraObj.getAddress();
+                                currentPort = currentCameraObj.getPort();
+                                playerControls();
 
 
-                                    if (!PlayerInstance.players.get(cameraIndex).getCameraOpen()) {
-                                        playerControlsHbox.setDisable(true);
+                                if (!PlayerInstance.players.get(cameraIndex).getCameraOpen()) {
+                                    playerControlsHbox.setDisable(true);
 
-                                    } else {
-                                        playerControlsHbox.setDisable(false);
-                                    }
-
-
-                                    if (mouseEvent.getClickCount() == 2) {
-                                        fullScreenCameraToggle();
-                                    }
+                                } else {
+                                    playerControlsHbox.setDisable(false);
                                 }
 
+
+                                if (mouseEvent.getClickCount() == 2) {
+                                    fullScreenCameraToggle();
+                                }
                             }
+
                         }
-                    });
+                    }
+                });
         }
 
     }
@@ -300,11 +300,11 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     int i = camerasScanResult.indexOf(f);
 
                     if (f.get().isOpen()) {
-                    //if(true){
+//                    if(true){
                         PlayerInstance.players.get(i).setCameraOpen(true);
                         PlayerInstance.players.get(i).mediaPlayer().videoSurface().set(videoSurfaceForImageView(PlayerInstance.players.get(i).videoSurface()));
                         PlayerInstance.players.get(i).mediaPlayer().media().start("http://"+PlayerInstance.players.get(i).cameraAddress()+":"+PlayerInstance.players.get(i).cameraPort());
-                        //PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
+//                        PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
                     }else{
                         PlayerInstance.players.get(i).setCameraOpen(false);
                     }
@@ -317,7 +317,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         EmbeddedMediaPlayer mediaPlayer = PlayerInstance.players.get(i).mediaPlayer();
                         mediaPlayer.controls().start();
                         if(verificationMode == true){
-                            fpsAnalizer(PlayerInstance.players.get(i).mediaPlayer(), i, PlayerInstance.players.get(i).cameraAddress(), (int) PlayerInstance.players.get(i).cameraPort());
+                            fpsAnalyzer(i, PlayerInstance.players.get(i).cameraAddress(), (int) PlayerInstance.players.get(i).cameraPort());
                         }
                     }
                     else{
@@ -363,7 +363,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 camerasScrollContainer.setVisible(true);
 
                 return null;
-            };
+            }
 
 
         };
@@ -374,17 +374,16 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     private void setPlayersImageAdjustments() {
+        //Done
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
-            JSONObject cameraObject = (JSONObject) camerasList.get(i);
-            float gamma = Float.parseFloat(cameraObject.get("gamma").toString());
-            float brightness = Float.parseFloat(cameraObject.get("brightness").toString());
-            float contrast = Float.parseFloat(cameraObject.get("contrast").toString());
-            float saturation = Float.parseFloat(cameraObject.get("saturation").toString());
 
-            PlayerInstance.players.get(i).mediaPlayer().video().setGamma(gamma);
-            PlayerInstance.players.get(i).mediaPlayer().video().setBrightness(brightness);
-            PlayerInstance.players.get(i).mediaPlayer().video().setContrast(contrast);
-            PlayerInstance.players.get(i).mediaPlayer().video().setSaturation(saturation);
+            PlayerInstance player = PlayerInstance.players.get(i);
+            VideoApi playerVideo =player.mediaPlayer().video();
+
+            playerVideo.setGamma(player.getGamma());
+            playerVideo.setBrightness(player.getBrightness());
+            playerVideo.setContrast(player.getConstrast());
+            playerVideo.setSaturation(player.getSaturation());
         }
     }
 
@@ -435,7 +434,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
         if((cameraColumnCount*RATIO)/cameraRowCount < (mainBorderPane.getWidth()/availableHeightTotal)){
             int heightSubtraction = VGAP_SIZE + BORDER_WIDTH * 2 + 5;
-            int availableHeightPerCamera = (int) availableHeightTotal / cameraRowCount;
+            int availableHeightPerCamera = availableHeightTotal / cameraRowCount;
             int playersHeight = availableHeightPerCamera - heightSubtraction;
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
                 PlayerInstance.players.get(i).videoSurface().setFitWidth(playersHeight*RATIO);
@@ -474,7 +473,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
         centerContainerVbox.getChildren().add(0,loadingText);
         camerasScrollContainer.setContent(cameraViewGrid);
     }
-    public void fpsAnalizer(EmbeddedMediaPlayer player, int cameraIndex, String address, int port) {
+
+    public void fpsAnalyzer(int cameraIndex, String address, int port) {
         reconnectionTolerance = 0;
         lastFrameCount[cameraIndex] = 0;
 
@@ -521,18 +521,17 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 200);
                     socket.close();
                     reconnected = true;
-
                     Thread.sleep(7000);
                     PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
                     succeedReconection(cameraIndex);
                     logger.setWarning("Camera: "+address+":"+port+ " reconnected");
                     lastFrameCount[cameraIndex] = 0;
-                    //analyzer[cameraIndex].playFromStart();
                 }
                 return null;
             };
 
         };
+
         Thread[] reconnectThread = new Thread[100];
         reconnectThread[cameraIndex] = new Thread(reconnector);
         reconnectThread[cameraIndex].setDaemon(true);
@@ -589,7 +588,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
                     playerSetted.video().setGamma((float) gammaSlider.getValue());
-                    saveCameraAdjusts("gamma", gammaSlider.getValue());
+
+                    currentCameraObj.setGamma((float) gammaSlider.getValue());
+                    currentCameraObj.save();
                 }
             }
         });
@@ -600,7 +601,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 if (!isNowChanging) {
 
                     playerSetted.video().setContrast((float) contrastSlider.getValue());
-                    saveCameraAdjusts("contrast", contrastSlider.getValue());
+                    currentCameraObj.setContrast((float) contrastSlider.getValue());
+                    currentCameraObj.save();
 
                 }
             }
@@ -611,7 +613,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 if (!isNowChanging) {
 
                     playerSetted.video().setSaturation((float) saturationSlider.getValue());
-                    saveCameraAdjusts("saturation", saturationSlider.getValue());
+
+                    currentCameraObj.setSaturation((float) saturationSlider.getValue());
+                    currentCameraObj.save();
                 }
             }
         });
@@ -620,7 +624,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
                     playerSetted.video().setBrightness((float) brightnessSlider.getValue());
-                    saveCameraAdjusts("brightness", brightnessSlider.getValue());
+
+                    currentCameraObj.setBrightness((float) brightnessSlider.getValue());
+                    currentCameraObj.save();
                 }
             }
         });
@@ -628,7 +634,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     public void playerControls(){
-        updateCurrentCamera();
         defaultCameraStyles();
         cameraNameField.setText(currentCameraName);
         addressLabel.setText(currentAddress);
@@ -652,23 +657,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
         }
     }
 
-    //not currently being used
-    private void removeAllBorderSelections() {
-        for(int i=0; i<PlayerInstance.players.size(); i++){
-            if(cameraContainer[i] == null){
-                break;
-            }
-            cameraContainer[i].setStyle("-fx-border-color: none");
-        }
-    }
-
     public void snapshotPlayer(ActionEvent actionEvent) {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH.mm.ss");
-        String time = (String)(formatter.format(date));
+        String time = formatter.format(date);
         File file = new File("./BlingMonitor Snapshots");
-        boolean dirCreated = file.mkdir();
-
+        file.mkdir();
         File photo = new File("./BlingMonitor Snapshots/"+time+" "+currentCameraName+".png");
         playerSetted.snapshots().save(photo);
     }
@@ -678,45 +672,11 @@ public class AllCamerasMainGridScreenController implements Initializable {
         cameraNameField.setText(newName);
         camerasScrollContainer.requestFocus();
 
-        JSONObject cameraObject = (JSONObject) camerasList.get((int) currentCameraIndex);
-        cameraObject.put("cameraName", newName);
-        updateJson();
-        updateCurrentCamera();
 
-    }
-    public void saveCameraAdjusts(String adjustment, double value){
-        JSONObject cameraObject = (JSONObject) camerasList.get((int) currentCameraIndex);
-        cameraObject.put(adjustment, value);
-        updateJson();
-        updateCurrentCamera();
-    }
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+        CamerasConfig cameraObj = CamerasConfig.getCamera((int) currentCameraId);
+        cameraObj.setName(newName);
+        cameraObj.save();
 
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
-
-    private void updateCurrentCamera() {
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("camerasIndexed.json")) {
-            Object obj = jsonParser.parse(reader);
-            fullJson = (JSONObject) obj;
-            camerasList = (JSONArray) fullJson.get("cameras");
-            JSONObject cameraObject = (JSONObject) camerasList.get((int) currentCameraIndex);
-
-            currentCameraName = (String) cameraObject.get("cameraName");
-        }  catch (ParseException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void updateJson(){
-        JsonWriter.main(fullJson);
     }
 
     public void resetControls(ActionEvent actionEvent) {
@@ -729,17 +689,13 @@ public class AllCamerasMainGridScreenController implements Initializable {
         playerSetted.video().setContrast(1);
         playerSetted.video().setSaturation(1);
         playerSetted.video().setBrightness(1);
-        saveCameraAdjusts("gamma", 1);
-        saveCameraAdjusts("saturation", 1);
-        saveCameraAdjusts("brightness", 1);
-        saveCameraAdjusts("contrast", 1);
 
+        currentCameraObj.setAdjustmentsToDefault();
+        currentCameraObj.save();
     }
 
     public void fullScreenCameraToggle() {
         int indexPlayerFullScreen = (int) currentCameraIndex;
-        int playerCollumn = indexPlayerFullScreen % 3;
-        int playerRow = indexPlayerFullScreen / 3;
 
         if (fullScreenPlayer == false){
             fullScreenCameraToggleImg.setImage(minimizeFullScreenPlayerImg);
@@ -791,6 +747,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         Config.setProperty("silent_mode", silentMode ? 1 : 0);
         setAlarmIcon();
     }
+
     private void setAlarmIcon(){
         if(silentMode == true){
             alarmToggleImg.setImage(alarmOffImg);
@@ -901,8 +858,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     taskSlider.setCycleCount(Timeline.INDEFINITE);
                     taskSlider.play();
 
-                    //slideRepeater = taskSlider;
-
                 }
             });
         }
@@ -919,7 +874,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
             fullScreenPlayer = true;
             fullScreenCameraToggle();
-            //playerControlsHbox.setVisible(true);
             for(int i=0; i<PlayerInstance.players.size(); i++){
 
                 cameraContainer[i].setManaged(true);
@@ -929,11 +883,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     public void backToCamerasRegistration(ActionEvent actionEvent) throws IOException {
         for (int i = 0; i <PlayerInstance.players.size() ; i++) {
-
-//            if(embeddedMediaPlayerIntances[i] != null){
-//                embeddedMediaPlayerIntances[i].controls().stop();
-//                embeddedMediaPlayerIntances[i].release();
-//            }
             if(analyzer[i] != null){
                 analyzer[i].stop();
             }
@@ -941,6 +890,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
             audioPlayer[i].dispose();
         }
         PlayerInstance.releaseAll();
+
         //taskSlider.stop();
         //startThread.interrupt();
 

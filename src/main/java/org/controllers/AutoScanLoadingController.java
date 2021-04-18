@@ -13,6 +13,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import org.CamerasConfig;
 import org.Config;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -76,30 +77,16 @@ public class AutoScanLoadingController implements Initializable {
 
                     camerasFound = getCameras.main(startIp, endIp, startPort, endPort, threads, timeout);
 
-                    JSONObject rootJson = new JSONObject();
-                    JSONArray allCameras = new JSONArray();
-
                     for (int index = 0; index < camerasFound.size(); index++) {
-                        JSONObject cameraUnique = new JSONObject();
 
-                        //ID START AT 1
-                        cameraUnique.put("id", (index + 1));
-                        cameraUnique.put("cameraName", "Camera " + (index + 1));
-                        cameraUnique.put("address", camerasFound.get(index)[0]);
-                        cameraUnique.put("port", camerasFound.get(index)[1]);
-
-                        //1 == default
-                        cameraUnique.put("brightness", 1);
-                        cameraUnique.put("contrast", 1);
-                        cameraUnique.put("saturation", 1);
-                        cameraUnique.put("gamma", 1);
-
-                        allCameras.add(cameraUnique);
-
+                        CamerasConfig  cameraObj = new CamerasConfig();
+                        cameraObj.setName("Camera " +(index + 1));
+                        cameraObj.setAddress((String) camerasFound.get(index)[0]);
+                        cameraObj.setPort((Integer) camerasFound.get(index)[1]);
+                        cameraObj.setAdjustmentsToDefault();
+//                        TODO change this to save on the END of the loop
+                        cameraObj.save();
                     }
-                    rootJson.put("cameras", allCameras);
-
-                    JsonWriter.main(rootJson);
 
                     scanFinished();
                     return null;

@@ -1,7 +1,6 @@
 package org.controllers;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -22,9 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.JsonReader;
+import org.CamerasConfig;
 import org.database.Database;
 import static org.database.Database.encrypt;
 
@@ -82,37 +79,20 @@ public class LoginScreenController implements Initializable {
                 passwordTyped = passwordField.getText();
 
                 logged = true;
-
-                File arquivo =  new File("camerasIndexed.json");
-
-
-                if(arquivo.exists()){
-                    JsonReader reader = new JsonReader();
-                    JSONObject fullJson = reader.main(null);
-
-
-                    JSONArray camerasList = (JSONArray) fullJson.get("cameras");
-                    if(camerasList.size() > 0){
+                if(CamerasConfig.camerasCount() > 0){
 //                    if(false){
-                        ManualRegisterController.enableScan = true;
-                        Parent camerasMainGridScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));
-                        Scene window = ((Node) event.getSource()).getScene();
-                        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                        stage.setMaximized(true);
-                        window.setRoot(camerasMainGridScreenRoot);
-
-                    }else{
-                        Parent startScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/startScreen.fxml"));
-                        Scene window = ((Node) event.getSource()).getScene();
-                        window.setRoot(startScreenRoot);
-                    }
+                    ManualRegisterController.enableScan = true;
+                    Parent camerasMainGridScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));
+                    Scene window = ((Node) event.getSource()).getScene();
+                    Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+                    stage.setMaximized(true);
+                    window.setRoot(camerasMainGridScreenRoot);
 
                 }else{
                     Parent startScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/startScreen.fxml"));
                     Scene window = ((Node) event.getSource()).getScene();
                     window.setRoot(startScreenRoot);
                 }
-
                 
             } else {
                 loginErrorMessage.setVisible(true);

@@ -16,10 +16,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
@@ -35,12 +32,8 @@ import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
+import org.CamerasConfig;
 import org.network.GetAvailableIps;
-import org.json.JsonReader;
-import org.json.JsonWriter;
 import org.database.Database;
 
 
@@ -72,7 +65,6 @@ public class ManualRegisterController implements Initializable {
     @FXML
     private Text registerText;
 
-    JSONObject fullJson;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -82,33 +74,13 @@ public class ManualRegisterController implements Initializable {
             backBtn.setVisible(false);
             backBtn.setManaged(false);
         }
-        fullJson = readJson();
-        fillCamerasRegistered(fullJson);
+        fillCamerasRegistered();
         try {
             userBtn.setText(getUserName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-    private JSONObject readJson(){
-        File arquivo =  new File("camerasIndexed.json");
-
-        if(!arquivo.exists()){
-
-            //cria arquivo com nenhuma camera listada
-
-            JSONObject rootJson = new JSONObject();
-            JSONArray allCameras = new JSONArray();
-
-            rootJson.put("cameras", allCameras);
-
-            JsonWriter.main(rootJson);
-        }
-        JsonReader reader = new JsonReader();
-
-        return reader.main(null);
-    }
-
 
     public String getUserName() throws SQLException {
         //Mod 1
@@ -120,40 +92,22 @@ public class ManualRegisterController implements Initializable {
             registerMessage("Insira apenas números no campo: Porta");
             return;
         }
-         //Pega todos dados de camerasIndexed.json
-        JsonReader reader = new JsonReader();
-        JSONObject fullJson = reader.main(null);
-
-
-        JSONArray camerasList = (JSONArray) fullJson.get("cameras");
-        JSONObject cameraUnique = new JSONObject();
 
         String cameraName = name.getText();
         String enderecoCamera = cameraAddress.getText();
-        int cameraID = camerasList.size()+1;
         int portNumber = Integer.parseInt(port.getText());
 
+        CamerasConfig cameraObj = new CamerasConfig();
 
-        cameraUnique.put("id", (camerasList.size()+1));
-        cameraUnique.put("cameraName", cameraName);
-        cameraUnique.put("address", enderecoCamera);
-        cameraUnique.put("port", portNumber);
-
-        cameraUnique.put("gamma", 1);
-        cameraUnique.put("brightness", 1);
-        cameraUnique.put("contrast", 1);
-        cameraUnique.put("saturation", 1);
-        cameraUnique.get(0);
-        camerasList.add(cameraUnique);
-
-        //Escreve no arquivo
-        JsonWriter.main(fullJson);
-
-
+        cameraObj.setName(cameraName);
+        cameraObj.setAddress(enderecoCamera);
+        cameraObj.setPort(portNumber);
+        cameraObj.setAdjustmentsToDefault();
+        cameraObj.save();
 
        resetTextFields();
 
-       addCamera(cameraName, enderecoCamera, portNumber, cameraID);
+       addCamera(cameraName, enderecoCamera, portNumber, cameraObj.getId());
         registerMessage("Câmera registrada com sucesso");
     }
 
@@ -169,19 +123,16 @@ public class ManualRegisterController implements Initializable {
             return false;
         }
     }
-    private void fillCamerasRegistered(JSONObject fullJson) {
+    private void fillCamerasRegistered() {
+        CamerasConfig.getCamerasList().forEach((id,v) ->{
+            CamerasConfig cameraObj = (CamerasConfig) v;
 
-        JSONArray camerasList = (JSONArray) fullJson.get("cameras");
+            String name = cameraObj.getName();
+            String address = cameraObj.getAddress();
+            long port = cameraObj.getPort();
 
-        for(int i=0; i<camerasList.size(); i++){
-            JSONObject cameraObject = (JSONObject) camerasList.get(i);
-            String name = (String) cameraObject.get("cameraName");
-            String address = (String) cameraObject.get("address");
-            long port = (long) cameraObject.get("port");
-            long id = (long) cameraObject.get("id");
-            addCamera(name, address, port, id);
-
-        }
+            addCamera(name, address, port, cameraObj.getId());
+        });
     }
 
     public void addCamera(String cameraName, String address, long port, long id)  {
@@ -286,19 +237,8 @@ public class ManualRegisterController implements Initializable {
     }
 
     public void removeCamera(long ID) {
-        JsonReader reader = new JsonReader();
-        JSONObject fullJson = reader.main(null);
-        JSONArray camerasList = (JSONArray) fullJson.get("cameras");
-
-        for(int i=0; i<camerasList.size(); i++){
-            JSONObject cameraObject = (JSONObject) camerasList.get(i);
-            long idTested = (long) cameraObject.get("id");
-            if(idTested == ID){
-               camerasList.remove(i);
-            }
-        }
-        JsonWriter.main(fullJson);
-
+        CamerasConfig cameraObj = CamerasConfig.getCamera((int) ID);
+        cameraObj.delete();
     }
 
     private void resetTextFields() {
@@ -328,11 +268,8 @@ public class ManualRegisterController implements Initializable {
     }
 
     public void visualizeCameras(ActionEvent actionEvent) throws IOException {
-        fullJson = readJson();
-        JSONArray camerasList = (JSONArray) fullJson.get("cameras");
 
-
-        if(camerasList.size() == 0){
+        if(CamerasConfig.camerasCount() == 0){
             registerMessage("Nenhuma câmera cadastrada");
         }else{
             Parent camerasMainScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));
