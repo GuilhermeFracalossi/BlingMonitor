@@ -147,7 +147,6 @@ public class CamerasConfig {
             this.id = Math.toIntExact(Database.insertCamera(this));
         }else{
 //            If the ID is set, that means you want to update a already existing camera
-            System.out.println("Updating camera with id: "+this.id);
             Database.updateCamera(this);
         }
         cameras.put(this.id,this);
