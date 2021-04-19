@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="mainBorderPane" minWidth="400.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #1F3146; -fx-border-color: none;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controllers.AllCamerasMainGridScreenController">
    <top>
@@ -31,8 +33,8 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Region layoutX="643.0" layoutY="11.0" prefHeight="51.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="topControlsMenu" alignment="CENTER" prefHeight="51.0" prefWidth="306.0" translateX="-40.0">
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox fx:id="topControlsMenu" alignment="CENTER" disable="true">
                <children>
                   <Button fx:id="gridModeBtn" mnemonicParsing="false" onAction="#gridScreenMode" style="-fx-background-color: #133f78;">
                      <graphic>
@@ -58,9 +60,28 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <HBox fx:id="intervalContainer" alignment="CENTER" prefHeight="100.0" spacing="7.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Intervalo:">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Spinner fx:id="intervalSpinner" editable="true" prefHeight="25.0" prefWidth="67.0" />
+                        <Button mnemonicParsing="false" onAction="#startSlideMode" style="-fx-background-color: #0092cc;" text="Iniciar" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-            <HBox fx:id="gridSizeContainerHbox" alignment="CENTER" disable="true" prefHeight="51.0" prefWidth="200.0">
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox fx:id="gridSizeContainerHbox" alignment="CENTER" disable="true" prefHeight="51.0">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -75,7 +96,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Region prefHeight="51.0" prefWidth="95.0" HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS" />
             <Button mnemonicParsing="false" onAction="#alarmToggle" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: none;">
                <graphic>
                   <ImageView fx:id="alarmToggleImg" fitHeight="27.0" fitWidth="26.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
@@ -88,7 +109,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Region layoutX="67.0" layoutY="11.0" prefHeight="51.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS" />
             <Button fx:id="fullScreenToggleBtn" mnemonicParsing="false" onAction="#fullScreenToggle" prefWidth="54.0" style="-fx-background-color: none;">
                <graphic>
                   <ImageView fx:id="fullScreenToggleImg" fitHeight="30.0" fitWidth="30.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
