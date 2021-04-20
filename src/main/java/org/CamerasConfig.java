@@ -142,6 +142,7 @@ public class CamerasConfig {
     }
 
     public void save() {
+        isCamerasReaded = false;
 //        If the ID of this class is not set, that means the camera is not in the database
         if (this.id == null){
             this.id = Math.toIntExact(Database.insertCamera(this));
