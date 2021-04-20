@@ -1,8 +1,9 @@
 package org.controllers;
 
-public class Main{
+import javafx.application.Application;
+public class Main {
     public static void main(String[] args) throws Exception {
-        ScenesControl.main(null);
+        Application.launch(ScenesControl.class, args);
 
     }
 }
