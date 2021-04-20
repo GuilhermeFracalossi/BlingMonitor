@@ -40,10 +40,10 @@ public class CamerasConfig {
                 cameraInstance.setName(results.getString("name"));
                 cameraInstance.setAddress(results.getString("address"));
                 cameraInstance.setPort(results.getInt("port"));
-                cameraInstance.setBrightness(results.getInt("brightness"));
-                cameraInstance.setContrast(results.getInt("contrast"));
-                cameraInstance.setGamma(results.getInt("gamma"));
-                cameraInstance.setSaturation(results.getInt("saturation"));
+                cameraInstance.setBrightness(results.getFloat("brightness"));
+                cameraInstance.setContrast(results.getFloat("contrast"));
+                cameraInstance.setGamma(results.getFloat("gamma"));
+                cameraInstance.setSaturation(results.getFloat("saturation"));
 
                 cameras.put(cameraInstance.getId(), cameraInstance);
             }
