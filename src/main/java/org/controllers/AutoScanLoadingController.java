@@ -15,11 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.CamerasConfig;
 import org.Config;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.network.GetCameraUrls;
-import org.json.JsonWriter;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
