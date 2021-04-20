@@ -77,7 +77,7 @@ public class CamerasConfig {
     public static boolean isCameraAlreadyRegistered(String ip, int port) {
         for (Map.Entry<Integer, CamerasConfig> entry : cameras.entrySet()) {
             CamerasConfig camerasObj = entry.getValue();
-            if (camerasObj.getAddress() == ip || camerasObj.getPort() == port) {
+            if (camerasObj.getAddress().equals(ip) && camerasObj.getPort() == port) {
                 return true;
             }
         }
@@ -85,6 +85,7 @@ public class CamerasConfig {
     }
 
     public void delete(){
+        isCamerasReaded = false;
         if(this.id != null){
 //            If the ID is null (IN THEORY) this camera is not registered in the database yet,
 //                    so no need to actually run the command
