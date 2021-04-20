@@ -41,10 +41,6 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         return constrast;
     }
 
-
-
-
-
     public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
 
     public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float constrast) {

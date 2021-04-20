@@ -84,8 +84,8 @@ public class Database extends MySQL {
         try {
             ArrayList params = new ArrayList();
 
-            params.add(cameraObj.getName());
-            params.add(cameraObj.getAddress());
+            params.add(cameraObj.getName().trim());
+            params.add(cameraObj.getAddress().trim());
             params.add(String.valueOf(cameraObj.getPort()));
             params.add(String.valueOf(cameraObj.getBrightness()));
             params.add(String.valueOf(cameraObj.getGamma()));
@@ -102,8 +102,8 @@ public class Database extends MySQL {
     }
     public static void updateCamera(CamerasConfig cameraObj){
         ArrayList params = new ArrayList();
-        params.add(cameraObj.getName());
-        params.add(cameraObj.getAddress());
+        params.add(cameraObj.getName().trim());
+        params.add(cameraObj.getAddress().trim());
         params.add(cameraObj.getPort());
         params.add(cameraObj.getBrightness());
         params.add(cameraObj.getGamma());

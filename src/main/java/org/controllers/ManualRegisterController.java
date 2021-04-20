@@ -5,8 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -29,7 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.CamerasConfig;
@@ -88,6 +85,7 @@ public class ManualRegisterController implements Initializable {
         return userName;
     }
     public void manualRegisterAction(ActionEvent actionEvent) throws Exception {
+
         if(!isInteger(port.getText())){
             registerMessage("Insira apenas números no campo: Porta");
             return;
@@ -105,9 +103,9 @@ public class ManualRegisterController implements Initializable {
         cameraObj.setAdjustmentsToDefault();
         cameraObj.save();
 
-       resetTextFields();
+        resetTextFields();
 
-       addCamera(cameraName, enderecoCamera, portNumber, cameraObj.getId());
+        addCamera(cameraName, enderecoCamera, portNumber, cameraObj.getId());
         registerMessage("Câmera registrada com sucesso");
     }
 
@@ -137,6 +135,9 @@ public class ManualRegisterController implements Initializable {
 
     public void addCamera(String cameraName, String address, long port, long id)  {
 
+        cameraName = cameraName.trim();
+        address = address.trim();
+        port = Long.parseLong(String.valueOf(port).trim());
 
         HBox cameraContainer = new HBox();
         cameraContainer.setAlignment(Pos.CENTER_LEFT);
@@ -144,9 +145,6 @@ public class ManualRegisterController implements Initializable {
         cameraContainer.setStyle( "-fx-border-color: #9e9e9e;");
         cameraContainer.setPadding(new Insets(0,0,0,15));
 
-        //imagem de camera
-
-        //File cameraFile = new File("src/images/cameraIconLow.png");
         Image cameraImg = new Image(getClass().getResource("/org/images/camera-icon-low.png").toString());
 
         ImageView imageView = new ImageView();
@@ -158,7 +156,7 @@ public class ManualRegisterController implements Initializable {
         imageView.setFitWidth(50);
         cameraContainer.getChildren().add(imageView);
 
-        //separador
+
         Separator separador = new Separator();
         separador.setOrientation(Orientation.VERTICAL);
         separador.setPrefWidth(50);
