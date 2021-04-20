@@ -311,9 +311,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         PlayerInstance.players.get(i).videoSurface().setImage(cameraNotFoundImg);
                     }
                 }
-                if(camerasOpened<2){
-                    topControlsMenu.setDisable(true);
-                }
+                topControlsMenu.setDisable(camerasOpened < 2);
                 synchronized (this) {
                     VBox.setVgrow(loadingText, Priority.NEVER);
                     loadingText.setVisible(false);
@@ -347,7 +345,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 }
                 defaultCameraStyles();
                 camerasScrollContainer.setVisible(true);
-                topControlsMenu.setDisable(false);
+
 
                 return null;
             }
@@ -852,6 +850,11 @@ public class AllCamerasMainGridScreenController implements Initializable {
         if(mediaPlayerFactory != null){
             mediaPlayerFactory.release();
         }
+        if(taskSlider != null){
+            taskSlider.stop();
+            taskSlider = null;
+        }
+
 
         ManualRegisterController.enableScan = true;
         Parent manualRegisterRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
