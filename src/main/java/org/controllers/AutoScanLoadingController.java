@@ -44,11 +44,10 @@ public class AutoScanLoadingController implements Initializable {
     private int threads;
     private int timeout;
 
+    int newCameras = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         GetCameraUrls getCameras = new GetCameraUrls();
 
         startIp = Config.get("ip_start_scan");
@@ -67,6 +66,7 @@ public class AutoScanLoadingController implements Initializable {
                         String ip = (String) camerasFound.get(index)[0];
                         int port = (int) camerasFound.get(index)[1];
                         if (!CamerasConfig.isCameraAlreadyRegistered(ip,port)){
+                            newCameras++;
                             CamerasConfig  cameraObj = new CamerasConfig();
                             cameraObj.setName("Camera " +(index + 1));
                             cameraObj.setAddress(ip);
@@ -102,6 +102,8 @@ public class AutoScanLoadingController implements Initializable {
     public void showCamerasRegisteredPage(ActionEvent actionEvent) throws IOException {
 
         ManualRegisterController.enableScan = true;
+        ManualRegisterController.previousScreenScan = true;
+        ManualRegisterController.newCameras = newCameras;
         Parent camerasRegisteredRoot= FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
         Scene window = ((Node) actionEvent.getSource()).getScene();
         //Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

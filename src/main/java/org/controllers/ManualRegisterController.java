@@ -56,12 +56,22 @@ public class ManualRegisterController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        if(enableScan == true){
+        if(enableScan){
             reescanBtn.setVisible(true);
             reescanBtn.setManaged(true);
             backBtn.setVisible(false);
             backBtn.setManaged(false);
         }
+        if(previousScreenScan){
+            camerasFoundText.setVisible(true);
+            if (newCameras == 1) {
+                camerasFoundText.setText(newCameras + " câmera nova encontrada");
+            } else {
+                camerasFoundText.setText(newCameras + " câmeras novas encontradas");
+            }
+            previousScreenScan = false;
+        }
+
         fillCamerasRegistered();
         try {
             userBtn.setText(getUserName());
