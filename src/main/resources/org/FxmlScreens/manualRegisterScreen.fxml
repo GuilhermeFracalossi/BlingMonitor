@@ -97,23 +97,35 @@
                               <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <VBox alignment="CENTER" maxWidth="660.0" prefWidth="660.0" spacing="20.0">
+                        <VBox alignment="CENTER_LEFT" maxWidth="660.0" prefHeight="268.0" spacing="5.0">
                            <children>
                               <TextField fx:id="name" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Nome">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </TextField>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: Camera 1, Quarto de visita, Frente de casa" />
                               <TextField fx:id="cameraAddress" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Endereço">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
                               </TextField>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: 192.168.0.5, 10.0.0.7" />
                               <TextField fx:id="port" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Porta">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
                               </TextField>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: 8081, 8556" />
                            </children>
                            <padding>
                               <Insets left="30.0" />
@@ -187,8 +199,16 @@
                               <Font size="21.0" />
                            </font>
                            <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fx:id="camerasFoundText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="x câmeras novas encontradas" visible="false">
+                           <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
                         </Text>
                      </children>
                      <HBox.margin>
