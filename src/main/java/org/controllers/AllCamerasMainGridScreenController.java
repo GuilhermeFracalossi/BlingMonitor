@@ -265,12 +265,10 @@ public class AllCamerasMainGridScreenController implements Initializable {
                                     fullScreenCameraToggle();
                                 }
                             }
-
                         }
                     }
                 });
         }
-
     }
 //
     private synchronized void startPlayers() {
@@ -346,26 +344,23 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 defaultCameraStyles();
                 camerasScrollContainer.setVisible(true);
 
-
                 return null;
             }
         };
         Thread startThread = new Thread(start);
         startThread.setDaemon(true);
         startThread.start();
-
     }
 
     private void setPlayersImageAdjustments() {
         //Done
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
-
             PlayerInstance player = PlayerInstance.players.get(i);
-            VideoApi playerVideo =player.mediaPlayer().video();
+            VideoApi playerVideo = player.mediaPlayer().video();
 
             playerVideo.setGamma(player.getGamma());
             playerVideo.setBrightness(player.getBrightness());
-            playerVideo.setContrast(player.getConstrast());
+            playerVideo.setContrast(player.getContrast());
             playerVideo.setSaturation(player.getSaturation());
         }
     }
@@ -388,24 +383,20 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     private void setPlayersSize() {
-
         double videoWidths = 0;
         double videoHeights = 0;
         int numberOfcameras = 0;
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
-
             if(cameraContainer[i].isVisible()){
                 numberOfcameras++;
                 videoWidths += PlayerInstance.players.get(i).videoSurface().getBoundsInLocal().getWidth();
                 videoHeights += PlayerInstance.players.get(i).videoSurface().getBoundsInLocal().getHeight();
             }
         }
-
         final double RATIO = (videoWidths/numberOfcameras) / (videoHeights/numberOfcameras);
         int cameraColumnCount=  (numberOfcameras<=3 ? numberOfcameras : (int) Math.ceil((double) numberOfcameras/2));
         int cameraRowCount = (int) Math.ceil((double) numberOfcameras/cameraColumnCount);
         int availableHeightTotal = (int) (stage.getHeight()-playerControlsHbox.getHeight()-topPane.getHeight()-30);
-
 
         if(playerSizeSelected != 0 && fullScreenPlayer!=true && gridScreen == true){
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
@@ -422,7 +413,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
             for (int i = 0; i < PlayerInstance.players.size(); i++) {
                 PlayerInstance.players.get(i).videoSurface().setFitWidth(playersHeight*RATIO);
                 PlayerInstance.players.get(i).videoSurface().setFitHeight(playersHeight);
-
             }
         }else{
             int widthSubtraction = HGAP_SIZE + BORDER_WIDTH*2 + 5;
@@ -433,7 +423,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 PlayerInstance.players.get(i).videoSurface().setFitHeight(playersWidth/RATIO);
             }
         }
-
     }
     private void playerControlsHboxStartingConfig() {
         cameraNameField.setStyle("-fx-text-fill: white;"+ "-fx-background-color: #131617;");
@@ -717,7 +706,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     }
     public void alarmToggle(ActionEvent actionEvent) {
-        silentMode = !silentMode;
+        silentMode =! silentMode;
 
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
             audioPlayer[i].setVolume(silentMode ? 0 : 1);

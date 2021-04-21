@@ -26,22 +26,16 @@ public class AutoScanLoadingController implements Initializable {
     public static String ipSelected;
     List<Object[]> camerasFound;
 
-    @FXML
-    HBox topPane;
+    @FXML HBox topPane;
 
-    @FXML
-    Button nextBtn;
+    @FXML Button nextBtn;
 
-    @FXML
-    Text statusTxt;
+    @FXML Text statusTxt;
 
-    @FXML
-    ImageView tickImg;
-    @FXML
-    Text statusScanningLabel;
+    @FXML ImageView tickImg;
+    @FXML Text statusScanningLabel;
 
-    @FXML
-    ProgressBar progressBarScanning;
+    @FXML ProgressBar progressBarScanning;
 
     private int startIp;
     private int endIp;
@@ -64,13 +58,9 @@ public class AutoScanLoadingController implements Initializable {
         threads = Config.get("number_threads");
         timeout = Config.get("timeout");
 
-
-
         try {
-
            Task<Void> scanning = new Task<>() {
                 @Override public Void call() throws Exception {
-
                     camerasFound = getCameras.main(startIp, endIp, startPort, endPort, threads, timeout);
 
                     for (int index = 0; index < camerasFound.size(); index++) {
@@ -82,7 +72,7 @@ public class AutoScanLoadingController implements Initializable {
                             cameraObj.setAddress(ip);
                             cameraObj.setPort(port);
                             cameraObj.setAdjustmentsToDefault();
-//                        TODO change this to save on the END of the loop
+//                         TODO change this to save on the END of the loop
                             cameraObj.save();
                         }
 
@@ -93,7 +83,6 @@ public class AutoScanLoadingController implements Initializable {
                 }
             };
             Thread scanningThread = new Thread(scanning);
-
             scanningThread.start();
 
             progressBarScanning.progressProperty().bind(getCameras.progressProperty());
@@ -104,8 +93,7 @@ public class AutoScanLoadingController implements Initializable {
 
     }
 
-    public void scanFinished() throws IOException {
-
+    public void scanFinished(){
         statusScanningLabel.setText("Concluído");
         nextBtn.setVisible(true);
         tickImg.setVisible(true);

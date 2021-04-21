@@ -37,30 +37,21 @@ import org.database.Database;
 public class ManualRegisterController implements Initializable {
     FadeTransition fade;
     public static boolean enableScan = false;
-    @FXML
-    Button userBtn;
-    @FXML
-    Button backBtn;
+    public static boolean previousScreenScan = false;
+    public static int newCameras;
+    @FXML Button userBtn;
+    @FXML Button backBtn;
+    @FXML Button reescanBtn;
+    @FXML HBox  registerMessageHbox;
 
-    @FXML
-    Button reescanBtn;
-    @FXML
-    HBox  registerMessageHbox;
+    @FXML VBox camerasRegisteredList;
 
-    @FXML
-    VBox camerasRegisteredList;
+    @FXML private TextField cameraAddress;
+    @FXML private TextField port;
+    @FXML private TextField name;
+    @FXML private Text registerText;
 
-    @FXML
-    private TextField cameraAddress;
-
-    @FXML
-    private TextField port;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private Text registerText;
+    @FXML Text camerasFoundText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
