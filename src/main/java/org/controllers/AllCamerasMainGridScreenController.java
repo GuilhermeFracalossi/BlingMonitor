@@ -81,7 +81,10 @@ public class AllCamerasMainGridScreenController implements Initializable {
     @FXML Slider gammaSlider;
     @FXML Button fullScreenCameraToggleBtn;
     @FXML ImageView fullScreenCameraToggleImg;
+    @FXML Button snapshotBtn;
+    @FXML Button resetControlsBtn;
     @FXML ImageView alarmToggleImg;
+    @FXML Button alarmToggleBtn;
 
 
     private final Image cameraNotFoundImg = new Image(getClass().getResource("/org/images/camera-not-found.jpg").toString());
@@ -144,6 +147,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
     private int index = 0;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setTooltips();
         intervalContainer.setManaged(false);
         intervalContainer.setVisible(false);
 
