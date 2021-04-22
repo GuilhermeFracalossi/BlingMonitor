@@ -37,40 +37,41 @@ import org.database.Database;
 public class ManualRegisterController implements Initializable {
     FadeTransition fade;
     public static boolean enableScan = false;
-    @FXML
-    Button userBtn;
-    @FXML
-    Button backBtn;
+    public static boolean previousScreenScan = false;
+    public static int newCameras;
+    @FXML Button userBtn;
+    @FXML Button backBtn;
+    @FXML Button reescanBtn;
+    @FXML HBox  registerMessageHbox;
 
-    @FXML
-    Button reescanBtn;
-    @FXML
-    HBox  registerMessageHbox;
+    @FXML VBox camerasRegisteredList;
 
-    @FXML
-    VBox camerasRegisteredList;
+    @FXML private TextField cameraAddress;
+    @FXML private TextField port;
+    @FXML private TextField name;
+    @FXML private Text registerText;
 
-    @FXML
-    private TextField cameraAddress;
-
-    @FXML
-    private TextField port;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private Text registerText;
+    @FXML Text camerasFoundText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        if(enableScan == true){
+        if(enableScan){
             reescanBtn.setVisible(true);
             reescanBtn.setManaged(true);
             backBtn.setVisible(false);
             backBtn.setManaged(false);
         }
+        if(previousScreenScan){
+            camerasFoundText.setVisible(true);
+            if (newCameras == 1) {
+                camerasFoundText.setText(newCameras + " câmera nova encontrada");
+            } else {
+                camerasFoundText.setText(newCameras + " câmeras novas encontradas");
+            }
+            previousScreenScan = false;
+        }
+
         fillCamerasRegistered();
         try {
             userBtn.setText(getUserName());

@@ -35,18 +35,11 @@ public class LoginScreenController implements Initializable {
 
     public static boolean logged = false;
     
-    @FXML
-    private HBox loginErrorMessage;
+    @FXML private HBox loginErrorMessage;
 
-    @FXML
-    private PasswordField passwordField;
-
-
-    @FXML
-    private TextField login;
-
-    @FXML
-    private Button loginBtn;
+    @FXML private PasswordField passwordField;
+    @FXML private TextField login;
+    @FXML private Button loginBtn;
 
     ResultSet rs;
 
@@ -80,7 +73,6 @@ public class LoginScreenController implements Initializable {
 
                 logged = true;
                 if(CamerasConfig.camerasCount() > 0){
-//                    if(false){
                     ManualRegisterController.enableScan = true;
                     Parent camerasMainGridScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));
                     Scene window = ((Node) event.getSource()).getScene();

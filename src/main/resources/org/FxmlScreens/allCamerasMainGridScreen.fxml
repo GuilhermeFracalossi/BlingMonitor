@@ -97,7 +97,7 @@
                </children>
             </HBox>
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#alarmToggle" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: none;">
+            <Button fx:id="alarmToggleBtn" mnemonicParsing="false" onAction="#alarmToggle" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: none;">
                <graphic>
                   <ImageView fx:id="alarmToggleImg" fitHeight="27.0" fitWidth="26.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -110,22 +110,38 @@
                </cursor>
             </Button>
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="fullScreenToggleBtn" mnemonicParsing="false" onAction="#fullScreenToggle" prefWidth="54.0" style="-fx-background-color: none;">
-               <graphic>
-                  <ImageView fx:id="fullScreenToggleImg" fitHeight="30.0" fitWidth="30.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/full-screen-low.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+            <HBox alignment="CENTER_RIGHT" spacing="5.0">
+               <children>
+                  <Button fx:id="fullScreenToggleBtn" mnemonicParsing="false" onAction="#fullScreenToggle" prefWidth="54.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <ImageView fx:id="fullScreenToggleImg" fitHeight="30.0" fitWidth="30.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/full-screen-low.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logout" opacity="0.64" style="-fx-background-color: none;" text="Sair" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/logout-icon-low.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets right="10.0" />
-         </padding>
       </HBox>
    </top>
    <center>
@@ -174,7 +190,7 @@
                </children>
             </VBox>
             <Region prefHeight="93.0" prefWidth="0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#snapshotPlayer" prefHeight="42.0" prefWidth="43.0" style="-fx-background-color: none;">
+            <Button fx:id="snapshotBtn" mnemonicParsing="false" onAction="#snapshotPlayer" prefHeight="42.0" prefWidth="43.0" style="-fx-background-color: none;">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -255,7 +271,7 @@
                   </ImageView>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#resetControls" prefHeight="36.0" prefWidth="41.0" style="-fx-background-color: none;">
+            <Button fx:id="resetControlsBtn" mnemonicParsing="false" onAction="#resetControls" prefHeight="36.0" prefWidth="41.0" style="-fx-background-color: none;">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -26,22 +26,16 @@ public class AutoScanLoadingController implements Initializable {
     public static String ipSelected;
     List<Object[]> camerasFound;
 
-    @FXML
-    HBox topPane;
+    @FXML HBox topPane;
 
-    @FXML
-    Button nextBtn;
+    @FXML Button nextBtn;
 
-    @FXML
-    Text statusTxt;
+    @FXML Text statusTxt;
 
-    @FXML
-    ImageView tickImg;
-    @FXML
-    Text statusScanningLabel;
+    @FXML ImageView tickImg;
+    @FXML Text statusScanningLabel;
 
-    @FXML
-    ProgressBar progressBarScanning;
+    @FXML ProgressBar progressBarScanning;
 
     private int startIp;
     private int endIp;
@@ -50,11 +44,10 @@ public class AutoScanLoadingController implements Initializable {
     private int threads;
     private int timeout;
 
+    int newCameras = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         GetCameraUrls getCameras = new GetCameraUrls();
 
         startIp = Config.get("ip_start_scan");
@@ -64,25 +57,22 @@ public class AutoScanLoadingController implements Initializable {
         threads = Config.get("number_threads");
         timeout = Config.get("timeout");
 
-
-
         try {
-
            Task<Void> scanning = new Task<>() {
                 @Override public Void call() throws Exception {
-
                     camerasFound = getCameras.main(startIp, endIp, startPort, endPort, threads, timeout);
 
                     for (int index = 0; index < camerasFound.size(); index++) {
                         String ip = (String) camerasFound.get(index)[0];
                         int port = (int) camerasFound.get(index)[1];
                         if (!CamerasConfig.isCameraAlreadyRegistered(ip,port)){
+                            newCameras++;
                             CamerasConfig  cameraObj = new CamerasConfig();
                             cameraObj.setName("Camera " +(index + 1));
                             cameraObj.setAddress(ip);
                             cameraObj.setPort(port);
                             cameraObj.setAdjustmentsToDefault();
-//                        TODO change this to save on the END of the loop
+//                         TODO change this to save on the END of the loop
                             cameraObj.save();
                         }
 
@@ -93,7 +83,6 @@ public class AutoScanLoadingController implements Initializable {
                 }
             };
             Thread scanningThread = new Thread(scanning);
-
             scanningThread.start();
 
             progressBarScanning.progressProperty().bind(getCameras.progressProperty());
@@ -104,8 +93,7 @@ public class AutoScanLoadingController implements Initializable {
 
     }
 
-    public void scanFinished() throws IOException {
-
+    public void scanFinished(){
         statusScanningLabel.setText("Concluído");
         nextBtn.setVisible(true);
         tickImg.setVisible(true);
@@ -114,6 +102,8 @@ public class AutoScanLoadingController implements Initializable {
     public void showCamerasRegisteredPage(ActionEvent actionEvent) throws IOException {
 
         ManualRegisterController.enableScan = true;
+        ManualRegisterController.previousScreenScan = true;
+        ManualRegisterController.newCameras = newCameras;
         Parent camerasRegisteredRoot= FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
         Scene window = ((Node) actionEvent.getSource()).getScene();
         //Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

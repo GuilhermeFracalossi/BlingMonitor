@@ -24,7 +24,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     private float gamma = 1;
     private float brightness= 1;
     private float saturation = 1;
-    private float constrast = 1;
+    private float contrast = 1;
 
     public float getGamma() {
         return gamma;
@@ -37,13 +37,13 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         return saturation;
     }
 
-    public float getConstrast() {
-        return constrast;
+    public float getContrast() {
+        return contrast;
     }
 
     public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
 
-    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float constrast) {
+    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float contrast) {
         this.id = id;
 
         this.mediaPlayer = mediaPlayer;
@@ -54,7 +54,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         this.gamma = gamma;
         this.brightness = brightness;
         this.saturation = saturation;
-        this.constrast = constrast;
+        this.contrast = contrast;
 
         players.add(this);
         mediaPlayer.events().addMediaPlayerEventListener(this);
