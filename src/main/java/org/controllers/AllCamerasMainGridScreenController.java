@@ -270,7 +270,18 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 });
         }
     }
-//
+
+    private void setTooltips() {
+        gridModeBtn.setTooltip(new Tooltip("Modo grade"));
+        slideModeBtn.setTooltip(new Tooltip("Modo slide"));
+        alarmToggleBtn.setTooltip(new Tooltip("Ativar/desativar alertas sonoros"));
+        fullScreenToggleBtn.setTooltip(new Tooltip("Ativar/desativar tela cheia"));
+        snapshotBtn.setTooltip(new Tooltip("Tirar print da câmera"));
+        resetControlsBtn.setTooltip(new Tooltip("Resetar todos ajustes de imagem"));
+        fullScreenCameraToggleBtn.setTooltip(new Tooltip("Ativar/desativar câmera em tela cheia"));
+        cameraNameField.setTooltip(new Tooltip("Alterar nome da câmera"));
+    }
+
     private synchronized void startPlayers() {
         Task<Void> start = new Task<Void>() {
             @Override
