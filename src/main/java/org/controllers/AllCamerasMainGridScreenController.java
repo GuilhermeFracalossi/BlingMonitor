@@ -556,7 +556,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
                     playerSetted.video().setGamma((float) gammaSlider.getValue());
-
                     currentCameraObj.setGamma((float) gammaSlider.getValue());
                     currentCameraObj.save();
                 }
@@ -567,11 +566,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
-
                     playerSetted.video().setContrast((float) contrastSlider.getValue());
                     currentCameraObj.setContrast((float) contrastSlider.getValue());
                     currentCameraObj.save();
-
                 }
             }
         });
@@ -579,9 +576,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
-
                     playerSetted.video().setSaturation((float) saturationSlider.getValue());
-
                     currentCameraObj.setSaturation((float) saturationSlider.getValue());
                     currentCameraObj.save();
                 }
@@ -592,7 +587,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
                     playerSetted.video().setBrightness((float) brightnessSlider.getValue());
-
                     currentCameraObj.setBrightness((float) brightnessSlider.getValue());
                     currentCameraObj.save();
                 }
@@ -639,11 +633,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
         cameraNameField.setText(newName);
         camerasScrollContainer.requestFocus();
 
-
         CamerasConfig cameraObj = CamerasConfig.getCamera((int) currentCameraId);
         cameraObj.setName(newName);
         cameraObj.save();
-
     }
 
     public void resetControls(ActionEvent actionEvent) {
@@ -733,21 +725,16 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 intervalContainer.setManaged(true);
                 intervalContainer.setVisible(true);
             }
-
         }
     }
     public void startSlideMode(ActionEvent actionEvent) {
         gridScreen = false;
         int INTERVAL = (int) intervalSpinner.getValue();
         gridSizeContainerHbox.setDisable(true);
-
         intervalContainer.setManaged(false);
         intervalContainer.setVisible(false);
-        //topControlsMenu.getChildren().remove(intervalContainer);
-
         slideModeBtn.setStyle("-fx-background-color:  #133f78;");
         gridModeBtn.setStyle("-fx-background-color:  none;");
-
         playerControlsHbox.setVisible(false);
         playerControlsHbox.setManaged(false);
 
@@ -824,7 +811,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         }
     }
 
-    public void backToCamerasRegistration(ActionEvent actionEvent) throws IOException {
+    private void stopAllRunningTasks() {
         for (int i = 0; i <PlayerInstance.players.size() ; i++) {
             if(analyzer[i] != null){
                 analyzer[i].stop();
@@ -843,12 +830,21 @@ public class AllCamerasMainGridScreenController implements Initializable {
             taskSlider.stop();
             taskSlider = null;
         }
-
-
+    }
+    public void backToCamerasRegistration(ActionEvent actionEvent) throws IOException {
+        stopAllRunningTasks();
         ManualRegisterController.enableScan = true;
         Parent manualRegisterRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
         Scene window = ((Node) actionEvent.getSource()).getScene();
         window.setRoot(manualRegisterRoot);
     }
 
+    public void logout(ActionEvent actionEvent) throws IOException {
+        stopAllRunningTasks();
+
+        LoginScreenController.logged = false;
+        Parent loginScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));
+        Scene window = ((Node) actionEvent.getSource()).getScene();
+        window.setRoot(loginScreenRoot);
+    }
 }
