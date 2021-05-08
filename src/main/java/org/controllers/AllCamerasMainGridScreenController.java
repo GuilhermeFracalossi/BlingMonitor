@@ -566,45 +566,33 @@ public class AllCamerasMainGridScreenController implements Initializable {
     }
 
     private void imageControlsListeners() {
-        gammaSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
-                if (!isNowChanging) {
-                    playerSetted.video().setGamma((float) gammaSlider.getValue());
-                    currentCameraObj.setGamma((float) gammaSlider.getValue());
-                    currentCameraObj.save();
-                }
+        gammaSlider.valueChangingProperty().addListener((obs, wasChanging, isNowChanging) -> {
+            if (!isNowChanging) {
+                playerSetted.video().setGamma((float) gammaSlider.getValue());
+                currentCameraObj.setGamma((float) gammaSlider.getValue());
+                currentCameraObj.save();
             }
         });
 
-        contrastSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
-                if (!isNowChanging) {
-                    playerSetted.video().setContrast((float) contrastSlider.getValue());
-                    currentCameraObj.setContrast((float) contrastSlider.getValue());
-                    currentCameraObj.save();
-                }
+        contrastSlider.valueChangingProperty().addListener((obs, wasChanging, isNowChanging) -> {
+            if (!isNowChanging) {
+                playerSetted.video().setContrast((float) contrastSlider.getValue());
+                currentCameraObj.setContrast((float) contrastSlider.getValue());
+                currentCameraObj.save();
             }
         });
-        saturationSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
-                if (!isNowChanging) {
-                    playerSetted.video().setSaturation((float) saturationSlider.getValue());
-                    currentCameraObj.setSaturation((float) saturationSlider.getValue());
-                    currentCameraObj.save();
-                }
+        saturationSlider.valueChangingProperty().addListener((obs, wasChanging, isNowChanging) -> {
+            if (!isNowChanging) {
+                playerSetted.video().setSaturation((float) saturationSlider.getValue());
+                currentCameraObj.setSaturation((float) saturationSlider.getValue());
+                currentCameraObj.save();
             }
         });
-        brightnessSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
-                if (!isNowChanging) {
-                    playerSetted.video().setBrightness((float) brightnessSlider.getValue());
-                    currentCameraObj.setBrightness((float) brightnessSlider.getValue());
-                    currentCameraObj.save();
-                }
+        brightnessSlider.valueChangingProperty().addListener((obs, wasChanging, isNowChanging) -> {
+            if (!isNowChanging) {
+                playerSetted.video().setBrightness((float) brightnessSlider.getValue());
+                currentCameraObj.setBrightness((float) brightnessSlider.getValue());
+                currentCameraObj.save();
             }
         });
     }
