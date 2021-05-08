@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import org.CamerasConfig;
+import org.Config;
 import org.database.Database;
 import static org.database.Database.encrypt;
 
@@ -77,7 +78,8 @@ public class LoginScreenController implements Initializable {
                     Parent camerasMainGridScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));
                     Scene window = ((Node) event.getSource()).getScene();
                     Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                    stage.setMaximized(true);
+                    boolean maximized = Config.get("maximized") == 1;
+                    stage.setMaximized(maximized);
                     window.setRoot(camerasMainGridScreenRoot);
 
                 }else{

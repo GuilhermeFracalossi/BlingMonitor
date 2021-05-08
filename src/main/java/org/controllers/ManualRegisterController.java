@@ -30,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.CamerasConfig;
+import org.Config;
 import org.network.GetAvailableIps;
 import org.database.Database;
 
@@ -275,7 +276,8 @@ public class ManualRegisterController implements Initializable {
             //Parent camerasMainScreenRoot = FXMLLoader.load(getClass().getResource("/FxmlScreens/teste.fxml"));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = ((Node) actionEvent.getSource()).getScene();
-            stage.setMaximized(true);
+            boolean maximized = Config.get("maximized") == 1;
+            stage.setMaximized(maximized);
             scene.setRoot(camerasMainScreenRoot);
         }
 
