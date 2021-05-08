@@ -28,47 +28,22 @@ import java.util.ResourceBundle;
 public class ConfigScreenController implements Initializable {
     public static String previousScreen;
 
-    @FXML
-    BorderPane mainPane;
-    
-    @FXML
-    Spinner<Integer> startIpSpinner;
+    @FXML BorderPane mainPane;
+    @FXML Spinner<Integer> startIpSpinner;
+    @FXML Spinner<Integer> endIpSpinner;
+    @FXML Spinner<Integer> startPortSpinner;
+    @FXML Spinner<Integer> endPortSpinner;
+    @FXML Spinner<Integer> threadsSpinner;
+    @FXML Spinner<Integer> timeoutSpinner;
+    @FXML CheckBox defaultCheckbox;
+    @FXML CheckBox silentModeCheckbox;
+    @FXML CheckBox maximizedCheckbox;
+    @FXML RadioButton verificationOnRadio;
+    @FXML RadioButton verificationOffRadio;
+    @FXML HBox advancedConfigsHbox;
+    @FXML CheckBox advancedConfigsCheckbox;
 
-    @FXML
-    Spinner<Integer> endIpSpinner;
-
-    @FXML
-    Spinner<Integer> startPortSpinner;
-
-    @FXML
-    Spinner<Integer> endPortSpinner;
-
-    @FXML
-    Spinner<Integer> threadsSpinner;
-
-    @FXML
-    Spinner<Integer> timeoutSpinner;
-
-    @FXML
-    CheckBox defaultCheckbox;
-
-    @FXML
-    CheckBox silentModeCheckbox;
-
-    @FXML
-    RadioButton verificationOnRadio;
-
-    @FXML
-    RadioButton verificationOffRadio;
-
-    @FXML
-    HBox advancedConfigsHbox;
-
-    @FXML
-    CheckBox advancedConfigsCheckbox;
-
-    @FXML
-    Button applyBtn;
+    @FXML Button applyBtn;
 
     public HashMap<String, Integer> properties;
 
@@ -118,6 +93,7 @@ public class ConfigScreenController implements Initializable {
 
         defaultCheckbox.selectedProperty().setValue(properties.get("default_scan_config") == 1);
         silentModeCheckbox.selectedProperty().setValue(properties.get("silent_mode") == 1);
+        maximizedCheckbox.selectedProperty().setValue(properties.get("maximized") == 1);
         verificationOnRadio.selectedProperty().setValue(properties.get("active_verification") == 1);
         verificationOffRadio.selectedProperty().setValue(!(properties.get("active_verification") == 1));
     }
@@ -178,6 +154,7 @@ public class ConfigScreenController implements Initializable {
 
         properties.put("default_scan_config", defaultCheckbox.selectedProperty().getValue() ? 1 : 0);
         properties.put("silent_mode", silentModeCheckbox.selectedProperty().getValue() ? 1 : 0);
+        properties.put("maximized", maximizedCheckbox.selectedProperty().getValue() ? 1 : 0);
         properties.put("active_verification", verificationOnRadio.selectedProperty().getValue() ? 1 : 0);
         properties.put("advanced_configuration", advancedConfigsCheckbox.selectedProperty().getValue() ? 1 : 0);
 

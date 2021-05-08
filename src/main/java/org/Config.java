@@ -24,6 +24,7 @@ public class Config {
         DEFAULT_VALUES.put("number_threads", 50);
         DEFAULT_VALUES.put("timeout", 1500);
         DEFAULT_VALUES.put("silent_mode", 0);
+        DEFAULT_VALUES.put("maximized", 1);
         DEFAULT_VALUES.put("active_verification", 1);
 
     }
@@ -75,6 +76,7 @@ public class Config {
             prop.setProperty("advanced_configuration", String.valueOf(configValues.get("advanced_configuration")));
             prop.setProperty("number_threads", String.valueOf(configValues.get("number_threads")));
             prop.setProperty("timeout", String.valueOf(configValues.get("timeout")));
+            prop.setProperty("maximized", String.valueOf(configValues.get("maximized")));
             prop.setProperty("silent_mode", String.valueOf(configValues.get("silent_mode")));
             prop.setProperty("active_verification", String.valueOf(configValues.get("active_verification")));
 
