@@ -155,7 +155,7 @@
                         <Region prefWidth="200.0" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="325.0" style="-fx-background-color: #008391;" text="Escanear" textFill="WHITE">
+                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #008391;" text="Escanear" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -169,6 +169,9 @@
                                        </image>
                                     </ImageView>
                                  </graphic>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
                               </Button>
                               <Button contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#visualizeCameras" prefHeight="60.0" prefWidth="194.0" style="-fx-background-color: #2791e3;" text="Visualizar" textFill="WHITE">
                                  <font>
