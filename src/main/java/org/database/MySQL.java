@@ -108,15 +108,7 @@ public class MySQL{
         ResultSet rs = st.getGeneratedKeys();
         return rs.getLong(1);
     }
-    protected void insertDefaultUser() {
-        ArrayList<String> params = new ArrayList<String>();
 
-        params.add("Nome Usuario");
-        params.add("admin");
-        params.add("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918");
-
-        execute("INSERT INTO usuario(nome,login,senha) VALUES (?, ?, ?)",params,false);
-    }
     protected static boolean isConnClosed() throws SQLException {
         return conn.isClosed();
     }

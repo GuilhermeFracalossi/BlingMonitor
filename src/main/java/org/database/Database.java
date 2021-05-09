@@ -25,10 +25,10 @@ public class Database extends MySQL {
     public void prepareDatabase() {
         super.createDefaultTables();
 
-        if (super.isDefaultTablesEmpty()) {
-            super.insertDefaultUser();
-        }
-        closeConn();
+    }
+    public boolean userExists(){
+        boolean isUserRegistered = !super.isDefaultTablesEmpty();
+        return isUserRegistered;
     }
 
     public static ResultSet login(String user, String password) {
@@ -39,6 +39,16 @@ public class Database extends MySQL {
         params.add(password);
 
         return execute("SELECT * FROM usuario WHERE login=? AND senha=?", params,true);
+    }
+    public static void insertUser(String name, String user, String pass) {
+        System.out.println(user+" "+ pass);
+        ArrayList<String> params = new ArrayList<String>();
+
+        params.add(name);
+        params.add(user);
+        params.add(pass);
+
+        execute("INSERT INTO usuario(nome,login,senha) VALUES (?, ?, ?)",params,false);
     }
     public static void updateUserInfo(int id, String nome, String login, String senha) {
         ArrayList params = new ArrayList();
@@ -80,6 +90,7 @@ public class Database extends MySQL {
     public static ResultSet getUsers() {
         return execute("SELECT * FROM usuario",true);
     }
+
     public static Long insertCamera(CamerasConfig cameraObj){
         try {
             ArrayList params = new ArrayList();
@@ -100,6 +111,7 @@ public class Database extends MySQL {
         }
         return null;
     }
+
     public static void updateCamera(CamerasConfig cameraObj){
         ArrayList params = new ArrayList();
         params.add(cameraObj.getName().trim());

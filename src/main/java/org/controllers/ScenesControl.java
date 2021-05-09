@@ -11,11 +11,15 @@ import javafx.stage.Stage;
 import org.Log;
 import org.database.Database;
 import org.network.GetCameraUrls;
+
+import java.util.Objects;
 import java.util.concurrent.Future;
 
 
 public class ScenesControl extends Application {
 
+    String LOGIN_SCREEN = "/org/FxmlScreens/loginScreen.fxml";
+    String SIGN_SCREEN = "/org/FxmlScreens/signInScreen.fxml";
     Log logger;
     @Override
     public void start(Stage stage) throws Exception{
@@ -29,9 +33,15 @@ public class ScenesControl extends Application {
 
         Config config = new Config();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/loginScreen.fxml"));//Gets the frontend page
+        String screen;
+        if(connection.userExists()){
+            screen = LOGIN_SCREEN;
+        }else{
+            screen = SIGN_SCREEN;
+        }
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(screen)));
+        //Gets the frontend page
 //        Parent root = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/allCamerasMainGridScreen.fxml"));//Gets the frontend page
-
 
         Scene startingScene = new Scene(root);//Create a scene with the loginscreen
 
