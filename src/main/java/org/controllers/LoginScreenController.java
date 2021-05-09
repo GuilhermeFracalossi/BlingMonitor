@@ -27,7 +27,7 @@ import org.database.Database;
 import static org.database.Database.encrypt;
 
 
-public class LoginScreenController implements Initializable {
+public class LoginScreenController {
 
     public static String name;
     public static String passwordTyped;
@@ -44,12 +44,6 @@ public class LoginScreenController implements Initializable {
 
     ResultSet rs;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-        loginBtn.setDefaultButton(true); //makes the enter key activate the button
-    }
     public void logIn(ActionEvent event) throws IOException {
 
         String usuario = login.getText();
@@ -57,13 +51,10 @@ public class LoginScreenController implements Initializable {
         
             try {
 //                if(Database.conn.isClosed()){
-                if(Database.isClosed()){
+                if(Database.isClosed()) {
                     Database connection = new Database();
-                     rs = connection.login(usuario, senha);
-
-                }else{
-                    rs = Database.login(usuario, senha);
                 }
+                rs = Database.login(usuario, senha);
 
             if (rs.next()) { 
                 id = rs.getInt("id");
