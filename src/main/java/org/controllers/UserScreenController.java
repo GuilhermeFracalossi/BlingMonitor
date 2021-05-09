@@ -62,17 +62,12 @@ public class UserScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
         saveBtn.setDefaultButton(true);
         ResultSet data= Database.getUsers();
 
         try {
-
              name= data.getString(2);
              user= data.getString(3);
-
-
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
