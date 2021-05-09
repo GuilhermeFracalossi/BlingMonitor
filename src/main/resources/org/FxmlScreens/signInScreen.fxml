@@ -15,7 +15,7 @@
 
 <BorderPane fx:id="mainPane" minWidth="400.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #1F3146;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controllers.SignInScreenController">
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="748.0" prefWidth="739.0" spacing="20.0">
+      <VBox alignment="TOP_CENTER" prefHeight="748.0" prefWidth="739.0" spacing="30.0">
          <children>
             <VBox alignment="CENTER" spacing="10.0">
                <children>
@@ -39,7 +39,7 @@
                   <Font name="System Bold" size="30.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="20.0" top="10.0" />
+                  <Insets />
                </VBox.margin>
             </Text>
             <VBox alignment="CENTER" spacing="5.0">
@@ -48,6 +48,9 @@
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </Text>
                   <TextField fx:id="nameField" maxWidth="-Infinity" prefHeight="37.0" prefWidth="435.0">
                      <font>
@@ -58,6 +61,9 @@
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </Text>
                   <TextField fx:id="userField" maxWidth="-Infinity" prefHeight="37.0" prefWidth="435.0">
                      <font>
@@ -68,34 +74,40 @@
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </Text>
                   <PasswordField fx:id="passwordField" maxWidth="-Infinity" prefHeight="37.0" prefWidth="435.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </PasswordField>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="signBtn" alignment="CENTER" defaultButton="true" graphicTextGap="20.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#registerUser" prefHeight="68.0" prefWidth="217.0" style="-fx-background-color: #2791e3;" text="Cadastrar" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="24.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <graphic>
-                              <ImageView fitHeight="47.0" fitWidth="47.0">
-                                 <image>
-                                    <Image url="@../images/login-icon-low.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
                </children>
             </VBox>
-            <HBox fx:id="loginErrorMessage" alignment="CENTER" spacing="10.0" visible="false">
+            <HBox alignment="CENTER" prefWidth="200.0">
+               <children>
+                  <Button fx:id="signBtn" alignment="CENTER" defaultButton="true" graphicTextGap="20.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#registerUser" prefHeight="68.0" prefWidth="217.0" style="-fx-background-color: #2791e3;" text="Cadastrar" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="47.0">
+                           <image>
+                              <Image url="@../images/login-icon-low.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="loginErrorMessage" alignment="CENTER" spacing="10.0">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Preencha todos os campos">
                      <font>
