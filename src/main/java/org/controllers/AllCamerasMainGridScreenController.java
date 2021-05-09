@@ -55,6 +55,7 @@ import static uk.co.caprica.vlcj.javafx.videosurface.ImageViewVideoSurfaceFactor
 public class AllCamerasMainGridScreenController implements Initializable {
 
     public static Stage stage;
+    public boolean inCamerasScreen;
     Log logger;
 
     boolean fullScreenStage;
@@ -147,6 +148,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
     private int index = 0;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        inCamerasScreen = true;
         setTooltips();
         intervalContainer.setManaged(false);
         intervalContainer.setVisible(false);
@@ -341,12 +343,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     }
                 }
                 stage.heightProperty().addListener((observable, oldvalue, newvalue) -> {
-                    if(fullScreenPlayer){
+                    if(fullScreenPlayer && inCamerasScreen){
                         setPlayersSize();
                     }
                 });
                 stage.widthProperty().addListener((observable, oldvalue, newvalue) -> {
-                    if(fullScreenPlayer){
+                    if(fullScreenPlayer && inCamerasScreen){
                         setPlayersSize();
                     }
                 });
@@ -835,6 +837,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         }
     }
     public void backToCamerasRegistration(ActionEvent actionEvent) throws IOException {
+        inCamerasScreen = false;
         stopAllRunningTasks();
         ManualRegisterController.enableScan = true;
         Parent manualRegisterRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/manualRegisterScreen.fxml"));
