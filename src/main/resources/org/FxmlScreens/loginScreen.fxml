@@ -53,7 +53,7 @@
                   </PasswordField>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <Button fx:id="loginBtn" alignment="CENTER" graphicTextGap="20.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#logIn" prefHeight="68.0" prefWidth="217.0" style="-fx-background-color: #2791e3;" text="Entrar" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="loginBtn" alignment="CENTER" defaultButton="true" graphicTextGap="20.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#logIn" prefHeight="68.0" prefWidth="217.0" style="-fx-background-color: #2791e3;" text="Entrar" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>

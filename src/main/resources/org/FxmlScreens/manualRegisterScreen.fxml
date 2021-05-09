@@ -131,15 +131,18 @@
                               <Insets left="30.0" />
                            </padding>
                         </VBox>
-                        <HBox alignment="CENTER" prefWidth="664.0" spacing="20.0">
+                        <HBox alignment="CENTER" prefWidth="631.0">
                            <children>
-                              <Button defaultButton="true" mnemonicParsing="false" onAction="#manualRegisterAction" prefHeight="55.0" prefWidth="180.0" style="-fx-background-color: #00bf73;" text="Registrar" textFill="WHITE">
+                              <Button defaultButton="true" mnemonicParsing="false" onAction="#manualRegisterAction" prefWidth="180.0" style="-fx-background-color: #00bf73;" text="Registrar" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
+                                 <padding>
+                                    <Insets bottom="15.0" top="15.0" />
+                                 </padding>
                               </Button>
                            </children>
                         </HBox>
