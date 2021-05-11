@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -29,7 +28,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <VBox alignment="TOP_CENTER" prefHeight="748.0" prefWidth="739.0" spacing="30.0">
+            <VBox alignment="TOP_CENTER" prefHeight="748.0" prefWidth="739.0" spacing="20.0">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Dados do usuário">
                      <font>
@@ -39,58 +38,48 @@
                         <Insets bottom="30.0" />
                      </VBox.margin>
                   </Text>
-                  <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" spacing="20.0">
+                  <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="157.0" prefWidth="400.0">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="400.0" spacing="15.0">
+                        <VBox spacing="30.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="nameField" editable="false" prefHeight="25.0" prefWidth="279.0" HBox.hgrow="ALWAYS">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </TextField>
+                              <HBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="15.0">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome:">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="nameField" editable="false" prefHeight="25.0" prefWidth="279.0" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefWidth="400.0" spacing="15.0">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario:">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="userField" editable="false" prefHeight="31.0" prefWidth="327.0" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="400.0" spacing="15.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="userField" editable="false" prefHeight="31.0" prefWidth="327.0" HBox.hgrow="ALWAYS">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="400.0" spacing="15.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <PasswordField fx:id="passwordField" editable="false" prefHeight="25.0" prefWidth="304.0" HBox.hgrow="ALWAYS">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </PasswordField>
-                           </children>
-                        </HBox>
+                        </VBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <HBox alignment="CENTER" spacing="20.0">
                      <children>
-                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelChanges" prefHeight="50.0" style="-fx-background-color: #e8503f;" text="Cancelar" textFill="WHITE">
+                        <Button fx:id="cancelBtn" cancelButton="true" mnemonicParsing="false" onAction="#cancelChanges" prefHeight="50.0" style="-fx-background-color: #e8503f;" text="Cancelar" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -98,7 +87,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#update" prefHeight="50.0" style="-fx-background-color: #2791e3;" text="Salvar" textFill="WHITE">
+                        <Button fx:id="saveBtn" defaultButton="true" mnemonicParsing="false" onAction="#update" prefHeight="50.0" style="-fx-background-color: #2791e3;" text="Salvar" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -114,21 +103,39 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
+                        <Button fx:id="changePassBtn" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="8.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: none; -fx-border-color: #008391; -fx-border-width: 2; -fx-border-radius: 3;" text="Alterar senha" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/lock-icon-low.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
                      </children>
                   </HBox>
-                  <HBox fx:id="loginErrorMessage" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" visible="false">
+                  <HBox fx:id="messageTextHbox" alignment="CENTER" prefWidth="860.0" spacing="10.0" visible="false">
                      <children>
                         <ImageView fx:id="messageImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/cancel-low.png" />
                            </image>
                         </ImageView>
-                        <Text fx:id="messageText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Formulário vazio">
+                        <Text fx:id="messageText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </Text>
                      </children>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <padding>

@@ -28,8 +28,9 @@ import static org.database.Database.encrypt;
 
 public class UserScreenController implements Initializable {
     public static String previousScreen;
+    public static boolean passwordUpdated = false;
     @FXML
-    private HBox loginErrorMessage;
+    private HBox messageTextHbox;
 
     @FXML
     private Text messageText;
@@ -37,7 +38,8 @@ public class UserScreenController implements Initializable {
     @FXML
     private ImageView messageImage;
 
-
+    @FXML
+    Button changePassBtn;
 
     @FXML
     Button changeDataBtn;
@@ -51,18 +53,11 @@ public class UserScreenController implements Initializable {
     @FXML
     TextField userField;
 
-    @FXML
-    PasswordField passwordField;
-
     String name;
     String user;
 
-    String password = LoginScreenController.passwordTyped;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        saveBtn.setDefaultButton(true);
         ResultSet data= Database.getUsers();
 
         try {
@@ -79,11 +74,15 @@ public class UserScreenController implements Initializable {
 
         nameField.setText(name);
         userField.setText(user);
-        passwordField.setText(password);
 
         nameField.setText(name);
         userField.setText(user);
-        passwordField.setText(password);
+
+        if(passwordUpdated){
+            messageImage.setImage(new Image(getClass().getResource("/org/images/tick.png").toString()));
+            showMessage("Senha alterada com sucesso");
+            passwordUpdated = false;
+        }
 
     }
 
@@ -91,34 +90,30 @@ public class UserScreenController implements Initializable {
 
         nameField.setEditable(true);
         userField.setEditable(true);
-        passwordField.setEditable(true);
+        nameField.requestFocus();
 
         cancelBtn.setManaged(true);
         cancelBtn.setVisible(true);
         saveBtn.setVisible(true);
         saveBtn.setManaged(true);
-
+        
         changeDataBtn.setManaged(false);
         changeDataBtn.setVisible(false);
 
     }
 
-    public void update(ActionEvent event) throws IOException, InterruptedException {
+    public void update(ActionEvent event) throws InterruptedException {
 
         String user = userField.getText().trim();
-        String passwordString = passwordField.getText().trim();
         String name = nameField.getText().trim();
 
-
-
-        if(user.length() == 0 | passwordString.length() == 0 | name.length() == 0 ){
-            showMessage("Todos os campos devem ser preenchidos");
+        if(user.length() == 0 ||  name.length() == 0 ){
+            messageImage.setImage(new Image(getClass().getResource("/org/images/cancel-low.png").toString()));
+            showMessage("Todos os campos devem estar preenchidos");
+            return;
 
         }else{
-
-            Database.updateUserInfo(LoginScreenController.id, name, user, encrypt(passwordString));
-
-            LoginScreenController.passwordTyped = passwordString;
+            Database.updateUserInfo(LoginScreenController.id, name, user);
             messageImage.setImage(new Image(getClass().getResource("/org/images/tick.png").toString()));
             showMessage("Dados alterados com sucesso");
         }
@@ -132,14 +127,9 @@ public class UserScreenController implements Initializable {
 
         nameField.setEditable(false);
         userField.setEditable(false);
-        passwordField.setEditable(false);
-
-
     }
     public void backToStartScreen(ActionEvent actionEvent) throws IOException {
-
         Parent startScreenRoot = FXMLLoader.load(getClass().getResource(previousScreen));
-
         Scene window =  ((Node) actionEvent.getSource()).getScene();
         window.setRoot(startScreenRoot);
     }
@@ -156,24 +146,28 @@ public class UserScreenController implements Initializable {
 
         nameField.setText(name);
         userField.setText(user);
-        passwordField.setText(password);
 
         nameField.setEditable(false);
         userField.setEditable(false);
-        passwordField.setEditable(false);
 
     }
 
-    public void showMessage(String text) throws InterruptedException{
+    public void showMessage(String text){
         messageText.setText(text);
-        loginErrorMessage.setVisible(true);
+        messageTextHbox.setVisible(true);
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2500));
         fade.setFromValue(1);
         fade.setToValue(0);
-        fade.setNode(loginErrorMessage);
+        fade.setNode(messageTextHbox);
 
         fade.play();
+    }
+
+    public void changePassword(ActionEvent actionEvent) throws IOException {
+        Parent startScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/passwordChangeScreen.fxml"));
+        Scene window =  ((Node) actionEvent.getSource()).getScene();
+        window.setRoot(startScreenRoot);
     }
 }
