@@ -277,7 +277,9 @@ public class ManualRegisterController implements Initializable {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = ((Node) actionEvent.getSource()).getScene();
             boolean maximized = Config.get("maximized") == 1;
-            stage.setMaximized(maximized);
+            if(maximized){
+                stage.setMaximized(true);
+            }
             scene.setRoot(camerasMainScreenRoot);
         }
 

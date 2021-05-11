@@ -2,6 +2,7 @@ package org.database;
 
 import org.CamerasConfig;
 
+import javax.xml.transform.Result;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,8 +28,7 @@ public class Database extends MySQL {
 
     }
     public boolean userExists(){
-        boolean isUserRegistered = !super.isDefaultTablesEmpty();
-        return isUserRegistered;
+        return !super.isDefaultTablesEmpty();
     }
 
     public static ResultSet login(String user, String password) {
@@ -41,8 +41,7 @@ public class Database extends MySQL {
         return execute("SELECT * FROM usuario WHERE login=? AND senha=?", params,true);
     }
     public static void insertUser(String name, String user, String pass) {
-        System.out.println(user+" "+ pass);
-        ArrayList<String> params = new ArrayList<String>();
+        ArrayList<String> params = new ArrayList<>();
 
         params.add(name);
         params.add(user);
@@ -50,24 +49,32 @@ public class Database extends MySQL {
 
         execute("INSERT INTO usuario(nome,login,senha) VALUES (?, ?, ?)",params,false);
     }
-    public static void updateUserInfo(int id, String nome, String login, String senha) {
-        ArrayList params = new ArrayList();
+    public static void updateUserInfo(int id, String nome, String login) {
+        ArrayList<String> params = new ArrayList<>();
 
         params.add(nome);
         params.add(login);
-        params.add(senha);
         params.add(String.valueOf(id));
 
-        execute("UPDATE usuario SET nome=?, login=?, senha=? WHERE id=?", params, false);
+        execute("UPDATE usuario SET nome=?, login=? WHERE id=?", params, false);
     }
 
+    /**
+     * @param password encrypted password in SHA-256
+     * @param id id of the user
+     */
+    public static void updatePassword(String password, int id){
+        ArrayList<String> params = new ArrayList<>();
+        params.add(password);
+        params.add(String.valueOf(id));
+        execute("UPDATE usuario SET senha=? WHERE id=?", params, false);
+    }
 
     public static String encrypt(String password) {
         String result = password;
         MessageDigest md;
 
         try {
-
             md = MessageDigest.getInstance("SHA-256");
             BigInteger hash = new BigInteger(1, md.digest(password.getBytes()));
             result = hash.toString(16);
@@ -91,9 +98,21 @@ public class Database extends MySQL {
         return execute("SELECT * FROM usuario",true);
     }
 
+    /**
+     *
+     * @param info the information required: id, nome, login, senha
+     * @return String result
+     */
+    public static String getInfoUser(String info) throws SQLException {
+        ArrayList<String> parm = new ArrayList<>();
+        parm.add(info);
+        return execute("SELECT "+info+" FROM usuario", true).getString(1);
+
+    }
+
     public static Long insertCamera(CamerasConfig cameraObj){
         try {
-            ArrayList params = new ArrayList();
+            ArrayList<String> params = new ArrayList<>();
 
             params.add(cameraObj.getName().trim());
             params.add(cameraObj.getAddress().trim());
