@@ -30,7 +30,6 @@ import static org.database.Database.encrypt;
 public class LoginScreenController {
 
     public static String name;
-    public static String passwordTyped;
     public static String user;
     public static int id;
 
@@ -48,9 +47,7 @@ public class LoginScreenController {
 
         String usuario = login.getText();
         String senha = encrypt(passwordField.getText());
-        
             try {
-//                if(Database.conn.isClosed()){
                 if(Database.isClosed()) {
                     Database connection = new Database();
                 }
@@ -61,7 +58,6 @@ public class LoginScreenController {
 
                 name = rs.getString("nome");
                 user = rs.getString("login");
-                passwordTyped = passwordField.getText();
 
                 logged = true;
                 if(CamerasConfig.camerasCount() > 0){
@@ -70,7 +66,10 @@ public class LoginScreenController {
                     Scene window = ((Node) event.getSource()).getScene();
                     Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
                     boolean maximized = Config.get("maximized") == 1;
-                    stage.setMaximized(maximized);
+                    if(maximized){
+                        stage.setMaximized(true);
+                    }
+
                     window.setRoot(camerasMainGridScreenRoot);
 
                 }else{
