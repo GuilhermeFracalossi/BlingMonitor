@@ -107,7 +107,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="loginErrorMessage" alignment="CENTER" spacing="10.0">
+            <HBox fx:id="loginErrorMessage" alignment="CENTER" spacing="10.0" visible="false">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Preencha todos os campos">
                      <font>

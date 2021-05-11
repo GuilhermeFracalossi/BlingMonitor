@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class GetCameraUrls {
-
     private static DoubleProperty progress = new SimpleDoubleProperty();;
     public final static List<Future<ScanResult>> futures = new ArrayList<>();
     public List<Object[]> main(int startIp, int endIp, int startPort, int endPort, int numberThreads, int timeout) throws Exception {
@@ -19,12 +18,7 @@ public class GetCameraUrls {
 
         final ExecutorService es = Executors.newFixedThreadPool(numberThreads);
 
-        //String ipv4Ip = AutoScanLoadingController.ipSelected;
-
-        //System.out.println(ipv4Ip);
-
         String ipCutted = AutoScanLoadingController.ipSelected;
-
 
         int i = 1;
         double scanningProgress;
@@ -74,10 +68,6 @@ public class GetCameraUrls {
             }
         });
     }
-
-
-  // private final DoubleProperty progress = new SimpleDoubleProperty();
-
     public DoubleProperty progressProperty() {
         return progress ;
     }
@@ -123,6 +113,4 @@ public class GetCameraUrls {
         }
 
     }
-
-
 }
