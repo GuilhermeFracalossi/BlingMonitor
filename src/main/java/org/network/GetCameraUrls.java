@@ -14,6 +14,8 @@ public class GetCameraUrls {
     public final static List<Future<ScanResult>> futures = new ArrayList<>();
     public List<Object[]> main(int startIp, int endIp, int startPort, int endPort, int numberThreads, int timeout) throws Exception {
 
+        setProgress(0);
+        futures.clear();
         List<Object[]> camerasFound = new ArrayList<Object[]>();
 
         final ExecutorService es = Executors.newFixedThreadPool(numberThreads);
