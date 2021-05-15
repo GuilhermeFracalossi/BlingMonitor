@@ -19,7 +19,7 @@
 
 <BorderPane fx:id="mainBorderPane" minWidth="400.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #1F3146; -fx-border-color: none;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controllers.AllCamerasMainGridScreenController">
    <top>
-      <HBox fx:id="topPane" alignment="CENTER_RIGHT" centerShape="false" prefHeight="50.0" prefWidth="1200.0" spacing="5.0" style="-fx-background-color: #152537; -fx-border-color: #111d2d;">
+      <HBox fx:id="topPane" alignment="CENTER_RIGHT" centerShape="false" prefHeight="50.0" spacing="5.0" style="-fx-background-color: #152537; -fx-border-color: #111d2d;">
          <children>
             <Button fx:id="backBtn" mnemonicParsing="false" onAction="#backToCamerasRegistration" prefHeight="44.0" prefWidth="51.0" style="-fx-background-color: none;">
                <graphic>
@@ -110,7 +110,7 @@
                </cursor>
             </Button>
             <Region HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER_RIGHT" spacing="5.0">
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
                <children>
                   <Button fx:id="fullScreenToggleBtn" mnemonicParsing="false" onAction="#fullScreenToggle" prefWidth="54.0" style="-fx-background-color: none;">
                      <graphic>
