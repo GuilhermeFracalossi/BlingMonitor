@@ -733,6 +733,9 @@ public class AllCamerasMainGridScreenController implements Initializable {
         }
     }
     public void startSlideMode(ActionEvent actionEvent) {
+        currentCameraIndex = fullScreenPlayer ? currentCameraIndex : 0;
+        fullScreenCameraToggle();
+        //if(fullScreenPlayer) fullScreenCameraToggle();
         gridScreen = false;
         int INTERVAL = (int) intervalSpinner.getValue();
         gridSizeContainerHbox.setDisable(true);
@@ -743,17 +746,25 @@ public class AllCamerasMainGridScreenController implements Initializable {
         playerControlsHbox.setVisible(false);
         playerControlsHbox.setManaged(false);
 
-        currentCameraIndex = 0;
+
 
         //NECESSARIO POR QUE A TIMELINE SO INICIA APOS OS 5 SEGUNDOS DE DELAY
         for (int i = 0; i < PlayerInstance.players.size(); i++) {
             if(PlayerInstance.players.get((int) currentCameraIndex).getCameraOpen() == false){
                 currentCameraIndex++;
+                continue;
             }
-            if(i != currentCameraIndex){
-                cameraContainer[i].setVisible(false);
-                cameraContainer[i].setManaged(false);
+            for(int j = 0; j < PlayerInstance.players.size(); j++){
+                if(j != currentCameraIndex){
+                    cameraContainer[j].setVisible(false);
+                    cameraContainer[j].setManaged(false);
+                }else if(j == currentCameraIndex){
+
+                    cameraContainer[j].setManaged(true);
+                    cameraContainer[j].setVisible(true);
+                }
             }
+
         }
         setPlayersSize();
         taskSlider = new Timeline(new KeyFrame(Duration.seconds(INTERVAL), new EventHandler<ActionEvent>() {
@@ -765,12 +776,13 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     i=0;
 
                 }
-                if(PlayerInstance.players.get(i).getCameraOpen() == false && cameraContainer[i+1]!= null){
+                while(!PlayerInstance.players.get(i).getCameraOpen()){
                     i++;
-                }else if(PlayerInstance.players.get(i).getCameraOpen() == false && cameraContainer[i+1]== null){
-                    i=0;
-                }
+                    if(cameraContainer[i]== null){
+                        i=0;
 
+                    }
+                }
                 currentCameraIndex = i;
                 playerSetted = PlayerInstance.players.get(i).mediaPlayer();
                 cameraContainerSetted = cameraContainer[i];
