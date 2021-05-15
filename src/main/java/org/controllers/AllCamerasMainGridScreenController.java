@@ -245,35 +245,34 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 }
             });
 
-                cameraContainer[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            cameraContainer[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        if(gridScreen != false){
+                            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                            playerSetted = PlayerInstance.players.get(cameraIndex).mediaPlayer();
+                            cameraContainerSetted = cameraContainer[cameraIndex];
 
-                            if(gridScreen != false){
-                                stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                                playerSetted = PlayerInstance.players.get(cameraIndex).mediaPlayer();
-                                cameraContainerSetted = cameraContainer[cameraIndex];
+                            currentCameraIndex = cameraIndex;
+                            currentCameraId = PlayerInstance.players.get(cameraIndex).getId();
+                            currentCameraObj = CamerasConfig.getCamera((int) currentCameraId);
+                            currentCameraName = currentCameraObj.getName();
 
-                                currentCameraIndex = cameraIndex;
-                                currentCameraId = PlayerInstance.players.get(cameraIndex).getId();
-                                currentCameraObj = CamerasConfig.getCamera((int) currentCameraId);
-                                currentCameraName = currentCameraObj.getName();
+                            currentAddress = currentCameraObj.getAddress();
+                            currentPort = currentCameraObj.getPort();
+                            playerControls();
 
-                                currentAddress = currentCameraObj.getAddress();
-                                currentPort = currentCameraObj.getPort();
-                                playerControls();
+                            //if the camera is disconnected, doesn't allow to change it's configuration like saturation or even take a snapshot
+                            playerControlsHbox.setDisable(!PlayerInstance.players.get(cameraIndex).getCameraOpen());
 
-                                //if the camera is disconnected, doesn't allow to change it's configuration like saturation or even take a snapshot
-                                playerControlsHbox.setDisable(!PlayerInstance.players.get(cameraIndex).getCameraOpen());
-
-                                if (mouseEvent.getClickCount() == 2 && CamerasConfig.camerasCount()>1) {
-                                    fullScreenCameraToggle();
-                                }
+                            if (mouseEvent.getClickCount() == 2 && CamerasConfig.camerasCount()>1) {
+                                fullScreenCameraToggle();
                             }
                         }
                     }
-                });
+                }
+            });
         }
     }
 
