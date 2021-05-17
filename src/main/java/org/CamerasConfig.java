@@ -12,8 +12,6 @@ public class CamerasConfig {
     private String name = "camera";
     private String address;
 
-    private int port = 8081;
-
     private float brightness = 1;
     private float gamma = 1;
     private float saturation = 1;
@@ -39,7 +37,6 @@ public class CamerasConfig {
                 CamerasConfig cameraInstance = new CamerasConfig(results.getInt("id"));
                 cameraInstance.setName(results.getString("name"));
                 cameraInstance.setAddress(results.getString("address"));
-                cameraInstance.setPort(results.getInt("port"));
                 cameraInstance.setBrightness(results.getFloat("brightness"));
                 cameraInstance.setContrast(results.getFloat("contrast"));
                 cameraInstance.setGamma(results.getFloat("gamma"));
@@ -74,10 +71,10 @@ public class CamerasConfig {
         return cameras.get(id);
     }
 
-    public static boolean isCameraAlreadyRegistered(String ip, int port) {
+    public static boolean isCameraAlreadyRegistered(String address) {
         for (Map.Entry<Integer, CamerasConfig> entry : cameras.entrySet()) {
             CamerasConfig camerasObj = entry.getValue();
-            if (camerasObj.getAddress().equals(ip) && camerasObj.getPort() == port) {
+            if (camerasObj.getAddress().equals(address)) {
                 return true;
             }
         }
@@ -118,14 +115,6 @@ public class CamerasConfig {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 
     public float getBrightness() {

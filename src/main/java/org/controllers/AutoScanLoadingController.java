@@ -65,12 +65,11 @@ public class AutoScanLoadingController implements Initializable {
                     for (int index = 0; index < camerasFound.size(); index++) {
                         String ip = (String) camerasFound.get(index)[0];
                         int port = (int) camerasFound.get(index)[1];
-                        if (!CamerasConfig.isCameraAlreadyRegistered(ip,port)){
+                        if (!CamerasConfig.isCameraAlreadyRegistered("http://"+ip+":"+port)){
                             newCameras++;
                             CamerasConfig  cameraObj = new CamerasConfig();
                             cameraObj.setName("Camera " +(index + 1));
-                            cameraObj.setAddress(ip);
-                            cameraObj.setPort(port);
+                            cameraObj.setAddress("http://"+ip+":"+port);
                             cameraObj.setAdjustmentsToDefault();
 //                         TODO change this to save on the END of the loop
                             cameraObj.save();

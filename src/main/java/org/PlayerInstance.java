@@ -15,8 +15,9 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
 
     private final EmbeddedMediaPlayer mediaPlayer;
     private final ImageView videoSurface;
-    protected final String cameraAddress;
-    protected final long cameraPort;
+    protected String cameraAddress;
+    protected String cameraIp;
+    protected int cameraPort;
     protected boolean cameraOpen;
     private static PlayerInstance instance;
 
@@ -43,7 +44,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
 
     public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
 
-    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float contrast) {
+    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress,  float gamma, float brightness, float saturation, float contrast) {
         this.id = id;
 
         this.mediaPlayer = mediaPlayer;
@@ -71,7 +72,10 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     public String cameraAddress(){
         return cameraAddress;
     }
-    public long cameraPort(){
+    public String cameraIp(){
+        return cameraIp;
+    }
+    public int cameraPort(){
         return cameraPort;
     }
     public boolean getCameraOpen(){

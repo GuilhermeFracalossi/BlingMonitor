@@ -97,9 +97,14 @@
                               <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <VBox alignment="CENTER_LEFT" maxWidth="660.0" prefHeight="268.0" spacing="5.0">
+                        <VBox alignment="CENTER_LEFT" maxWidth="660.0" spacing="5.0">
                            <children>
-                              <TextField fx:id="name" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Nome">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome da câmera">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="name" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -108,24 +113,23 @@
                                  </VBox.margin>
                               </TextField>
                               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: Camera 1, Quarto de visita, Frente de casa" />
-                              <TextField fx:id="cameraAddress" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Endereço">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Endereço">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="15.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <TextField fx:id="cameraAddress" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </TextField>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: 192.168.0.5, 10.0.0.7" />
-                              <TextField fx:id="port" maxWidth="600.0" prefHeight="37.0" prefWidth="435.0" promptText="Porta">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: 8081, 8556" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: http://192.168.0.5:8081 rtsp://192.168.1.9:8554/cam" />
                            </children>
                            <padding>
                               <Insets left="30.0" />
@@ -158,7 +162,7 @@
                         <Region prefWidth="200.0" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #008391;" text="Escanear" textFill="WHITE">
+                              <Button fx:id="reescanBtn" graphicTextGap="20.0" mnemonicParsing="false" onAction="#scanAgain" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: none; -fx-border-color: #008391; -fx-border-radius: 3; -fx-border-width: 3;" text="Escanear" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>

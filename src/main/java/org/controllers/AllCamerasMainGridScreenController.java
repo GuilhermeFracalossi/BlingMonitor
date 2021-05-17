@@ -199,12 +199,11 @@ public class AllCamerasMainGridScreenController implements Initializable {
                 float saturation = cameraObj.getSaturation();
                 float contrast = cameraObj.getContrast();
 
-                long cameraPort = cameraObj.getPort();
 //                Creates an VLC player instance and put it into the players instance list
                 EmbeddedMediaPlayer embeddedMediaPlayer= mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer();
 
                 PlayerInstance playerInstance = new PlayerInstance(
-                    cameraId,embeddedMediaPlayer,cameraAddress,cameraPort,
+                    cameraId,embeddedMediaPlayer,cameraAddress,
                     gamma,brightness,saturation,contrast);
 
 
@@ -260,7 +259,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
                             currentCameraName = currentCameraObj.getName();
 
                             currentAddress = currentCameraObj.getAddress();
-                            currentPort = currentCameraObj.getPort();
+
                             playerControls();
 
                             //if the camera is disconnected, doesn't allow to change it's configuration like saturation or even take a snapshot
