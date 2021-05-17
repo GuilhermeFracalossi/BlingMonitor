@@ -32,7 +32,7 @@ public class PasswordChangeController {
 
         String confirmPass = confirmPassField.getText();
         int id = Integer.parseInt(Database.getInfoUser("id"));
-        String user = Database.getInfoUser("login");
+        String user = Database.getInfoUser("user");
 
 
         if(Database.login(user, Database.encrypt(oldPass)).next()){

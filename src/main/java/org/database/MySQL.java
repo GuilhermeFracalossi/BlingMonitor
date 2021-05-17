@@ -63,10 +63,10 @@ public class MySQL{
 
     protected void createDefaultTables() {
         try{
-            String sql = "CREATE TABLE IF NOT EXISTS usuario (" +
+            String sql = "CREATE TABLE IF NOT EXISTS users (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "nome VARCHAR(20)," +
-                    "login VARCHAR(20)," +
+                    "name VARCHAR(20)," +
+                    "user VARCHAR(20)," +
                     "senha VARCHAR(32)" +
                     ")";
             st.execute(sql);
@@ -74,7 +74,6 @@ public class MySQL{
             sql =  "CREATE TABLE IF NOT EXISTS cameras("+
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                     "name VARCHAR(255),"+
-                    "port INTEGER,"+
                     "address VARCHAR(15),"+
                     "gamma FLOAT,"+
                     "contrast FLOAT,"+
@@ -91,7 +90,7 @@ public class MySQL{
         boolean empty = true;
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT COUNT(*) FROM usuario");
+            rs = st.executeQuery("SELECT COUNT(*) FROM users");
 
             while (rs.next()) {
                 if(rs.getInt(1) > 0){
