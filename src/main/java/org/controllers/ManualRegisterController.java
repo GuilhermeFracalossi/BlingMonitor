@@ -88,8 +88,21 @@ public class ManualRegisterController implements Initializable {
     public void manualRegisterAction(ActionEvent actionEvent) throws Exception {
 
         String cameraName = name.getText();
-        String enderecoCamera = cameraAddress.getText();
-        int portNumber = Integer.parseInt(port.getText());
+        String addressCamera = cameraAddress.getText();
+
+        if(cameraName.isEmpty() | addressCamera.isEmpty()){
+            registerMessage("Preencha todos os campos");
+            return;
+        }
+
+        String regex = ".*[/@]((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(:|/|$).*";
+
+        boolean matches = Pattern.matches(regex, addressCamera);
+
+        if(!matches){
+            registerMessage("Insira um endereço válido");
+            return;
+        }
 
         CamerasConfig cameraObj = new CamerasConfig();
 
