@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-
 import javafx.stage.Stage;
 import org.network.GetAvailableIps;
 import org.database.Database;
@@ -38,7 +37,6 @@ public class StartScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-
             userBtn.setText(getUserName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();

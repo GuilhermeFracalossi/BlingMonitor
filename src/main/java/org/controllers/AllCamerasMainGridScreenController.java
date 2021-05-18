@@ -100,7 +100,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
     Timeline taskSlider;
     @FXML HBox intervalContainer;
-    @FXML Spinner intervalSpinner = new Spinner();
+    @FXML Spinner<Integer> intervalSpinner = new Spinner<>();
 
    // Timeline slideRepeater;
     @FXML VBox centerContainerVbox;
@@ -283,7 +283,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         snapshotBtn.setTooltip(new Tooltip("Tirar print da câmera"));
         resetControlsBtn.setTooltip(new Tooltip("Resetar todos ajustes de imagem"));
         fullScreenCameraToggleBtn.setTooltip(new Tooltip("Ativar/desativar câmera em tela cheia"));
-        cameraNameField.setTooltip(new Tooltip("Alterar nome da câmera"));
+        cameraNameField.setTooltip(new Tooltip("Alterar nome da câmera ([Enter] para salvar)"));
     }
 
     private synchronized void startPlayers() {

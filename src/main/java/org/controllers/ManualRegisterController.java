@@ -10,6 +10,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -81,10 +83,9 @@ public class ManualRegisterController implements Initializable {
     }
 
     public String getUserName() throws SQLException {
-        //Mod 1
-        String userName = Database.getUsers().getString(2);
-        return userName;
+        return Database.getUsers().getString(2);
     }
+
     public void manualRegisterAction(ActionEvent actionEvent) throws Exception {
 
         String cameraName = name.getText();
@@ -259,7 +260,6 @@ public class ManualRegisterController implements Initializable {
         fade.setToValue(0);
         fade.setNode(registerMessageHbox);
         fade.play();
-
 
     }
 

@@ -156,7 +156,7 @@ public class CamerasConfig {
     public void setAdjustmentsToDefault() {
         this.gamma = 1;
         this.brightness = 1;
-        this.saturation =1;
-        this.contrast =1;
+        this.saturation = 1;
+        this.contrast = 1;
     }
 }
