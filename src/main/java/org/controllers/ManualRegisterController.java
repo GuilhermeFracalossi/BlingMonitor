@@ -287,6 +287,7 @@ public class ManualRegisterController implements Initializable {
         ArrayList availableIps = new GetAvailableIps().main();
         IpSelectionScreenController.ips = availableIps;
         IpSelectionScreenController.previousScreen = "/org/FxmlScreens/manualRegisterScreen.fxml";
+        AutoScanLoadingController.previousScreen = "/org/FxmlScreens/manualRegisterScreen.fxml";
         Parent camerasMainScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/ipSelectionScreen.fxml"));
         //Scene camerasMainScreen = new Scene(camerasMainScreenRoot);
         //Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

@@ -59,7 +59,7 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" onAction="#backToStartScreen" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: none; -fx-border-color: #e8503f; -fx-border-radius: 3; -fx-border-width: 3;" text="Voltar" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#back" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: none; -fx-border-color: #e8503f; -fx-border-radius: 3; -fx-border-width: 3;" text="Voltar" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="21.0" />
                            </font>

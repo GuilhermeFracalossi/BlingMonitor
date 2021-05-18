@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 
 
 public class AutoScanLoadingController implements Initializable {
+    public static String previousScreen;
     public static String ipSelected;
     List<Object[]> camerasFound;
 
@@ -124,8 +125,8 @@ public class AutoScanLoadingController implements Initializable {
     }
 
 
-    public void backToStartScreen(ActionEvent actionEvent) throws IOException {
-        Parent startScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/startScreen.fxml"));
+    public void back(ActionEvent actionEvent) throws IOException {
+        Parent startScreenRoot = FXMLLoader.load(getClass().getResource(previousScreen));
         Scene window =  ((Node) actionEvent.getSource()).getScene();
         window.setRoot(startScreenRoot);
     }

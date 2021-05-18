@@ -53,12 +53,15 @@ public class StartScreenController implements Initializable {
         ArrayList availableIps = new GetAvailableIps().main();
 
         if(availableIps.size() == 1){
+            AutoScanLoadingController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
+            IpSelectionScreenController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             AutoScanLoadingController.ipSelected = (String) availableIps.get(0);
             Parent autoScanLoadingRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/autoScanLoadingScreen.fxml"));
             Scene window =  ((Node) actionEvent.getSource()).getScene();
             window.setRoot(autoScanLoadingRoot);
 
         }else{
+            AutoScanLoadingController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             IpSelectionScreenController.ips = availableIps;
             IpSelectionScreenController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             Parent ipSelectionRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/ipSelectionScreen.fxml"));
