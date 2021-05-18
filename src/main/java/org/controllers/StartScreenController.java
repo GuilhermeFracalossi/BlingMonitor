@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import org.network.GetAvailableIps;
 import org.database.Database;
 
-
+import java.awt.*;
 import java.io.IOException;
 import java.net.*;
 import java.sql.SQLException;
@@ -23,6 +23,8 @@ import java.util.*;
 
 
 public class StartScreenController implements Initializable {
+    @FXML
+    Button infoBtn;
     @FXML
     BorderPane mainPane;
 
@@ -102,5 +104,11 @@ public class StartScreenController implements Initializable {
         Scene window = ((Node) actionEvent.getSource()).getScene();
         window.setRoot(loginScreenRoot);
 
+    }
+
+    public void openDocumentation(ActionEvent actionEvent) throws URISyntaxException, IOException {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI("https://github.com/GuilhermeFracalossi/BlingMonitor"));
+        }
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.CamerasConfig;
 import org.Config;
@@ -29,8 +30,10 @@ public class AutoScanLoadingController implements Initializable {
     @FXML HBox topPane;
 
     @FXML Button nextBtn;
+    @FXML HBox progressHbox;
 
-    @FXML Text statusTxt;
+    @FXML
+    VBox startInfoVbox;
 
     @FXML ImageView tickImg;
     @FXML Text statusScanningLabel;
@@ -48,6 +51,17 @@ public class AutoScanLoadingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        progressHbox.setVisible(false);
+        progressHbox.setManaged(false);
+        startInfoVbox.setManaged(true);
+        startInfoVbox.setVisible(true);
+
+    }
+    public void startScan(ActionEvent actionEvent) {
+        progressHbox.setManaged(true);
+        progressHbox.setVisible(true);
+        startInfoVbox.setVisible(false);
+        startInfoVbox.setManaged(false);
         GetCameraUrls getCameras = new GetCameraUrls();
 
         startIp = Config.get("ip_start_scan");
@@ -58,7 +72,7 @@ public class AutoScanLoadingController implements Initializable {
         timeout = Config.get("timeout");
 
         try {
-           Task<Void> scanning = new Task<>() {
+            Task<Void> scanning = new Task<>() {
                 @Override public Void call() throws Exception {
                     camerasFound = getCameras.main(startIp, endIp, startPort, endPort, threads, timeout);
 
@@ -86,7 +100,7 @@ public class AutoScanLoadingController implements Initializable {
 
             progressBarScanning.progressProperty().bind(getCameras.progressProperty());
 
-            } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -109,4 +123,10 @@ public class AutoScanLoadingController implements Initializable {
         window.setRoot(camerasRegisteredRoot);
     }
 
+
+    public void backToStartScreen(ActionEvent actionEvent) throws IOException {
+        Parent startScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/startScreen.fxml"));
+        Scene window =  ((Node) actionEvent.getSource()).getScene();
+        window.setRoot(startScreenRoot);
+    }
 }
