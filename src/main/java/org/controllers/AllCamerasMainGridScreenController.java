@@ -712,7 +712,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
     public void slideModeScreen(ActionEvent actionEvent) {
         if(gridScreen == true) {
             if(!intervalContainer.isManaged()){
-                SpinnerValueFactory<Integer> spFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 120, 5);
+                SpinnerValueFactory<Integer> spFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 5);
                 intervalSpinner.setValueFactory(spFactory);
 
                 intervalContainer.setManaged(true);
