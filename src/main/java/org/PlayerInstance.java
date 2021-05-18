@@ -106,6 +106,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
 
     @Override
     public void playing(MediaPlayer mediaPlayer) {
+        setCameraOpen(true);
         //System.out.println("playing");
     }
 
@@ -127,6 +128,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     @Override
     public void error(MediaPlayer mediaPlayer) {
         //System.out.println("error");
+        setCameraOpen(false);
     }
 
     @Override

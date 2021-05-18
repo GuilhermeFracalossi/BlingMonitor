@@ -290,25 +290,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
         Task<Void> start = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                ExecutorService es = Executors.newFixedThreadPool(10);
-                for (int i =0; i< PlayerInstance.players.size(); i++){
-                    camerasScanResult.add(GetCameraUrls.portIsOpen(es, PlayerInstance.players.get(i).cameraAddress(), (int)PlayerInstance.players.get(i).cameraPort(), 3000));
-                }
-                es.shutdown();
 
-                for (final Future<GetCameraUrls.ScanResult> f : camerasScanResult) {
-                    int i = camerasScanResult.indexOf(f);
-
-                    if (f.get().isOpen()) {
-//                    if(true){
-                        PlayerInstance.players.get(i).setCameraOpen(true);
-                        PlayerInstance.players.get(i).mediaPlayer().videoSurface().set(videoSurfaceForImageView(PlayerInstance.players.get(i).videoSurface()));
-                        PlayerInstance.players.get(i).mediaPlayer().media().start("http://"+PlayerInstance.players.get(i).cameraAddress()+":"+PlayerInstance.players.get(i).cameraPort());
-//                        PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
-                    }else{
-                        PlayerInstance.players.get(i).setCameraOpen(false);
-                    }
+                for (int i = 0; i < PlayerInstance.players.size(); i++) {
+                    PlayerInstance.players.get(i).mediaPlayer().videoSurface().set(videoSurfaceForImageView(PlayerInstance.players.get(i).videoSurface()));
+                    PlayerInstance.players.get(i).mediaPlayer().media().start(PlayerInstance.players.get(i).cameraAddress());
                 }
+
                 int camerasOpened=0;
                 for (int i = 0; i < PlayerInstance.players.size(); i++) {
                     PlayerInstance.players.get(i).videoSurface().setPreserveRatio(true);
@@ -461,7 +448,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         camerasScrollContainer.setContent(cameraViewGrid);
     }
 
-    public void fpsAnalyzer(int cameraIndex, String address, int port) {
+    public void fpsAnalyzer(int cameraIndex) {
         reconnectionTolerance = 0;
         lastFrameCount[cameraIndex] = 0;
 
