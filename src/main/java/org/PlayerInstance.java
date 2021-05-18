@@ -9,6 +9,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PlayerInstance extends MediaPlayerEventAdapter {
@@ -50,7 +52,23 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
         this.mediaPlayer = mediaPlayer;
         this.videoSurface = new ImageView();
         this.cameraAddress = cameraAddress;
-        this.cameraPort = cameraPort;
+
+
+        Pattern patternIP = Pattern.compile("((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])");
+        Matcher matcherIP = patternIP.matcher(cameraAddress);
+        while (matcherIP.find()) {
+            if(!matcherIP.group().equals("")){
+                this.cameraIp = matcherIP.group();
+            }
+        }
+
+        Pattern patternPort = Pattern.compile("(?<=\\:)(.*?)(?=\\/|\\/*$)");
+        Matcher matcherPort = patternPort.matcher(cameraAddress);
+        while (matcherPort.find()) {
+            if(!matcherPort.group().equals("")){
+                this.cameraPort = Integer.parseInt(matcherPort.group());
+            }
+        }
 
         this.gamma = gamma;
         this.brightness = brightness;

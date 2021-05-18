@@ -75,7 +75,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
     @FXML HBox playerControlsHbox;
     @FXML TextField cameraNameField;
     @FXML Label addressLabel;
-    @FXML Label portLabel;
     @FXML Slider brightnessSlider;
     @FXML Slider contrastSlider;
     @FXML Slider saturationSlider;
@@ -303,8 +302,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         camerasOpened++;
                         EmbeddedMediaPlayer mediaPlayer = PlayerInstance.players.get(i).mediaPlayer();
                         mediaPlayer.controls().start();
-                        if(verificationMode == true){
-                            fpsAnalyzer(i, PlayerInstance.players.get(i).cameraAddress(), (int) PlayerInstance.players.get(i).cameraPort());
+                        if(verificationMode){
+                            fpsAnalyzer(i);
                         }
                     }
                     else{
@@ -321,9 +320,8 @@ public class AllCamerasMainGridScreenController implements Initializable {
 
                 Thread.sleep(1000);
 
-                for (Future<GetCameraUrls.ScanResult> f : camerasScanResult) {
-                    int i = camerasScanResult.indexOf(f);
-                    if (f.get().isOpen()) {
+                for (int i = 0; i < PlayerInstance.players.size(); i++) {
+                    if(PlayerInstance.players.get(i).getCameraOpen()){
                         PlayerInstance.players.get(i).mediaPlayer().video().setAdjustVideo(true);
                     }
                 }
@@ -461,9 +459,12 @@ public class AllCamerasMainGridScreenController implements Initializable {
                         audioPlayer[cameraIndex].seek(audioPlayer[cameraIndex].getStartTime());
                         audioPlayer[cameraIndex].play();
                     }
-                    logger.setWarning("Camera: "+address+":"+port+ " disconnected");
+                    String address= PlayerInstance.players.get(cameraIndex).cameraAddress();
+                    String ip = PlayerInstance.players.get(cameraIndex).cameraIp();
+                    int port = PlayerInstance.players.get(cameraIndex).cameraPort();
+                    logger.setWarning("Camera: "+address+ " disconnected");
                     transmissionOffAlert(cameraIndex);
-                    reconnectCamera(cameraIndex, address, port);
+                    reconnectCamera(cameraIndex, address, ip, port);
                     analyzer[cameraIndex].stop();
 
                 }else{
@@ -479,7 +480,7 @@ public class AllCamerasMainGridScreenController implements Initializable {
         analyzer[cameraIndex].play();
     }
 
-    public void reconnectCamera(int cameraIndex,String address, int port) {
+    public void reconnectCamera(int cameraIndex,String fullAddress, String ip, int port) {
         Task<Void> reconnector = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -488,16 +489,19 @@ public class AllCamerasMainGridScreenController implements Initializable {
                     //if the socket.connect goes wrong, lands on catch and it loops again, that's why it works,
                     try {
                         Socket socket = new Socket();
-                        socket.connect(new InetSocketAddress(PlayerInstance.players.get(cameraIndex).cameraAddress(), (int) PlayerInstance.players.get(cameraIndex).cameraPort()), 1500);
+                        socket.connect(new InetSocketAddress(ip, port), 1500);
                         socket.close();
-
-                        reconnected = true;
                         Thread.sleep(7000);
-                        PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play("http://" + PlayerInstance.players.get(cameraIndex).cameraAddress() + ":" + PlayerInstance.players.get(cameraIndex).cameraPort());
-                        succeedReconnection(cameraIndex);
-                        logger.setWarning("Camera: " + address + ":" + port + " reconnected");
-                        lastFrameCount[cameraIndex] = 0;
-                        analyzer[cameraIndex].playFromStart();
+                        PlayerInstance.players.get(cameraIndex).mediaPlayer().media().play(fullAddress);
+                        Thread.sleep(2000);
+                        if(PlayerInstance.players.get(cameraIndex).getCameraOpen()){
+                            reconnected = true;
+                            succeedReconnection(cameraIndex);
+                            logger.setWarning("Camera: " +fullAddress+" reconnected");
+                            lastFrameCount[cameraIndex] = 0;
+                            analyzer[cameraIndex].playFromStart();
+                        }
+
                     } catch (Exception ignored) { }
                 }
                 return null;
@@ -588,7 +592,6 @@ public class AllCamerasMainGridScreenController implements Initializable {
         defaultCameraStyles();
         cameraNameField.setText(currentCameraName);
         addressLabel.setText(currentAddress);
-        portLabel.setText(String.valueOf(currentPort));
 
         cameraContainerSetted.setStyle("-fx-border-color: #ffffff;"+ "-fx-border-width:"+BORDER_WIDTH+"px;" +"-fx-background-color: black;");
 
