@@ -14,27 +14,74 @@
 
 <BorderPane fx:id="mainPane" minWidth="400.0" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #1F3146;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controllers.AutoScanLoadingController">
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" spacing="20.0">
+            <Text fx:id="statusScanningLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escaneamento automático" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="31.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Text>
+            <HBox fx:id="progressHbox" alignment="CENTER" prefHeight="90.0" prefWidth="1000.0">
                <children>
-                  <Text fx:id="statusScanningLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Realizando escaneamento" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="31.0" />
-                     </font>
-                  </Text>
+                  <ProgressBar fx:id="progressBarScanning" prefHeight="35.0" prefWidth="700.0" progress="0.0" />
                </children>
             </HBox>
-            <ProgressBar fx:id="progressBarScanning" prefHeight="38.0" prefWidth="700.0" progress="0.0">
+            <VBox fx:id="startInfoVbox" maxWidth="800.0" minWidth="300.0" spacing="5.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="ATENÇÃO">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="O escaneamento trata-se de um network mapping. Certifique-se de que você tem permissões para realizar o escaneamento na rede." wrappingWidth="800.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="O escaneamento só funcionará corretamente com câmeras HTTP que NÃO possuem subdomínios. Use o registro manual de câmeras para esses cenários." wrappingWidth="800.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Exemplo: A câmera 'http://192.168.0.10:8081' será detectada, mas 'http://192.168.0.10:8081/video' NÃO." wrappingWidth="800.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="CENTER" spacing="15.0">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#back" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: none; -fx-border-color: #e8503f; -fx-border-radius: 3; -fx-border-width: 3;" text="Voltar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#startScan" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: #2791e3;" text="Iniciar" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
                <VBox.margin>
-                  <Insets bottom="10.0" top="20.0" />
+                  <Insets top="40.0" />
                </VBox.margin>
-            </ProgressBar>
-            <Text fx:id="statusTxt" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
-               <font>
-                  <Font name="System Bold" size="21.0" />
-               </font>
-            </Text>
+            </VBox>
             <HBox alignment="TOP_CENTER" prefHeight="179.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
                <children>
                   <ImageView fx:id="tickImg" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -49,7 +96,7 @@
             <Insets />
          </BorderPane.margin>
          <padding>
-            <Insets top="100.0" />
+            <Insets top="80.0" />
          </padding>
       </VBox>
    </center>

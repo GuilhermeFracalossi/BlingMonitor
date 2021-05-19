@@ -102,7 +102,7 @@ public class UserScreenController implements Initializable {
 
     }
 
-    public void update(ActionEvent event) throws InterruptedException {
+    public void update(ActionEvent event) throws SQLException {
 
         String user = userField.getText().trim();
         String name = nameField.getText().trim();
@@ -113,7 +113,7 @@ public class UserScreenController implements Initializable {
             return;
 
         }else{
-            Database.updateUserInfo(LoginScreenController.id, name, user);
+            Database.updateUserInfo(Integer.parseInt(Database.getInfoUser("id")), name, user);
             messageImage.setImage(new Image(getClass().getResource("/org/images/tick.png").toString()));
             showMessage("Dados alterados com sucesso");
         }

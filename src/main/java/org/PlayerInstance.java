@@ -9,14 +9,17 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PlayerInstance extends MediaPlayerEventAdapter {
 
     private final EmbeddedMediaPlayer mediaPlayer;
     private final ImageView videoSurface;
-    protected final String cameraAddress;
-    protected final long cameraPort;
+    protected String cameraAddress;
+    protected String cameraIp;
+    protected int cameraPort;
     protected boolean cameraOpen;
     private static PlayerInstance instance;
 
@@ -43,13 +46,29 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
 
     public static List<PlayerInstance> players = new ArrayList<PlayerInstance>();
 
-    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress, long cameraPort, float gamma, float brightness, float saturation, float contrast) {
+    public PlayerInstance(int id, EmbeddedMediaPlayer mediaPlayer, String cameraAddress,  float gamma, float brightness, float saturation, float contrast) {
         this.id = id;
 
         this.mediaPlayer = mediaPlayer;
         this.videoSurface = new ImageView();
         this.cameraAddress = cameraAddress;
-        this.cameraPort = cameraPort;
+
+
+        Pattern patternIP = Pattern.compile("((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])");
+        Matcher matcherIP = patternIP.matcher(cameraAddress);
+        while (matcherIP.find()) {
+            if(!matcherIP.group().equals("")){
+                this.cameraIp = matcherIP.group();
+            }
+        }
+
+        Pattern patternPort = Pattern.compile("(?<=\\:)(.*?)(?=\\/|\\/*$)");
+        Matcher matcherPort = patternPort.matcher(cameraAddress);
+        while (matcherPort.find()) {
+            if(!matcherPort.group().equals("")){
+                this.cameraPort = Integer.parseInt(matcherPort.group());
+            }
+        }
 
         this.gamma = gamma;
         this.brightness = brightness;
@@ -71,7 +90,10 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     public String cameraAddress(){
         return cameraAddress;
     }
-    public long cameraPort(){
+    public String cameraIp(){
+        return cameraIp;
+    }
+    public int cameraPort(){
         return cameraPort;
     }
     public boolean getCameraOpen(){
@@ -102,6 +124,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
 
     @Override
     public void playing(MediaPlayer mediaPlayer) {
+        setCameraOpen(true);
         //System.out.println("playing");
     }
 
@@ -123,6 +146,7 @@ public class PlayerInstance extends MediaPlayerEventAdapter {
     @Override
     public void error(MediaPlayer mediaPlayer) {
         //System.out.println("error");
+        setCameraOpen(false);
     }
 
     @Override

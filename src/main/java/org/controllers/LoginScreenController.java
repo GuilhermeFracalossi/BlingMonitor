@@ -2,15 +2,12 @@ package org.controllers;
 
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,11 +25,6 @@ import static org.database.Database.encrypt;
 
 
 public class LoginScreenController {
-
-    public static String name;
-    public static String user;
-    public static int id;
-
     public static boolean logged = false;
     
     @FXML private HBox loginErrorMessage;
@@ -45,19 +37,15 @@ public class LoginScreenController {
 
     public void logIn(ActionEvent event) throws IOException {
 
-        String usuario = login.getText();
-        String senha = encrypt(passwordField.getText());
+        String user = login.getText();
+        String password = encrypt(passwordField.getText());
             try {
                 if(Database.isClosed()) {
-                    Database connection = new Database();
+                    new Database();
                 }
-                rs = Database.login(usuario, senha);
+                rs = Database.login(user, password);
 
-            if (rs.next()) { 
-                id = rs.getInt("id");
-
-                name = rs.getString("nome");
-                user = rs.getString("login");
+            if (rs.next()) {
 
                 logged = true;
                 if(CamerasConfig.camerasCount() > 0){

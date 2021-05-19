@@ -10,12 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-
 import javafx.stage.Stage;
 import org.network.GetAvailableIps;
 import org.database.Database;
 
-
+import java.awt.*;
 import java.io.IOException;
 import java.net.*;
 import java.sql.SQLException;
@@ -23,6 +22,8 @@ import java.util.*;
 
 
 public class StartScreenController implements Initializable {
+    @FXML
+    Button infoBtn;
     @FXML
     BorderPane mainPane;
 
@@ -36,7 +37,6 @@ public class StartScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-
             userBtn.setText(getUserName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -53,12 +53,15 @@ public class StartScreenController implements Initializable {
         ArrayList availableIps = new GetAvailableIps().main();
 
         if(availableIps.size() == 1){
+            AutoScanLoadingController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
+            IpSelectionScreenController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             AutoScanLoadingController.ipSelected = (String) availableIps.get(0);
             Parent autoScanLoadingRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/autoScanLoadingScreen.fxml"));
             Scene window =  ((Node) actionEvent.getSource()).getScene();
             window.setRoot(autoScanLoadingRoot);
 
         }else{
+            AutoScanLoadingController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             IpSelectionScreenController.ips = availableIps;
             IpSelectionScreenController.previousScreen = "/org/FxmlScreens/startScreen.fxml";
             Parent ipSelectionRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/ipSelectionScreen.fxml"));
@@ -102,5 +105,11 @@ public class StartScreenController implements Initializable {
         Scene window = ((Node) actionEvent.getSource()).getScene();
         window.setRoot(loginScreenRoot);
 
+    }
+
+    public void openDocumentation(ActionEvent actionEvent) throws URISyntaxException, IOException {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI("https://github.com/GuilhermeFracalossi/BlingMonitor"));
+        }
     }
 }

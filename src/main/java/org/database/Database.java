@@ -38,7 +38,7 @@ public class Database extends MySQL {
         params.add(user);
         params.add(password);
 
-        return execute("SELECT * FROM usuario WHERE login=? AND senha=?", params,true);
+        return execute("SELECT * FROM users WHERE user=? AND senha=?", params,true);
     }
     public static void insertUser(String name, String user, String pass) {
         ArrayList<String> params = new ArrayList<>();
@@ -47,16 +47,17 @@ public class Database extends MySQL {
         params.add(user);
         params.add(pass);
 
-        execute("INSERT INTO usuario(nome,login,senha) VALUES (?, ?, ?)",params,false);
+        execute("INSERT INTO users(name,user,senha) VALUES (?, ?, ?)",params,false);
     }
-    public static void updateUserInfo(int id, String nome, String login) {
+    public static void updateUserInfo(int id, String name, String user){
+
         ArrayList<String> params = new ArrayList<>();
 
-        params.add(nome);
-        params.add(login);
+        params.add(name);
+        params.add(user);
         params.add(String.valueOf(id));
 
-        execute("UPDATE usuario SET nome=?, login=? WHERE id=?", params, false);
+        execute("UPDATE users SET name=?, user=? WHERE id=?", params, false);
     }
 
     /**
@@ -67,7 +68,7 @@ public class Database extends MySQL {
         ArrayList<String> params = new ArrayList<>();
         params.add(password);
         params.add(String.valueOf(id));
-        execute("UPDATE usuario SET senha=? WHERE id=?", params, false);
+        execute("UPDATE users SET senha=? WHERE id=?", params, false);
     }
 
     public static String encrypt(String password) {
@@ -95,18 +96,18 @@ public class Database extends MySQL {
     }
 
     public static ResultSet getUsers() {
-        return execute("SELECT * FROM usuario",true);
+        return execute("SELECT * FROM users",true);
     }
 
     /**
      *
-     * @param info the information required: id, nome, login, senha
+     * @param info the information required: id, name, user, senha
      * @return String result
      */
     public static String getInfoUser(String info) throws SQLException {
         ArrayList<String> parm = new ArrayList<>();
         parm.add(info);
-        return execute("SELECT "+info+" FROM usuario", true).getString(1);
+        return execute("SELECT "+info+" FROM users", true).getString(1);
 
     }
 
@@ -116,13 +117,12 @@ public class Database extends MySQL {
 
             params.add(cameraObj.getName().trim());
             params.add(cameraObj.getAddress().trim());
-            params.add(String.valueOf(cameraObj.getPort()));
             params.add(String.valueOf(cameraObj.getBrightness()));
             params.add(String.valueOf(cameraObj.getGamma()));
             params.add(String.valueOf(cameraObj.getSaturation()));
             params.add(String.valueOf(cameraObj.getContrast()));
 
-            execute("INSERT INTO cameras(name,address,port,brightness,gamma,saturation,contrast) values(?,?,?,?,?,?,?)", params, false);
+            execute("INSERT INTO cameras(name,address,brightness,gamma,saturation,contrast) values(?,?,?,?,?,?)", params, false);
             return lastInsertedId();
 
         }catch (SQLException e){
@@ -135,7 +135,6 @@ public class Database extends MySQL {
         ArrayList params = new ArrayList();
         params.add(cameraObj.getName().trim());
         params.add(cameraObj.getAddress().trim());
-        params.add(cameraObj.getPort());
         params.add(cameraObj.getBrightness());
         params.add(cameraObj.getGamma());
         params.add(cameraObj.getSaturation());
@@ -143,6 +142,6 @@ public class Database extends MySQL {
 
         params.add(cameraObj.getId());
 
-        execute("UPDATE cameras SET name=?,address=?,port=?,brightness=?,gamma=?,saturation=?,contrast=? WHERE id=?",params, false);
+        execute("UPDATE cameras SET name=?,address=?,brightness=?,gamma=?,saturation=?,contrast=? WHERE id=?",params, false);
     }
 }

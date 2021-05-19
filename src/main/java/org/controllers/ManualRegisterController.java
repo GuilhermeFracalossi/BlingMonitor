@@ -10,6 +10,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -48,7 +50,6 @@ public class ManualRegisterController implements Initializable {
     @FXML VBox camerasRegisteredList;
 
     @FXML private TextField cameraAddress;
-    @FXML private TextField port;
     @FXML private TextField name;
     @FXML private Text registerText;
 
@@ -82,32 +83,38 @@ public class ManualRegisterController implements Initializable {
     }
 
     public String getUserName() throws SQLException {
-        //Mod 1
-        String userName = Database.getUsers().getString(2);
-        return userName;
+        return Database.getUsers().getString(2);
     }
+
     public void manualRegisterAction(ActionEvent actionEvent) throws Exception {
 
-        if(!isInteger(port.getText())){
-            registerMessage("Insira apenas números no campo: Porta");
+        String cameraName = name.getText();
+        String addressCamera = cameraAddress.getText();
+
+        if(cameraName.isEmpty() | addressCamera.isEmpty()){
+            registerMessage("Preencha todos os campos");
             return;
         }
 
-        String cameraName = name.getText();
-        String enderecoCamera = cameraAddress.getText();
-        int portNumber = Integer.parseInt(port.getText());
+        String regex = ".*[/@]((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(:|/|$).*";
+
+        boolean matches = Pattern.matches(regex, addressCamera);
+
+        if(!matches){
+            registerMessage("Insira um endereço válido");
+            return;
+        }
 
         CamerasConfig cameraObj = new CamerasConfig();
 
         cameraObj.setName(cameraName);
-        cameraObj.setAddress(enderecoCamera);
-        cameraObj.setPort(portNumber);
+        cameraObj.setAddress(addressCamera);
         cameraObj.setAdjustmentsToDefault();
         cameraObj.save();
 
         resetTextFields();
 
-        addCamera(cameraName, enderecoCamera, portNumber, cameraObj.getId());
+        addCamera(cameraName, addressCamera, cameraObj.getId());
         registerMessage("Câmera registrada com sucesso");
     }
 
@@ -129,17 +136,15 @@ public class ManualRegisterController implements Initializable {
 
             String name = cameraObj.getName();
             String address = cameraObj.getAddress();
-            long port = cameraObj.getPort();
 
-            addCamera(name, address, port, cameraObj.getId());
+            addCamera(name, address, cameraObj.getId());
         });
     }
 
-    public void addCamera(String cameraName, String address, long port, long id)  {
+    public void addCamera(String cameraName, String address, long id)  {
 
         cameraName = cameraName.trim();
         address = address.trim();
-        port = Long.parseLong(String.valueOf(port).trim());
 
         HBox cameraContainer = new HBox();
         cameraContainer.setAlignment(Pos.CENTER_LEFT);
@@ -172,12 +177,6 @@ public class ManualRegisterController implements Initializable {
         nomeDaCamera.setStyle("-fx-alignment: center");
 
 
-        Text porta = new Text();
-        porta.setText(String.valueOf(port));
-        porta.setFont(Font.font ("System", 12));
-        porta.setFill(Color.WHITE);
-        porta.setStyle("-fx-alignment: center");
-
         Text enderecoCamera = new Text();
         enderecoCamera.setText(address);
         enderecoCamera.setFont(Font.font ("System", 12));
@@ -192,7 +191,7 @@ public class ManualRegisterController implements Initializable {
 
         HBox addressContainer = new HBox();
         addressContainer.setAlignment(Pos.CENTER);
-        Region regiaoEspacadora = new Region();
+        //Region regiaoEspacadora = new Region();
 
         //container do botao de excluir
         HBox deleteContainer = new HBox();
@@ -226,8 +225,7 @@ public class ManualRegisterController implements Initializable {
 
         deleteContainer.getChildren().add(deleteBtn);
 
-        addressContainer.getChildren().addAll(enderecoCamera,  regiaoEspacadora,porta);
-        addressContainer.setHgrow(regiaoEspacadora, Priority.ALWAYS);
+        addressContainer.getChildren().addAll(enderecoCamera);
 
         informationContainer.getChildren().addAll(nomeDaCamera, addressContainer);
         cameraContainer.getChildren().addAll(informationContainer, deleteContainer);
@@ -244,7 +242,6 @@ public class ManualRegisterController implements Initializable {
     private void resetTextFields() {
         name.clear();
         cameraAddress.clear();
-        port.clear();
     }
 
     private void registerMessage(String message) {
@@ -263,7 +260,6 @@ public class ManualRegisterController implements Initializable {
         fade.setToValue(0);
         fade.setNode(registerMessageHbox);
         fade.play();
-
 
     }
 
@@ -291,6 +287,7 @@ public class ManualRegisterController implements Initializable {
         ArrayList availableIps = new GetAvailableIps().main();
         IpSelectionScreenController.ips = availableIps;
         IpSelectionScreenController.previousScreen = "/org/FxmlScreens/manualRegisterScreen.fxml";
+        AutoScanLoadingController.previousScreen = "/org/FxmlScreens/manualRegisterScreen.fxml";
         Parent camerasMainScreenRoot = FXMLLoader.load(getClass().getResource("/org/FxmlScreens/ipSelectionScreen.fxml"));
         //Scene camerasMainScreen = new Scene(camerasMainScreenRoot);
         //Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

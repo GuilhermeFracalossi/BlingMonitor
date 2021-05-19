@@ -89,11 +89,30 @@
                               <Image url="@../images/auto-scan-icon.png" />
                            </image>
                         </ImageView>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escaneamento automático">
-                           <font>
-                              <Font name="System Bold" size="24.0" />
-                           </font>
-                        </Text>
+                        <HBox alignment="CENTER" prefWidth="426.0" spacing="15.0">
+                           <children>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Escaneamento automático">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="infoBtn" mnemonicParsing="false" onAction="#openDocumentation" style="-fx-background-color: none;">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/info-icon-low.png" />
+                                       </image>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </ImageView>
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Procura por dispositivos transmitindo imagens em sua rede " textAlignment="CENTER" wrappingWidth="425.1640625">
                            <font>
                               <Font size="16.0" />
