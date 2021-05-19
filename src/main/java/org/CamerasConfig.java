@@ -17,8 +17,8 @@ public class CamerasConfig {
     private float saturation = 1;
     private float contrast = 1;
 
-    private static Map<Integer, CamerasConfig> cameras = new HashMap<>();
-    private static boolean isCamerasReaded = false;
+    private static Map<Integer, CamerasConfig> CameraCache = new HashMap<>();
+    private static boolean isCameraCached = false;
 
     public CamerasConfig(int id){
         this.id = id;
@@ -42,33 +42,33 @@ public class CamerasConfig {
                 cameraInstance.setGamma(results.getFloat("gamma"));
                 cameraInstance.setSaturation(results.getFloat("saturation"));
 
-                cameras.put(cameraInstance.getId(), cameraInstance);
+                CameraCache.put(cameraInstance.getId(), cameraInstance);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-    isCamerasReaded = true;
+    isCameraCached = true;
     }
 
-    public static int camerasCount() {
-        if(!isCamerasReaded){
+    public static boolean validadeCamerasCache(){
+        if(!isCameraCached){
             getConfigs();
         }
-        return cameras.size();
+        return true;
+    }
+    public static int camerasCount() {
+        validadeCamerasCache();
+        return CameraCache.size();
     }
 
     public static HashMap getCamerasList() {
-        if(!isCamerasReaded){
-            getConfigs();
-        }
-        return (HashMap) cameras;
+        validadeCamerasCache();
+        return (HashMap) CameraCache;
     }
 
     public static CamerasConfig getCamera(Integer id) {
-        if (!isCamerasReaded){
-            getConfigs();
-        }
-        return cameras.get(id);
+        validadeCamerasCache();
+        return CameraCache.get(id);
     }
 
     public static boolean isCameraAlreadyRegistered(String address) {
@@ -82,12 +82,23 @@ public class CamerasConfig {
     }
 
     public void delete(){
-        isCamerasReaded = false;
         if(this.id != null){
 //            If the ID is null (IN THEORY) this camera is not registered in the database yet,
 //                    so no need to actually run the command
             Database.deleteCamera(this.id);
-            cameras.remove(this.id);
+            CameraCache.remove(this.id);
+        }
+    }
+
+    public void save() {
+//        If the ID of this class is not set, that means the camera is not in the database
+        if (this.id == null){
+            this.id = Math.toIntExact(Database.insertCamera(this));
+            CameraCache.put(this.id,this);
+        }else{
+//            If the ID is set, that means you want to update a already existing camera
+            Database.updateCamera(this);
+            CameraCache.replace(this.id,this);
         }
     }
     public int getId(){
@@ -139,18 +150,6 @@ public class CamerasConfig {
 
     public void setSaturation(float saturation) {
         this.saturation = saturation;
-    }
-
-    public void save() {
-        isCamerasReaded = false;
-//        If the ID of this class is not set, that means the camera is not in the database
-        if (this.id == null){
-            this.id = Math.toIntExact(Database.insertCamera(this));
-        }else{
-//            If the ID is set, that means you want to update a already existing camera
-            Database.updateCamera(this);
-        }
-        cameras.put(this.id,this);
     }
 
     public void setAdjustmentsToDefault() {
